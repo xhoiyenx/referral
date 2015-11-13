@@ -11,4 +11,4 @@
 |
 */
 
-require_once __DIR__ . '/../app/routes/routes.php';
+require_once base_path() . '/app/routes/routes.php';

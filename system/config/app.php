@@ -78,7 +78,7 @@ return array(
 	|
 	*/
 
-	'key' => 'ruufg4iQxanqKF0qAEnQhYfBDqas3zle',
+	'key' => 'ezIjVIacyJPl4QHQnac4IUBzAxRBx3ND',
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
@@ -122,6 +122,7 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
+		'Barryvdh\Debugbar\ServiceProvider',
 	),
 
 	/*

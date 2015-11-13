@@ -5,7 +5,9 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.2.*",
-		"barryvdh/composer-cleanup-plugin": "0.1.x@dev"
+		"barryvdh/composer-cleanup-plugin": "0.1.x@dev",
+		"barryvdh/laravel-debugbar": "1.8.7",
+		"symfony/var-dumper": "2.7.6"
 	},
 	"autoload": {
     "psr-4": {

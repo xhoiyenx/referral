@@ -13,7 +13,7 @@ return array(
 	|
 	*/
 
-	'paths' => array(__DIR__.'/../../app/views'),
+	'paths' => array( base_path() . '/app/views/global' ),
 
 	/*
 	|--------------------------------------------------------------------------

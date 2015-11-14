@@ -58,8 +58,8 @@ return array(
 			'database'  => 'referral',
 			'username'  => 'root',
 			'password'  => '1234',
-			'charset'   => 'utf8',
-			'collation' => 'utf8_general_ci',
+			'charset'   => 'utf8mb4',
+			'collation' => 'utf8mb4_unicode_ci',
 			'prefix'    => '',
 		),
 

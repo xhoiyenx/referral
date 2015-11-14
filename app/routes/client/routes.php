@@ -20,6 +20,12 @@ Route::match(['GET', 'POST'], 'login', [
   'uses'  => 'Auth\AuthController@login',
 ]);
 
+#REGISTRATION PAGE
+Route::match(['GET', 'POST'], 'registration/{status?}', [
+  'as'    => 'client.registration', 
+  'uses'  => 'Auth\AuthController@registration',
+]);
+
 # CLIENTZONE NEED AUTH
 Route::group(['before' => 'auth.clientzone'], function(){
 

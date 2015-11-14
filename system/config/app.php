@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://localhost',
+	'url' => 'http://referral.dev',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ return array(
 	|
 	*/
 
-	'timezone' => 'UTC',
+	'timezone' => 'Asia/Singapore',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -78,8 +78,7 @@ return array(
 	|
 	*/
 
-	'key' => 'ezIjVIacyJPl4QHQnac4IUBzAxRBx3ND',
-
+	'key' => 'sen7jszXSxcRRZ6hb6mLslGguiT9GgO0',
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
 	/*
@@ -123,6 +122,7 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
 		'Barryvdh\Debugbar\ServiceProvider',
+		'Mews\Captcha\CaptchaServiceProvider',
 	),
 
 	/*
@@ -189,6 +189,7 @@ return array(
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
+		'Captcha' 				=> 'Mews\Captcha\Facades\Captcha',
 
 	),
 

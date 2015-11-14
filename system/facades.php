@@ -14,6 +14,11 @@ function response()
   return app('response');
 }
 
+function redirect()
+{
+	return app('redirect');
+}
+
 function form()
 {
   return app('form');
@@ -27,4 +32,14 @@ function html()
 function session()
 {
   return app('session');
+}
+
+function db()
+{
+	return app('db');
+}
+
+function validator()
+{
+	return app('validator');
 }

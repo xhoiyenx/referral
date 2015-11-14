@@ -81,3 +81,7 @@ App::down(function()
 require app_path().'/filters.php';
 
 require app_path().'/facades.php';
+
+require app_path().'/functions.php';
+
+require base_path().'/app/events/events.php';

@@ -24,7 +24,7 @@
     </div>
   {{ form()->close() }}
   <div class="footer-links row">
-    <div class="col-xs-6"><a href="#"><i class="fa fa-external-link"></i> Register Now</a></div>
+    <div class="col-xs-6"><a href="{{ route('client.registration') }}"><i class="fa fa-external-link"></i> Register Now</a></div>
     <div class="col-xs-6 text-right"><a href="#"><i class="fa fa-lock"></i> Forgot password</a></div>
   </div>
 </div>

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.12
+-- version 4.3.11
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2015 at 10:46 AM
--- Server version: 5.6.25
--- PHP Version: 5.5.27
+-- Generation Time: Nov 15, 2015 at 03:57 PM
+-- Server version: 5.6.24
+-- PHP Version: 5.5.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `referral`
@@ -293,23 +293,24 @@ INSERT INTO `countries` (`id`, `code`, `name`) VALUES
 CREATE TABLE IF NOT EXISTS `user` (
   `id` mediumint(8) unsigned NOT NULL,
   `role_id` tinyint(3) unsigned NOT NULL,
-  `first_name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `last_name` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fullname` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `usermail` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` char(60) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+  `activation_code` char(60) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `role_id`, `first_name`, `last_name`, `username`, `usermail`, `password`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Hoiyen', 'Lo', '99999999', 'hoiyen@itconcept.sg', '$2y$10$AIs7ffY3n7RbD9cEsWBJJOm7AmnwfOfqFJ6/dTD98wKg/huDvBJja', '0', NULL, '2015-11-14 10:29:52', '2015-11-14 10:29:52');
+INSERT INTO `user` (`id`, `role_id`, `fullname`, `username`, `usermail`, `password`, `status`, `activation_code`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 2, 'Hoiyen', 'admin', 'hoiyen.2000@gmail.com', '$2y$10$G.23wXMeXoUdJGAle7GCWO1J4p8fWRLtAooKD8J1Bvj.w4armxr6S', '1', '$2y$10$ZoIVCZUmOcxt/SAGtnPF/u7TZSBZ1POAwIrRUXrxz2hS8MKzd2UeW', 'epM1dkieFjvQM21Hmg7erWmzSBagQvvZxXD4xuAc2RJWgLzUMXONlcmIS1yL', '2015-11-15 07:08:12', '2015-11-15 14:22:41'),
+(2, 2, 'Lo Hoi Yen', 'hoiyen', 'hoiyen@itconcept.sg', '$2y$10$bVsSyakOLjbQU2As4gSMvu4gCe0yzCZ49yXFTm8vgxogqFllNol5y', '1', '$2y$10$u9iZw46jHeniLW0Z0DsOK.Uj.AneXFgB30SLqV/q.Ka1rImq.OiZu', 'm3SNSUdELXr2FYFRW0Ps2pOHMz5fdUnhsA51RZwcJGxCvGxzCtHR2hCbRtki', '2015-11-15 09:58:24', '2015-11-15 14:23:33');
 
 -- --------------------------------------------------------
 
@@ -322,16 +323,19 @@ CREATE TABLE IF NOT EXISTS `user_meta` (
   `user_id` mediumint(8) unsigned NOT NULL,
   `attr` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `value` text COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `user_meta`
 --
 
 INSERT INTO `user_meta` (`id`, `user_id`, `attr`, `value`) VALUES
-(1, 1, 'address', 'My Address'),
+(1, 1, 'address', 'Jl. Pengukiran 4 No 48, Pejagalan | RT/RW : 005/002'),
 (2, 1, 'zipcode', '11240'),
-(3, 1, 'country', 'SG');
+(3, 1, 'country', 'ID'),
+(4, 2, 'address', 'Jl Pengukiran 4 No 34'),
+(5, 2, 'zipcode', '11240'),
+(6, 2, 'country', 'ID');
 
 -- --------------------------------------------------------
 
@@ -406,22 +410,19 @@ CREATE TABLE IF NOT EXISTS `user_role_permission` (
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`,`usermail`);
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `username` (`username`,`usermail`);
 
 --
 -- Indexes for table `user_meta`
 --
 ALTER TABLE `user_meta`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `user_password_reminder`
 --
 ALTER TABLE `user_password_reminder`
-  ADD KEY `user_password_reminder_email_index` (`email`(191)),
-  ADD KEY `user_password_reminder_token_index` (`token`(191));
+  ADD KEY `user_password_reminder_email_index` (`email`(191)), ADD KEY `user_password_reminder_token_index` (`token`(191));
 
 --
 -- Indexes for table `user_relation`
@@ -439,8 +440,7 @@ ALTER TABLE `user_role`
 -- Indexes for table `user_role_permission`
 --
 ALTER TABLE `user_role_permission`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `permission` (`permission`);
+  ADD PRIMARY KEY (`id`), ADD KEY `permission` (`permission`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -450,12 +450,12 @@ ALTER TABLE `user_role_permission`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `user_meta`
 --
 ALTER TABLE `user_meta`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `user_relation`
 --

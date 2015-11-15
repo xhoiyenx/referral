@@ -29,15 +29,9 @@
 			    @else
 			      @include('layout.notices')
 			      <div class="row">
-				      <div class="col-md-6">
+				      <div class="col-md-12">
 					      <div class="group">
-					        {{ form()->text('first_name', null, ['class' => 'form-control', 'placeholder' => 'First Name']) }}
-					        <i class="fa fa-user"></i>
-					      </div>
-				      </div>
-				      <div class="col-md-6">
-					      <div class="group">
-					        {{ form()->text('last_name', null, ['class' => 'form-control', 'placeholder' => 'Last Name']) }}
+					        {{ form()->text('fullname', null, ['class' => 'form-control', 'placeholder' => 'Full name * same as NRIC']) }}
 					        <i class="fa fa-user"></i>
 					      </div>
 				      </div>
@@ -45,8 +39,8 @@
 			      <div class="row">
 				      <div class="col-md-6">
 					      <div class="group">
-					        {{ form()->text('username', null, ['class' => 'form-control', 'placeholder' => 'NRIC *']) }}
-					        <i class="fa fa-credit-card"></i>
+					        {{ form()->text('username', null, ['class' => 'form-control', 'placeholder' => 'Username *']) }}
+					        <i class="fa fa-user"></i>
 					      </div>
 				      </div>
 				      <div class="col-md-6">

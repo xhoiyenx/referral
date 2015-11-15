@@ -8,38 +8,38 @@
     <title>{{ $pageTitle or '' }}</title>
 
     <!-- JQUERY -->
-    <script type="text/javascript" src="{{ adm_assets('js/jquery.min.js') }}"></script>
+    {{ html()->script('public/global/jquery/jquery.min.js') }}
     
     <!-- FRAMEWORK -->
-    <link rel="stylesheet" media="all" href="{{ adm_assets('css/bootstrap.css') }}">
+    {{ html()->style('public/global/bootstrap/bootstrap.css') }}
     
     <!-- ICON -->
-    <link rel="stylesheet" media="all" href="{{ adm_assets('css/font-awesome.min.css') }}">
+    {{ html()->style('public/global/font-awesome/font-awesome.css') }}
 
     <!-- PLUGINS -->
-    <link rel="stylesheet" media="all" href="{{ adm_assets('plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}">
-    <link rel="stylesheet" media="all" href="{{ adm_assets('plugins/select/select.min.css') }}">
-    <link rel="stylesheet" media="all" href="{{ adm_assets('css/datatables.css') }}">
+    {{ html()->style('public/global/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}
+    {{ html()->style('public/global/select/select.min.css') }}
+    {{ html()->style('public/global/datatables/datatables.css') }} 
     
     <!-- THEME STYLE -->
-    <link rel="stylesheet" media="all" href="{{ adm_assets('css/style.css') }}">
-    <link rel="stylesheet" media="all" href="{{ adm_assets('css/responsive.css') }}">
-    <link rel="stylesheet" media="all" href="{{ adm_assets('css/shortcuts.css') }}">
+    {{ html()->style('public/manager/assets/css/style.css') }}
+    {{ html()->style('public/manager/assets/css/responsive.css') }}
+    {{ html()->style('public/manager/assets/css/shortcuts.css') }}
     @section('header_before_style')@show
-    <link rel="stylesheet" media="all" href="{{ adm_assets('css/custom.css') }}">
+    {{ html()->style('public/manager/assets/css/custom.css') }}
     @section('header_after_style')@show
 
   </head>
   <body>
     <!-- Start Page Loading -->
-    <div class="loading"><img src="{{ adm_assets('img/loading.gif') }}" alt="loading-img"></div>
+    <div class="loading"><img src="{{ asset('public/manager/assets/img/loading.gif') }}"></div>
     <!-- End Page Loading -->
     <!-- //////////////////////////////////////////////////////////////////////////// --> 
     <!-- START TOP -->
     <div id="top" class="clearfix">
       <!-- Start App Logo -->
       <div class="applogo">
-        <a href="" class="logo">HONAKO</a>
+        <a href="" class="logo">ITCONCEPT</a>
       </div>
       <!-- End App Logo -->
       <!-- Start Sidebar Show Hide Button -->
@@ -60,7 +60,7 @@
             <li><a href="#"><i class="fa falist fa-wrench"></i>Settings</a></li>
             <li class="divider"></li>
             <li><a href="#"><i class="fa falist fa-lock"></i> Lockscreen</a></li>
-            <li><a href="{{ route('backend.logout') }}"><i class="fa falist fa-power-off"></i> Logout</a></li>
+            <li><a href="{{ $logout_url }}"><i class="fa falist fa-power-off"></i> Logout</a></li>
           </ul>
         </li>
       </ul>
@@ -69,22 +69,15 @@
     <!-- END TOP -->
 
     <!-- START SIDEBAR -->
-    <div class="sidebar clearfix hidden">
-      <ul class="sidebar-panel nav">
-        <li class="sidetitle">MENU</li>
-        <li>
-          <a href="{{ adm_route('dashboard') }}"><span class="icon color5"><i class="fa fa-home"></i></span> Dashboard</a>
-        </li>
-        <li>
-          <a href="{{ adm_route('user') }}"><span class="icon color5"><i class="fa fa-user"></i></span> Users</a>
-        </li>
-      </ul>
+    <!-- <div class="sidebar clearfix hidden"> SET DEFAULT HIDDEN -->
+    <div class="sidebar clearfix">
+      @include('layout.menu')
     </div>
     <!-- END SIDEBAR -->
 
     <!-- START CONTENT -->
-    <div class="content" style="margin-left:0">
-
+    <!-- <div class="content" style="margin-left:0"> SET DEFAULT HIDDEN -->
+    <div class="content">
       @yield('content')
     
       <!-- Start Footer -->
@@ -97,14 +90,13 @@
       <!-- End Footer -->
     </div>
     <!-- End Content -->
-    
-    <script type="text/javascript" src="{{ adm_assets('js/bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ adm_assets('plugins/select/select.min.js') }}"></script>
-    <script type="text/javascript" src="{{ adm_assets('js/jquery.dataTables.min.js') }}"></script>
-    <script type="text/javascript" src="{{ adm_assets('js/dataTables.buttons.min.js') }}"></script>
-    <script type="text/javascript" src="{{ adm_assets('js/datatable_init.js') }}"></script>
-    <script type="text/javascript" src="{{ adm_assets('js/buttons.colVis.min.js') }}"></script>
+    {{ html()->script('public/global/bootstrap/bootstrap.min.js') }}
+    {{ html()->script('public/global/select/select.min.js') }}
+    {{ html()->script('public/global/datatables/jquery.dataTables.min.js') }}
+    {{ html()->script('public/global/datatables/dataTables.buttons.min.js') }}
+    {{ html()->script('public/global/datatables/datatable_init.js') }}
+    {{ html()->script('public/global/datatables/buttons.colVis.min.js') }}
     @section('footer')@show
-    <script type="text/javascript" src="{{ adm_assets('js/plugins.js') }}"></script>
+    {{ html()->script('public/manager/assets/js/plugins.js') }}
   </body>
 </html>

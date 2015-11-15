@@ -1,4 +1,19 @@
 <?php
+function auth()
+{
+  return app('auth');
+}
+
+function db()
+{
+  return app('db');
+}
+
+function form()
+{
+  return app('form');
+}
+
 function view()
 {
   return app('view');
@@ -19,11 +34,6 @@ function redirect()
 	return app('redirect');
 }
 
-function form()
-{
-  return app('form');
-}
-
 function html()
 {
   return app('html');
@@ -34,12 +44,12 @@ function session()
   return app('session');
 }
 
-function db()
-{
-	return app('db');
-}
-
 function validator()
 {
 	return app('validator');
+}
+
+function router()
+{
+  return app('router');
 }

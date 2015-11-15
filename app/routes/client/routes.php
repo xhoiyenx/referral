@@ -26,6 +26,24 @@ Route::match(['GET', 'POST'], 'registration/{status?}', [
   'uses'  => 'Auth\AuthController@registration',
 ]);
 
+#ACCOUNT ACTIVATION PAGE
+Route::get('activate', [
+  'as'    => 'client.activate', 
+  'uses'  => 'Auth\AuthController@activate',
+]);
+
+#REMINDER PAGE
+Route::match(['GET', 'POST'], 'reminder', [
+  'as'    => 'client.reminder', 
+  'uses'  => 'Auth\AuthController@reminder',
+]);
+
+#RESET PASSWORD PAGE
+Route::match(['GET', 'POST'], 'reset/{token}', [
+  'as'    => 'client.reset', 
+  'uses'  => 'Auth\AuthController@reset',
+]);
+
 # CLIENTZONE NEED AUTH
 Route::group(['before' => 'auth.clientzone'], function(){
 
@@ -34,5 +52,11 @@ Route::group(['before' => 'auth.clientzone'], function(){
     'as'    => 'client.dashboard', 
     'uses'  => 'Dashboard\DashboardController@index',
   ]);
+
+  # DASHBOARD
+  Route::get('logout', [
+    'as'    => 'client.logout',
+    'uses'  => 'Auth\AuthController@logout',
+  ]);  
 
 });

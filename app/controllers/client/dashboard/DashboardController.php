@@ -4,8 +4,14 @@ use App\Controllers\Client\Controller;
 
 class DashboardController extends Controller
 {
+  public function __construct()
+  {
+    parent::__construct();
+  }
+
   public function index()
   {
-    return 'dashboard';
+    #dump( app('router')->currentRouteName() );
+    return view()->make('dashboard.index');
   }
 }

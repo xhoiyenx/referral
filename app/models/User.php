@@ -25,14 +25,10 @@ class User extends Model implements UserInterface, RemindableInterface {
    */
   protected $hidden = array('password', 'remember_token');
 
-  public function usermeta()
-  {
-    return $this->hasMany('App\Models\UserMeta');
-  }
-
   protected function validate( $data, $id = null, $register = true )
   {
     $rules = [
+      'fullname'  => 'required',
       'username'  => 'required|unique:user,username,' . $id,
       'usermail'  => 'required|email|unique:user,usermail,' . $id,
       'password'  => 'required|confirmed',
@@ -49,5 +45,15 @@ class User extends Model implements UserInterface, RemindableInterface {
 
     $validator = validator()->make( $data, $rules );
     return $validator;
+  }
+
+  public function getReminderEmail()
+  {
+    return $this->usermail;
+  }
+
+  public function usermeta()
+  {
+    return $this->hasMany('App\Models\UserMeta');
   }
 }

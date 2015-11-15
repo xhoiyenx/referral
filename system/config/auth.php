@@ -28,7 +28,7 @@ return array(
 	|
 	*/
 
-	'model' => 'User',
+	'model' => 'App\Models\User',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -59,8 +59,8 @@ return array(
 	*/
 
 	'reminder' 	=> array(
-		'email' 	=> 'emails.auth.reminder',
-		'table' 	=> 'user_password_reminders',
+		'email' 	=> 'email.member-reminder',
+		'table' 	=> 'user_password_reminder',
 		'expire' 	=> 60,
 	),
 

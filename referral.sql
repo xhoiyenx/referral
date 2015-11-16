@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.3.11
+-- version 4.4.12
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 15, 2015 at 03:57 PM
--- Server version: 5.6.24
--- PHP Version: 5.5.24
+-- Generation Time: Nov 16, 2015 at 11:26 AM
+-- Server version: 5.6.25
+-- PHP Version: 5.5.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `referral`
@@ -300,6 +300,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   `status` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
   `activation_code` char(60) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `online` enum('0','1') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `logged_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `logout_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -308,9 +311,9 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `role_id`, `fullname`, `username`, `usermail`, `password`, `status`, `activation_code`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Hoiyen', 'admin', 'hoiyen.2000@gmail.com', '$2y$10$G.23wXMeXoUdJGAle7GCWO1J4p8fWRLtAooKD8J1Bvj.w4armxr6S', '1', '$2y$10$ZoIVCZUmOcxt/SAGtnPF/u7TZSBZ1POAwIrRUXrxz2hS8MKzd2UeW', 'epM1dkieFjvQM21Hmg7erWmzSBagQvvZxXD4xuAc2RJWgLzUMXONlcmIS1yL', '2015-11-15 07:08:12', '2015-11-15 14:22:41'),
-(2, 2, 'Lo Hoi Yen', 'hoiyen', 'hoiyen@itconcept.sg', '$2y$10$bVsSyakOLjbQU2As4gSMvu4gCe0yzCZ49yXFTm8vgxogqFllNol5y', '1', '$2y$10$u9iZw46jHeniLW0Z0DsOK.Uj.AneXFgB30SLqV/q.Ka1rImq.OiZu', 'm3SNSUdELXr2FYFRW0Ps2pOHMz5fdUnhsA51RZwcJGxCvGxzCtHR2hCbRtki', '2015-11-15 09:58:24', '2015-11-15 14:23:33');
+INSERT INTO `user` (`id`, `role_id`, `fullname`, `username`, `usermail`, `password`, `status`, `activation_code`, `remember_token`, `online`, `logged_at`, `logout_at`, `created_at`, `updated_at`) VALUES
+(1, 2, 'Hoiyen', 'admin', 'hoiyen.2000@gmail.com', '$2y$10$G.23wXMeXoUdJGAle7GCWO1J4p8fWRLtAooKD8J1Bvj.w4armxr6S', '1', '$2y$10$ZoIVCZUmOcxt/SAGtnPF/u7TZSBZ1POAwIrRUXrxz2hS8MKzd2UeW', 'swc5y6QZz7vTEZj19AD47T7xHxZznJMuENFxPqOJNGx7wzGxRkDEYkvwLdQK', '0', '2015-11-16 09:02:45', '2015-11-16 09:04:00', '2015-11-15 07:08:12', '2015-11-16 09:04:00'),
+(2, 2, 'Lo Hoi Yen', 'hoiyen', 'hoiyen@itconcept.sg', '$2y$10$bVsSyakOLjbQU2As4gSMvu4gCe0yzCZ49yXFTm8vgxogqFllNol5y', '1', '$2y$10$u9iZw46jHeniLW0Z0DsOK.Uj.AneXFgB30SLqV/q.Ka1rImq.OiZu', 'm3SNSUdELXr2FYFRW0Ps2pOHMz5fdUnhsA51RZwcJGxCvGxzCtHR2hCbRtki', '1', '2015-11-16 09:23:32', '0000-00-00 00:00:00', '2015-11-15 09:58:24', '2015-11-16 09:23:32');
 
 -- --------------------------------------------------------
 
@@ -410,19 +413,22 @@ CREATE TABLE IF NOT EXISTS `user_role_permission` (
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `username` (`username`,`usermail`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`,`usermail`);
 
 --
 -- Indexes for table `user_meta`
 --
 ALTER TABLE `user_meta`
-  ADD PRIMARY KEY (`id`), ADD KEY `user_id` (`user_id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `user_password_reminder`
 --
 ALTER TABLE `user_password_reminder`
-  ADD KEY `user_password_reminder_email_index` (`email`(191)), ADD KEY `user_password_reminder_token_index` (`token`(191));
+  ADD KEY `user_password_reminder_email_index` (`email`(191)),
+  ADD KEY `user_password_reminder_token_index` (`token`(191));
 
 --
 -- Indexes for table `user_relation`
@@ -440,7 +446,8 @@ ALTER TABLE `user_role`
 -- Indexes for table `user_role_permission`
 --
 ALTER TABLE `user_role_permission`
-  ADD PRIMARY KEY (`id`), ADD KEY `permission` (`permission`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `permission` (`permission`);
 
 --
 -- AUTO_INCREMENT for dumped tables

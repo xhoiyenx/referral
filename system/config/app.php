@@ -121,7 +121,7 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
-		'Barryvdh\Debugbar\ServiceProvider',
+		#'Barryvdh\Debugbar\ServiceProvider',
 		'Mews\Captcha\CaptchaServiceProvider',
 	),
 

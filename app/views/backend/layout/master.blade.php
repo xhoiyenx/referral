@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $pageTitle or '' }}</title>
+    <title>{{ $pageTitle or $controller->getPageTitle() }}</title>
 
     <!-- JQUERY -->
     {{ html()->script('public/global/jquery/jquery.min.js') }}
@@ -19,7 +19,7 @@
     <!-- PLUGINS -->
     {{ html()->style('public/global/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}
     {{ html()->style('public/global/select/select.min.css') }}
-    {{ html()->style('public/global/datatables/datatables.css') }} 
+    {{ html()->style('public/global/datatables/datatables.css') }}
     
     <!-- THEME STYLE -->
     {{ html()->style('public/manager/assets/css/style.css') }}
@@ -78,6 +78,12 @@
     <!-- START CONTENT -->
     <!-- <div class="content" style="margin-left:0"> SET DEFAULT HIDDEN -->
     <div class="content">
+      @if( $controller->useHeader() )
+      <div class="page-header">
+        <h1 class="title">{{ $controller->getPageTitle() }}</h1>
+        {{ $controller->drawBreadcrumb() }}
+      </div>
+      @endif
       @yield('content')
     
       <!-- Start Footer -->

@@ -44,8 +44,14 @@ Route::match(['GET', 'POST'], 'reset/{token}', [
   'uses'  => 'Auth\AuthController@reset',
 ]);
 
-# CLIENTZONE NEED AUTH
+# CLIENTZONE AFTER LOGIN
 Route::group(['before' => 'auth.clientzone'], function(){
+
+  # LOGOUT
+  Route::get('logout', [
+    'as'    => 'client.logout',
+    'uses'  => 'Auth\AuthController@logout',
+  ]);
 
   # DASHBOARD
   Route::get('/', [
@@ -53,10 +59,24 @@ Route::group(['before' => 'auth.clientzone'], function(){
     'uses'  => 'Dashboard\DashboardController@index',
   ]);
 
-  # DASHBOARD
-  Route::get('logout', [
-    'as'    => 'client.logout',
-    'uses'  => 'Auth\AuthController@logout',
+  # LEAD
+  Route::match(['GET', 'POST'], 'lead', [
+    'as'    => 'client.lead', 
+    'uses'  => 'Lead\LeadController@index',
+  ]);
+
+  # LEAD CREATE
+  Route::match(['GET', 'POST'], 'lead/create', [
+    'as'    => 'client.lead.create', 
+    'uses'  => 'Lead\LeadController@create',
   ]);  
+
+  # LEAD CREATE
+  Route::match(['GET', 'POST'], 'lead/update', [
+    'as'    => 'client.lead.update', 
+    'uses'  => 'Lead\LeadController@update',
+  ]);
+
+
 
 });

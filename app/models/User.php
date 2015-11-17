@@ -47,6 +47,26 @@ class User extends Model implements UserInterface, RemindableInterface {
     return $validator;
   }
 
+  protected function validate_lead( $data )
+  {
+    $messages = array(
+      'meta.company.required'  => 'Company name is required',
+      'meta.phone.required'    => 'Phone number is required',
+      'meta.mobile.required'   => 'Mobile number is required',
+      'fullname.required'      => 'Fullname is required'
+    );
+
+    $rules = [
+      'fullname'      => 'required',
+      'meta.company' => 'required',
+      'meta.phone'   => 'required',
+      'meta.mobile'  => 'required'
+    ];
+
+    $validator = validator()->make( $data, $rules, $messages );
+    return $validator;
+  }
+
   public function getReminderEmail()
   {
     return $this->usermail;
@@ -55,5 +75,10 @@ class User extends Model implements UserInterface, RemindableInterface {
   public function usermeta()
   {
     return $this->hasMany('App\Models\UserMeta');
+  }
+
+  public function children()
+  {
+    return $this->hasMany('App\Models\User', 'parent', 'id');
   }
 }

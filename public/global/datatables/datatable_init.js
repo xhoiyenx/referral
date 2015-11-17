@@ -2,7 +2,7 @@ $.extend( true, $.fn.dataTable.defaults, {
   columnDefs: [{
     targets   : 'no-sort',
     orderable : false,
-  }],
+  }]
 });
 
 function dataTableDelete( datatable, location, text )

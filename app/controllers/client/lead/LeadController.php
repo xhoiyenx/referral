@@ -115,29 +115,35 @@ class LeadController extends Controller
     $users = $query->lists('user.id');
     $query = null;
 
-    # filtering and ordering data done, show real data here
-    $query = User::with('usermeta')->whereIn( 'id', $users );
-    $query->orderByRaw( 'FIELD (id,' . implode(',', $users) . ')' );
-
     # get total
     #$total = $query->count();
     $total = count($users);
 
-    # add offset
-    $query->offset( $_POST['start'] );
+    if ( $total > 0 )
+    {
+      # filtering and ordering data done, show real data here
+      $query = User::with('usermeta')->whereIn( 'id', $users );
+      $query->orderByRaw( 'FIELD (id,' . implode(',', $users) . ')' );
 
-    # add limit
-    $query->take( $_POST['length'] );
+      # add offset
+      $query->offset( $_POST['start'] );
 
-    # get data
-    $rows = $query->get();
+      # add limit
+      $query->take( $_POST['length'] );
+
+      # get data
+      $rows = $query->get();
+    }
+
 
     $data  = [
       'recordsTotal' => $total,
-      'recordsFiltered' => $total
+      'recordsFiltered' => $total,
+      'data' => []
     ];
 
-    if ( ! $rows->isEmpty() ) {
+    if ( $total > 0 ) {
+    #if ( ! $rows->isEmpty() ) {
       foreach ( $rows as $row )
       {
         # TO-DO add this to library

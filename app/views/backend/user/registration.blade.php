@@ -39,7 +39,7 @@
 			      <div class="row">
 				      <div class="col-md-6">
 					      <div class="group">
-					        {{ form()->text('username', null, ['class' => 'form-control', 'placeholder' => 'Username *']) }}
+					        {{ form()->text('meta[mobile]', null, ['class' => 'form-control', 'placeholder' => 'Mobile *']) }}
 					        <i class="fa fa-user"></i>
 					      </div>
 				      </div>

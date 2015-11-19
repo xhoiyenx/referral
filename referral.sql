@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2015 at 11:01 AM
+-- Generation Time: Nov 19, 2015 at 10:56 AM
 -- Server version: 5.6.25
 -- PHP Version: 5.5.27
 
@@ -302,6 +302,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `online` enum('0','1') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
   `parent` mediumint(8) unsigned NOT NULL,
+  `sales_id` mediumint(8) unsigned DEFAULT NULL,
   `logged_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `logout_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -312,12 +313,12 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `role_id`, `fullname`, `username`, `usermail`, `password`, `status`, `activation_code`, `remember_token`, `online`, `parent`, `logged_at`, `logout_at`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Hoiyen', 'admin', 'hoiyen.2000@gmail.com', '$2y$10$G.23wXMeXoUdJGAle7GCWO1J4p8fWRLtAooKD8J1Bvj.w4armxr6S', '1', '$2y$10$ZoIVCZUmOcxt/SAGtnPF/u7TZSBZ1POAwIrRUXrxz2hS8MKzd2UeW', 'swc5y6QZz7vTEZj19AD47T7xHxZznJMuENFxPqOJNGx7wzGxRkDEYkvwLdQK', '0', 0, '2015-11-16 09:02:45', '2015-11-16 09:04:00', '2015-11-15 07:08:12', '2015-11-16 09:04:00'),
-(2, 2, 'Lo Hoi Yen', 'hoiyen', 'hoiyen@itconcept.sg', '$2y$10$bVsSyakOLjbQU2As4gSMvu4gCe0yzCZ49yXFTm8vgxogqFllNol5y', '1', '$2y$10$u9iZw46jHeniLW0Z0DsOK.Uj.AneXFgB30SLqV/q.Ka1rImq.OiZu', 'OqRmfcTAzIZVXyf7N0tSjtl6BmHKRqmbvxyYq1UXREGKUTfaPkULGJjfSXpC', '1', 0, '2015-11-17 10:59:10', '2015-11-17 10:42:13', '2015-11-15 09:58:24', '2015-11-17 10:59:10'),
-(3, 3, 'Sales Company A', '', '', '', '1', '', NULL, '0', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-17 05:02:18', '2015-11-17 05:02:18'),
-(5, 3, 'Sales Company B', '', '', '', '1', '', NULL, '0', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-17 05:54:56', '2015-11-17 05:54:56'),
-(6, 3, 'Sales Company C', '', '', '', '1', '', NULL, '0', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-17 05:55:16', '2015-11-17 05:55:16');
+INSERT INTO `user` (`id`, `role_id`, `fullname`, `username`, `usermail`, `password`, `status`, `activation_code`, `remember_token`, `online`, `parent`, `sales_id`, `logged_at`, `logout_at`, `created_at`, `updated_at`) VALUES
+(1, 2, 'Hoiyen', 'admin', 'hoiyen.2000@gmail.com', '$2y$10$G.23wXMeXoUdJGAle7GCWO1J4p8fWRLtAooKD8J1Bvj.w4armxr6S', '1', '$2y$10$ZoIVCZUmOcxt/SAGtnPF/u7TZSBZ1POAwIrRUXrxz2hS8MKzd2UeW', 'KPuRLwuuL1Oe2MYSmiBRnN1B45WmlX15T5W2XkSEpQZVKeAtkOZxrpcdYtck', '0', 0, 0, '2015-11-19 08:59:25', '2015-11-19 09:06:29', '2015-11-15 07:08:12', '2015-11-19 09:06:29'),
+(2, 2, 'Lo Hoi Yen', 'hoiyen', 'hoiyen@itconcept.sg', '$2y$10$bVsSyakOLjbQU2As4gSMvu4gCe0yzCZ49yXFTm8vgxogqFllNol5y', '1', '$2y$10$u9iZw46jHeniLW0Z0DsOK.Uj.AneXFgB30SLqV/q.Ka1rImq.OiZu', 'WLXHVo1T7vh7PMZLm9H0mUFGi5wjnoQY287R0yYgs3K4PwUenrmtrP1M5wWc', '0', 0, 0, '2015-11-19 09:06:35', '2015-11-19 10:01:27', '2015-11-15 09:58:24', '2015-11-19 10:01:27'),
+(3, 3, 'Sales Company A', '', '', '', '1', '', NULL, '0', 2, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-17 05:02:18', '2015-11-17 05:02:18'),
+(5, 3, 'Sales Company B', '', '', '', '1', '', NULL, '0', 2, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-17 05:54:56', '2015-11-17 05:54:56'),
+(6, 3, 'Sales Company C', '', '', '', '1', '', NULL, '0', 2, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-17 05:55:16', '2015-11-17 05:55:16');
 
 -- --------------------------------------------------------
 

@@ -35,7 +35,10 @@ class AuthController extends Controller
 
       $role_id = 2; # ONLY FOR MEMBER
 
+      # CODE BELOW WILL VALIDATE AGAINST USERNAME
       $success = app('auth')->once(['username' => $username, 'password' => $password, 'role_id' => $role_id]) OR app('auth')->once(['usermail' => $username, 'password' => $password, 'role_id' => $role_id]);
+      #
+      
       if ( $success ) {
         $user = auth()->user();
 

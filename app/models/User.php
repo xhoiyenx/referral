@@ -29,11 +29,19 @@ class User extends Model implements UserInterface, RemindableInterface {
   {
     $rules = [
       'fullname'  => 'required',
-      'username'  => 'required|unique:user,username,' . $id,
+      #'username'  => 'required|unique:user,username,' . $id,
       'usermail'  => 'required|email|unique:user,usermail,' . $id,
       'password'  => 'required|confirmed',
       'captcha'   => 'required|captcha',
+      'meta.mobile'  => 'required'
     ];
+
+    $messages = array(
+      'meta.company.required'  => 'Company name is required',
+      'meta.phone.required'    => 'Phone number is required',
+      'meta.mobile.required'   => 'Mobile number is required',
+      'fullname.required'      => 'Fullname is required'
+    );    
 
     if ( $id != null ) {
       unset($rules['password']);
@@ -43,7 +51,7 @@ class User extends Model implements UserInterface, RemindableInterface {
       unset($rules['captcha']);
     }
 
-    $validator = validator()->make( $data, $rules );
+    $validator = validator()->make( $data, $rules, $messages );
     return $validator;
   }
 
@@ -57,7 +65,7 @@ class User extends Model implements UserInterface, RemindableInterface {
     );
 
     $rules = [
-      'fullname'      => 'required',
+      'fullname'     => 'required',
       'meta.company' => 'required',
       'meta.phone'   => 'required',
       'meta.mobile'  => 'required'

@@ -121,7 +121,7 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
-		#'Barryvdh\Debugbar\ServiceProvider',
+		'Barryvdh\Debugbar\ServiceProvider',
 		'Mews\Captcha\CaptchaServiceProvider',
 	),
 
@@ -193,4 +193,13 @@ return array(
 
 	),
 
+	/*
+	|--------------------------------------------------------------------------
+	| Route Prefixes
+	|--------------------------------------------------------------------------
+	*/
+	'route_prefix' => array(
+		'administrator' => 'admin',
+		'member' => 'clientzone'
+	),
 );

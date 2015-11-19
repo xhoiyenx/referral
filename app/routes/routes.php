@@ -2,7 +2,7 @@
 # Manager Route
 Route::group([
 	'namespace' => 'App\Controllers\Manager',
-	'prefix' => 'manager'
+	'prefix' => Config::get('app.route_prefix.administrator')
 ], function()
 {
 	require_once __DIR__ . '/manager/routes.php';

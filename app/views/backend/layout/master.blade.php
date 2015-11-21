@@ -70,14 +70,16 @@
 
     <!-- START SIDEBAR -->
     <!-- <div class="sidebar clearfix hidden"> SET DEFAULT HIDDEN -->
-    <div class="sidebar clearfix">
+    <!-- <div class="sidebar clearfix"> SET DEFAULT SHOWING -->
+    <div class="sidebar clearfix hidden">
       @include('layout.menu')
     </div>
     <!-- END SIDEBAR -->
 
     <!-- START CONTENT -->
-    <!-- <div class="content" style="margin-left:0"> SET DEFAULT HIDDEN -->
-    <div class="content">
+    <!-- <div class="content" style="margin-left:0"> SET DEFAULT SHOWING -->
+    <!-- <div class="content"> SET DEFAULT HIDDEN -->
+    <div class="content" style="margin-left:0">
       @if( $controller->useHeader() )
       <div class="page-header">
         <h1 class="title">{{ $controller->getPageTitle() }}</h1>
@@ -102,7 +104,7 @@
     {{ html()->script('public/global/datatables/dataTables.buttons.min.js') }}
     {{ html()->script('public/global/datatables/datatable_init.js') }}
     {{ html()->script('public/global/datatables/buttons.colVis.min.js') }}
-    @section('footer')@show
     {{ html()->script('public/manager/assets/js/plugins.js') }}
+    @section('footer')@show
   </body>
 </html>

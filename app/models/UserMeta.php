@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserMeta extends Model
 {
   protected $table = 'user_meta';
-  protected $fillable = ['attr', 'value'];
+  protected $fillable = ['user_id', 'attr', 'value'];
   public $timestamps = false;
 
 	public function user()

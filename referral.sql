@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2015 at 10:56 AM
+-- Generation Time: Nov 21, 2015 at 11:58 AM
 -- Server version: 5.6.25
 -- PHP Version: 5.5.27
 
@@ -287,6 +287,28 @@ INSERT INTO `countries` (`id`, `code`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `solutions`
+--
+
+CREATE TABLE IF NOT EXISTS `solutions` (
+  `id` tinyint(3) unsigned NOT NULL,
+  `name` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `fee` decimal(10,2) NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `solutions`
+--
+
+INSERT INTO `solutions` (`id`, `name`, `price`, `fee`, `description`) VALUES
+(2, 'E-Commerce', '2500.00', '200.00', '<p>This is e-commerce</p>'),
+(3, 'Web Design', '500.00', '50.00', '');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -307,18 +329,17 @@ CREATE TABLE IF NOT EXISTS `user` (
   `logout_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `role_id`, `fullname`, `username`, `usermail`, `password`, `status`, `activation_code`, `remember_token`, `online`, `parent`, `sales_id`, `logged_at`, `logout_at`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Hoiyen', 'admin', 'hoiyen.2000@gmail.com', '$2y$10$G.23wXMeXoUdJGAle7GCWO1J4p8fWRLtAooKD8J1Bvj.w4armxr6S', '1', '$2y$10$ZoIVCZUmOcxt/SAGtnPF/u7TZSBZ1POAwIrRUXrxz2hS8MKzd2UeW', 'KPuRLwuuL1Oe2MYSmiBRnN1B45WmlX15T5W2XkSEpQZVKeAtkOZxrpcdYtck', '0', 0, 0, '2015-11-19 08:59:25', '2015-11-19 09:06:29', '2015-11-15 07:08:12', '2015-11-19 09:06:29'),
-(2, 2, 'Lo Hoi Yen', 'hoiyen', 'hoiyen@itconcept.sg', '$2y$10$bVsSyakOLjbQU2As4gSMvu4gCe0yzCZ49yXFTm8vgxogqFllNol5y', '1', '$2y$10$u9iZw46jHeniLW0Z0DsOK.Uj.AneXFgB30SLqV/q.Ka1rImq.OiZu', 'WLXHVo1T7vh7PMZLm9H0mUFGi5wjnoQY287R0yYgs3K4PwUenrmtrP1M5wWc', '0', 0, 0, '2015-11-19 09:06:35', '2015-11-19 10:01:27', '2015-11-15 09:58:24', '2015-11-19 10:01:27'),
-(3, 3, 'Sales Company A', '', '', '', '1', '', NULL, '0', 2, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-17 05:02:18', '2015-11-17 05:02:18'),
-(5, 3, 'Sales Company B', '', '', '', '1', '', NULL, '0', 2, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-17 05:54:56', '2015-11-17 05:54:56'),
-(6, 3, 'Sales Company C', '', '', '', '1', '', NULL, '0', 2, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-17 05:55:16', '2015-11-17 05:55:16');
+(1, 2, 'Hoiyen', 'admin', 'hoiyen.2000@gmail.com', '$2y$10$G.23wXMeXoUdJGAle7GCWO1J4p8fWRLtAooKD8J1Bvj.w4armxr6S', '1', '$2y$10$ZoIVCZUmOcxt/SAGtnPF/u7TZSBZ1POAwIrRUXrxz2hS8MKzd2UeW', 'KPuRLwuuL1Oe2MYSmiBRnN1B45WmlX15T5W2XkSEpQZVKeAtkOZxrpcdYtck', '1', 0, 0, '2015-11-20 10:19:44', '2015-11-19 09:06:29', '2015-11-15 07:08:12', '2015-11-20 10:19:44'),
+(2, 2, 'Lo Hoi Yen', 'hoiyen', 'hoiyen@itconcept.sg', '$2y$10$bVsSyakOLjbQU2As4gSMvu4gCe0yzCZ49yXFTm8vgxogqFllNol5y', '1', '$2y$10$u9iZw46jHeniLW0Z0DsOK.Uj.AneXFgB30SLqV/q.Ka1rImq.OiZu', 'kvb5stilREqyx7M95PJGjqvizU7YiJxBDWJdK6ud9SwBd8jUM6CF9StiM2VI', '0', 0, 0, '2015-11-21 04:10:29', '2015-11-21 09:29:03', '2015-11-15 09:58:24', '2015-11-21 09:29:03'),
+(10, 3, 'Sales Company A', '', '', '', '1', '', NULL, '0', 2, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-21 08:24:02', '2015-11-21 08:24:02'),
+(11, 1, '', 'manager', 'manager@itconcept.sg', '$2y$10$q/Rtx4b3j/XuwUhoPGmj8uINHkdKiBxBd3ehrN0Pn3rywW5pO8FwW', '1', '', NULL, '1', 0, NULL, '2015-11-21 09:33:38', '0000-00-00 00:00:00', '2015-11-21 09:29:04', '2015-11-21 09:33:38');
 
 -- --------------------------------------------------------
 
@@ -331,34 +352,23 @@ CREATE TABLE IF NOT EXISTS `user_meta` (
   `user_id` mediumint(8) unsigned NOT NULL,
   `attr` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `value` text COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `user_meta`
 --
 
 INSERT INTO `user_meta` (`id`, `user_id`, `attr`, `value`) VALUES
-(1, 1, 'address', 'Jl. Pengukiran 4 No 48, Pejagalan | RT/RW : 005/002'),
-(2, 1, 'zipcode', '11240'),
 (3, 1, 'country', 'ID'),
 (4, 2, 'address', 'Jl Pengukiran 4 No 34'),
 (5, 2, 'zipcode', '11240'),
 (6, 2, 'country', 'ID'),
-(7, 3, 'company', 'Company A'),
-(8, 3, 'designation', 'Sales Executive'),
-(9, 3, 'phone', '11111111'),
-(10, 3, 'mobile', '11111111'),
-(11, 3, 'introduce', 'Contact Sales Company A'),
-(12, 5, 'company', 'Company B'),
-(13, 5, 'designation', 'Sales Executive'),
-(14, 5, 'phone', '11111111'),
-(15, 5, 'mobile', '11111111'),
-(16, 5, 'introduce', ''),
-(17, 6, 'company', 'Company C'),
-(18, 6, 'designation', 'Sales Executive'),
-(19, 6, 'phone', '11111111'),
-(20, 6, 'mobile', '11111111'),
-(21, 6, 'introduce', '');
+(82, 10, 'company', 'Company A'),
+(83, 10, 'designation', 'Sales Executive'),
+(84, 10, 'solutions', 'a:2:{i:0;s:1:"2";i:1;s:1:"3";}'),
+(85, 10, 'phone', '123456789'),
+(86, 10, 'mobile', '123456789'),
+(87, 10, 'introduce', '');
 
 -- --------------------------------------------------------
 
@@ -439,6 +449,12 @@ CREATE TABLE IF NOT EXISTS `user_role_permission` (
 --
 
 --
+-- Indexes for table `solutions`
+--
+ALTER TABLE `solutions`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -483,15 +499,20 @@ ALTER TABLE `user_role_permission`
 --
 
 --
+-- AUTO_INCREMENT for table `solutions`
+--
+ALTER TABLE `solutions`
+  MODIFY `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `user_meta`
 --
 ALTER TABLE `user_meta`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=22;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=88;
 --
 -- AUTO_INCREMENT for table `user_relation`
 --

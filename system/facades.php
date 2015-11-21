@@ -26,7 +26,7 @@ function request()
 
 function response()
 {
-  return app('response');
+  return Response;
 }
 
 function redirect()

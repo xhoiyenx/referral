@@ -1,83 +1,50 @@
-@extends("layout.master")
-@section("content")
-@if ( isset( $user ) )
-{{ form()->model( $user, ['route' => ['lead.create', ['id' => $user->id]]] ) }}
+@if ( isset($data) )
+{{ form()->model( $data, ['route' => ['admin.solution.update', $data->id], 'class' => 'form-ajax'] ) }}
 @else
-{{ form()->open( ['adm_route' => 'lead.create'] ) }}
+{{ form()->open( ['route' => 'admin.solution.create', 'class' => 'form-ajax'] ) }}
 @endif
-<div class="page-action">
-  <div>
-    <button type="submit" class="btn btn-primary">SAVE</button>
-    <a href="{{ route('client.lead') }}" class="btn btn-light">CANCEL</a>
-  </div>
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <h4 class="modal-title">{{ $pageTitle or $controller->getPageTitle() }}</h4>
 </div>
-@include('layout.notices')
-<div class="container-default">
-  {{ form()->hidden('role_id', 3) }}
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-        {{ form()->label('company', 'Company', ['class' => 'form-label']) }} *
-        {{ form()->text('meta[company]', null, ['class' => 'form-control']) }}
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="form-group">
-        {{ form()->label('fullname', 'Contact Person Name', ['class' => 'form-label']) }} *
-        {{ form()->text('fullname', null, ['class' => 'form-control']) }}
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-        {{ form()->label('designation', 'Designation', ['class' => 'form-label']) }}
-        {{ form()->text('meta[designation]', null, ['class' => 'form-control', 'id' => 'designation']) }}
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="form-group">
-        {{ form()->label('solutions', 'Solutions Interested', ['class' => 'form-label']) }}
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-        {{ form()->label('phone', 'Phone Number', ['class' => 'form-label']) }} *
-        {{ form()->text('meta[phone]', null, ['class' => 'form-control', 'id' => 'phone']) }}
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="form-group">
-        {{ form()->label('mobile', 'Mobile Number', ['class' => 'form-label']) }} *
-        {{ form()->text('meta[mobile]', null, ['class' => 'form-control', 'id' => 'mobile']) }}
-      </div>
-    </div>
-  </div>  
-
+<div class="modal-body">
+  @include('layout.notices')
   <div class="row">
     <div class="col-md-12">
       <div class="form-group">
-        {{ form()->label('introduce', 'How you introduce us', ['class' => 'form-label']) }}
-        {{ form()->textarea('meta[introduce]', null, ['class' => 'form-control', 'id' => 'introduce', 'rows' => 3]) }}
-        <p class="note">
-          Explain how you introduce us. For example you tell your contact that you take product from us before, or your friend, etc.
-        </p>
+        {{ form()->label('name', 'Name', ['class' => 'form-label']) }} *
+        {{ form()->text('name', null, ['class' => 'form-control', 'id' => 'name']) }}
       </div>
     </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        {{ form()->label('cost', 'Price', ['class' => 'form-label']) }} *
+        <div class="input-group">
+          <div class="input-group-addon">S$</div>
+          {{ form()->text('price', null, ['class' => 'form-control', 'id' => 'cost']) }}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        {{ form()->label('fee', 'Referral Fee', ['class' => 'form-label']) }} *
+        <div class="input-group">
+          <div class="input-group-addon">S$</div>
+          {{ form()->text('fee', null, ['class' => 'form-control', 'id' => 'fee']) }}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group margin-0">
+        {{ form()->label('desc', 'Description', ['class' => 'form-label']) }}
+        {{ form()->textarea('description', null, ['class' => 'form-control redactor', 'id' => 'desc']) }}
+      </div>
+    </div>    
   </div>
+  
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+  <button type="submit" class="btn btn-primary">Save changes</button>
 </div>
 {{ form()->close() }}
-@endsection
-
-@section("header_before_style")
-@endsection
-
-@section("header_after_style")
-@endsection
-
-@section("footer")
-@endsection

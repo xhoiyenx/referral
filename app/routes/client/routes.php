@@ -72,11 +72,9 @@ Route::group(['before' => 'auth.clientzone'], function(){
   ]);  
 
   # LEAD CREATE
-  Route::match(['GET', 'POST'], 'lead/update', [
+  Route::match(['GET', 'POST'], 'lead/update/{id}', [
     'as'    => 'client.lead.update', 
     'uses'  => 'Lead\LeadController@update',
   ]);
-
-
 
 });

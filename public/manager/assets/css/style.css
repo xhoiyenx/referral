@@ -912,7 +912,7 @@ div[data-role="editor-toolbar"] { -webkit-user-select: none; -moz-user-select: n
 .modal-lg { min-width: 90%; }
 .modal .close { width: 26px; border-radius: 4px; font-size: 23px; background: #ccc; color: #000; text-shadow: none; opacity: 0.4; outline: 0; }
 .modal .close:hover { opacity: 0.6; }
-.modal-title { font-family: 'Montserrat', sans-serif; font-size: 16px; }
+.modal-title { font-family: 'Open Sans', sans-serif; font-size: 16px; }
 .modalicon { background: #fff; border-radius: 3px; text-align: center; height: 300px; display: table-cell; width: 100%; position: relative; vertical-align: middle; border: 2px solid #e2e2e2; }
 .modalicon img { border-radius: 3px; }
 .modalicon:hover { border-color: #ccc; }

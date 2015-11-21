@@ -246,3 +246,7 @@ b, strong {
 .modal-content {
 	border-radius: 0;
 }
+.modal-body {
+  max-height: calc(100vh - 212px);
+  overflow-y: auto;
+}

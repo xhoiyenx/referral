@@ -16,6 +16,7 @@
     },
 		"classmap": [
 			"system/commands",
+			"system/library",
 			"system/database/migrations",
 			"system/database/seeds"
 		]

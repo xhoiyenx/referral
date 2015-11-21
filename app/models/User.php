@@ -10,20 +10,9 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model implements UserInterface, RemindableInterface {
 
   use UserTrait, RemindableTrait;
-
-  /**
-   * The database table used by the model.
-   *
-   * @var string
-   */
-  protected $table = 'user';
-
-  /**
-   * The attributes excluded from the model's JSON form.
-   *
-   * @var array
-   */
-  protected $hidden = array('password', 'remember_token');
+  protected $table    = 'user';
+  protected $hidden   = array('password', 'remember_token');
+  protected $appends  = array('meta');
 
   protected function validate( $data, $id = null, $register = true )
   {
@@ -80,6 +69,11 @@ class User extends Model implements UserInterface, RemindableInterface {
     return $this->usermail;
   }
 
+  public function getMetaAttribute()
+  {
+    return $this->usermeta()->lists('value', 'attr');
+  }  
+
   public function usermeta()
   {
     return $this->hasMany('App\Models\UserMeta');
@@ -88,5 +82,11 @@ class User extends Model implements UserInterface, RemindableInterface {
   public function children()
   {
     return $this->hasMany('App\Models\User', 'parent', 'id');
+  }
+
+  public function delete()
+  {
+    $this->usermeta()->delete();
+    parent::delete();
   }
 }

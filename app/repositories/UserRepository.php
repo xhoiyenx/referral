@@ -24,7 +24,12 @@ class UserRepository
     if ( $user->save() ) {
       # INSERT META DATA
       foreach ( $input['meta'] as $key => $val ) {
-        $user->usermeta()->save( new UserMeta(['attr' => $key, 'value' => $val]) );
+        if ( is_array($val) ) {
+          $val = serialize($val);
+        }
+        $meta_old = ['user_id' => $user->id, 'attr' => $key];
+        $meta_new = ['user_id' => $user->id, 'attr' => $key, 'value' => $val];
+        $meta = UserMeta::updateOrCreate($meta_old, $meta_new);
       }
     }
 
@@ -45,7 +50,12 @@ class UserRepository
     {
       # INSERT META DATA
       foreach ( $input['meta'] as $key => $val ) {
-        $user->usermeta()->save( new UserMeta(['attr' => $key, 'value' => $val]) );
+        if ( is_array($val) ) {
+          $val = serialize($val);
+        }
+        $meta_old = ['user_id' => $user->id, 'attr' => $key];
+        $meta_new = ['user_id' => $user->id, 'attr' => $key, 'value' => $val];
+        $meta = UserMeta::updateOrCreate($meta_old, $meta_new);
       }
     }
 

@@ -2,7 +2,7 @@
 @section("content")
 <div class="page-action">
   <div>
-    <a href="{{ route('admin.solution.create') }}" class="btn btn-primary">ADD NEW</a>
+    <a href="#" class="btn btn-primary add-new">ADD NEW</a>
   </div>
 </div>
 @include('layout.notices')
@@ -10,9 +10,9 @@
   <table class="table data-table">
     <thead>
       <tr>
-        <th>Date</th>
-        <th>Company</th>
-        <th>Contact Person</th>        
+        <th>Name</th>
+        <th>Price</th>
+        <th>Fee</th>        
         <th class="no-sort action">&nbsp;</th>
       </tr>
     </thead>
@@ -22,36 +22,37 @@
 
 @section("header_before_style")
 {{ html()->style('public/global/sweet-alert/sweet-alert.css') }}
+{{ html()->style('public/global/redactor/redactor.css') }}
 @endsection
 
 @section("header_after_style")
 @endsection
 
 @section("footer")
+<div class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
 {{ html()->script('public/global/sweet-alert/sweet-alert.min.js') }}
+{{ html()->script('public/global/redactor/redactor.min.js') }}
+{{ html()->script('public/global/redactor/plugins/fullscreen/fullscreen.js') }}
 <script type="text/javascript">
 $(document).ready(function() {
 
-  /*
-  var dataTable = $('.data-table').DataTable({
-    serverSide: true,
-    bAutoWidth: false,
-    pageLength: 15,
-    dom: 'tp',
-    ajax: {
-      url: "/{{ app('config')->get('app.route_prefix.administrator') }}/solution",
-      type: "POST"
-    }
-  });
+  var route_create  = '{{ route('admin.solution.create') }}';
+  var route_update  = '{{ route('admin.solution.update') }}';
+  var route         = '{{ route('admin.solution') }}';
 
+  @include('layout.table_js')
 
-  dataTableDelete( dataTable, '/manager/user', {
-    warning: '{{ trans('ui.user.warning_delete') }} ',
-    delete: '{{ trans('ui.delete') }} ?',
-    btn_delete: '{{ trans('ui.form.yes_delete') }}',
-    btn_cancel: '{{ trans('ui.form.no_cancel') }}'
+  $( document ).ajaxComplete(function() {
+    $('.redactor').redactor({
+      plugins: ['fullscreen'],
+      minHeight: 200
+    });    
   });
-  */
 
 });
 </script>

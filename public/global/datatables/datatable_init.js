@@ -8,7 +8,7 @@ $.extend( true, $.fn.dataTable.defaults, {
 function dataTableDelete( datatable, location, text )
 {
   $('.data-table').on('click', '.action-delete', function ( event ) {
-    
+    event.preventDefault();
     var object = $(this);
     swal({
       title               : text.warning,

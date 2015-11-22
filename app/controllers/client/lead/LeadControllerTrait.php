@@ -9,8 +9,7 @@ trait LeadControllerTrait
   {
     $selected = [];
     if ( $user != null ) {
-      if ( isset( $user->meta['solutions'] ) )
-        $selected = unserialize( $user->meta['solutions'] );
+      $selected  = $user->solutions()->lists('solution_id');
     }
 
     $solutions = Solution::all();
@@ -18,7 +17,7 @@ trait LeadControllerTrait
     foreach ( $solutions as $solution )
     {
       $html .= '<div class="checkbox">';
-      $html .= form()->checkbox('meta[solutions][]', $solution->id, in_array($solution->id, $selected), ['id' => 'cb_' . $solution->id]);
+      $html .= form()->checkbox('solutions[]', $solution->id, in_array($solution->id, $selected), ['id' => 'cb_' . $solution->id]);
       $html .= form()->label('cb_' . $solution->id, $solution->name);
       $html .= '</div>';
     }
@@ -32,7 +31,10 @@ trait LeadControllerTrait
       'created_at',
       'usermeta.company',
       'fullname',
-      'usermeta.solutions'
+      'solutions',
+      'referral_fee',
+      'sales_id',
+      'usermeta.status'
     ];
 
     # because we have relationship table, need to create 2 query for filtering and ordering with sub data from another table
@@ -110,8 +112,21 @@ trait LeadControllerTrait
         $fields = [];
         for ( $i = 0, $c = count($field_names); $i < $c; $i++ )
         {
+          # CREATED AT
           if ( $field_names[$i] == 'created_at' ) {
             $fields[] = $row->created_at->toFormattedDateString();
+            continue;
+          }
+
+          # REFERRAL FEE TOTAL
+          if ( $field_names[$i] == 'referral_fee' ) {
+            $fields[] = $row->solutions()->sum('fee');
+            continue;
+          }
+
+          # GET SOLUTIONS LIST
+          if ( $field_names[$i] == 'solutions' ) {
+            $fields[] = $row->solutions()->lists('name');
             continue;
           }
 
@@ -119,8 +134,8 @@ trait LeadControllerTrait
           {
           	$meta = explode('.', $field_names[$i] );
 
-            if ( $meta[1] == 'solutions' ) {
-              $fields[] = $this->solution->metaLists( $this->user->getMeta( $row, $meta[1] ) );
+            if ( $meta[1] == 'status' ) {
+              $fields[] = $this->user->leadStatus( $this->user->getMeta( $row, $meta[1] ) );
               continue;
             }
 

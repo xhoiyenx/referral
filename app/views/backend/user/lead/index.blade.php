@@ -13,7 +13,10 @@
         <th>Date</th>
         <th>Company</th>
         <th>Contact Person</th>  
-        <th class="no-sort">Solutions</th>      
+        <th class="no-sort">Solutions</th> 
+        <th class="no-sort">Referral Fee</th>
+        <th>Sales Info</th>
+        <th>Status</th>
         <th class="no-sort action">&nbsp;</th>
       </tr>
     </thead>

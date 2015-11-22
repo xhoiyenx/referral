@@ -2,6 +2,7 @@
 {{ form()->model( $data->toArray(), ['route' => ['client.lead.update', $data->id], 'class' => 'form-ajax'] ) }}
 @else
 {{ form()->open( ['route' => 'client.lead.create', 'class' => 'form-ajax'] ) }}
+{{ form()->hidden('meta[status]', '3') }}
 @endif
 <div class="modal-header">
   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

@@ -11,7 +11,7 @@ class Controller extends BaseController
   public function __construct()
   {
     view()->addLocation( base_path() . '/app/views/backend' );
-    view()->share('logout_url', '#');
+    view()->share('logout_url', route('admin.logout'));
     view()->share('main_menu', $this->mainMenu());
     view()->share('controller', $this);
   }
@@ -30,10 +30,10 @@ class Controller extends BaseController
           'icon'    => 'fa-gears',
           'active'  => app('router')->currentRouteName() == 'admin.solution' ? ' active' : ''
         ],
-        'client.lead' => [
-          'name'    => 'Leads',
+        'admin.member' => [
+          'name'    => 'Members',
           'icon'    => 'fa-group',
-          'active'  => app('router')->currentRouteName() == 'client.lead' ? ' active' : ''
+          'active'  => app('router')->currentRouteName() == 'admin.member' ? ' active' : ''
         ],
       ]
     ];

@@ -10,10 +10,11 @@
   <table class="table data-table">
     <thead>
       <tr>
-        <th>Date</th>
-        <th>Company</th>
-        <th>Contact Person</th>  
-        <th class="no-sort">Solutions</th>      
+        <th>Fullname</th>
+        <th>Email</th>
+        <th>Total Leads</th>  
+        <th>Total Referral Fee</th>
+        <th>Last Login</th>      
         <th class="no-sort action">&nbsp;</th>
       </tr>
     </thead>
@@ -39,9 +40,9 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-  var route         = '{{ route('client.lead') }}';
-  var route_create  = '{{ route('client.lead.create') }}';
-  var route_update  = '{{ route('client.lead.update') }}';
+  var route         = '{{ route('admin.member') }}';
+  var route_create  = '';
+  var route_update  = '';
 
   @include('layout.table_js')
 

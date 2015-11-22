@@ -68,7 +68,7 @@ class AuthController extends Controller
   public function logout()
   {
     auth()->logout();
-    return redirect()->to('clientzone');
+    return redirect()->to('admin');
   }
 
   private function create_admin()

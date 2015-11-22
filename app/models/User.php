@@ -72,7 +72,7 @@ class User extends Model implements UserInterface, RemindableInterface {
   public function getMetaAttribute()
   {
     return $this->usermeta()->lists('value', 'attr');
-  }  
+  }
 
   public function usermeta()
   {
@@ -83,6 +83,11 @@ class User extends Model implements UserInterface, RemindableInterface {
   {
     return $this->hasMany('App\Models\User', 'parent', 'id');
   }
+
+  public function solutions()
+  {
+    return $this->belongsToMany('App\Models\Solution', 'user_solution');
+  }  
 
   public function delete()
   {

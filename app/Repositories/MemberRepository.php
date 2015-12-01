@@ -38,7 +38,12 @@ class MemberRepository
   public function validate_profile( $input )
   {
     return Member::validate_profile( $input );
-  }  
+  }
+
+  public function validate_resend_activation( $input )
+  {
+    return Member::validate_resend_activation( $input );
+  }
 
   public function addNew( $input )
   {

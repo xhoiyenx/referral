@@ -31,6 +31,11 @@
       </div>
       -->
       <button type="submit" class="btn btn-default btn-block">LOGIN</button>
+      @if ( ! isset($is_admin) )
+      <div class="text-c"><br>
+        <a href="{{ route('client.resend') }}">Resend activation email</a>
+      </div>
+      @endif
     </div>
   {{ form()->close() }}
   @if ( ! isset($is_admin) )

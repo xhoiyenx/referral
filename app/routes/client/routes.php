@@ -52,6 +52,12 @@ Route::match(['GET', 'POST'], 'user-profile', [
   'uses'  => 'Auth\AuthController@profile',
 ]);
 
+#RESET PASSWORD PAGE
+Route::match(['GET', 'POST'], 'resend', [
+  'as'    => 'client.resend', 
+  'uses'  => 'Auth\AuthController@resend',
+]);
+
 # CLIENTZONE AFTER LOGIN
 Route::group(['before' => 'auth.clientzone'], function(){
 

@@ -56,7 +56,23 @@ class Member extends Model implements UserInterface, RemindableInterface
 
     $validator = validator()->make( $data, $rules, $messages );
     return $validator;
-  }  
+  }
+
+  protected function validate_resend_activation( $data )
+  {
+    $rules = [
+      'usermail'  => 'required|email'
+    ];
+
+    $messages = array(
+      'usermail.required'   => 'Email is required',
+      'usermail.confirmed'  => 'Email confirmation does not match.',
+      'usermail.unique'     => 'Email has already been taken.'
+    );    
+
+    $validator = validator()->make( $data, $rules, $messages );
+    return $validator;
+  }
 
   public function getReminderEmail()
   {

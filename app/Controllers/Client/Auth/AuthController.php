@@ -33,7 +33,7 @@ class AuthController extends Controller
 
         # USER NOT ACTIVATED YET, SEND ERROR
         if ( $user->status == 0 ) {
-          return redirect()->back()->withInput()->withErrors( 'Your account not activated yet, please check your email for activation instructions' );
+          return redirect()->back()->withInput()->withErrors( 'Your account is not activated yet, please check your email for activation instructions' );
         }
         else
         if ( $user->status == 2 ) {
@@ -203,6 +203,37 @@ class AuthController extends Controller
       'user'    => $user
     ];
     return view()->make('user.user-profile', $view);
+  }
+
+  public function resend()
+  {
+    if ( request()->isMethod('post') )
+    {
+      $input = request()->all();
+      $validator = $this->user->validate_resend_activation( $input );
+
+      # VALIDATE
+      if ( $validator->fails() ) {
+        return redirect()->back()->withInput()->withErrors( $validator );
+      }
+      else {
+        $member = $this->user->query()->where('usermail', $input['usermail'])->first();
+
+        if ( ! $member ) {
+          return redirect()->back()->withInput()->withErrors( "We can't find a user with that e-mail address." );
+        }
+        else {
+          app('events')->fire('member.registration', [$member]);
+          return redirect()->route('client.login')->with( 'message', 'We have sent your activation email' );
+        }
+      }
+    }
+
+    $view = [
+      'title' => 'Resend your activation link',
+    ];
+
+    return view()->make('client.auth.activation-form', $view);
   }
 
   private function registration_success()

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.3.11
+-- version 4.4.12
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2015 at 12:00 AM
--- Server version: 5.6.24
--- PHP Version: 5.5.24
+-- Generation Time: Dec 01, 2015 at 11:00 AM
+-- Server version: 5.6.25
+-- PHP Version: 5.5.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,10 +14,10 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `data_referral`
+-- Database: `itc2_referral`
 --
 
 -- --------------------------------------------------------
@@ -40,7 +40,20 @@ CREATE TABLE IF NOT EXISTS `administrators` (
 --
 
 INSERT INTO `administrators` (`id`, `username`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', '$2y$10$17.nlANy8z4wS54FTVgD8uRmy8wtENN5OihCY4gOzKkeyB08HWB2e', 'LjT15iDaIjvbLp50Y60lwT9bV8KgHHQrEzTDyzTYSAoBfzclIb3gQodT9ay9', '2015-11-24 15:04:19', '2015-11-24 15:04:19');
+(1, 'admin', '$2y$10$17.nlANy8z4wS54FTVgD8uRmy8wtENN5OihCY4gOzKkeyB08HWB2e', 'TJ8yMp8UZlceQalgZwqTl8pyp9uz1DnsGrgrOB7snto0iTXkUesOSfpP0lWZ', '2015-11-24 15:04:19', '2015-11-24 15:04:19');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `configuration`
+--
+
+CREATE TABLE IF NOT EXISTS `configuration` (
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -332,7 +345,7 @@ CREATE TABLE IF NOT EXISTS `leads` (
 --
 
 INSERT INTO `leads` (`id`, `fullname`, `company`, `phone`, `mobile`, `designation`, `introduce`, `status`, `member_id`, `sales_id`, `created_at`, `updated_at`) VALUES
-(1, 'Hendro', 'Company A', '0812-9999-8888', '0812-9999-8888', 'Sales', 'By Name', '3', 1, NULL, '2015-11-24 10:59:35', '2015-11-24 10:59:35'),
+(1, 'Hendro', 'Company A', '0812-9999-8888', '0812-9999-8888', 'Sales', 'By Name', '3', 1, NULL, '2015-11-24 10:59:35', '2015-11-27 11:22:09'),
 (2, 'Muriel Zulauf', 'Boyle, Barton and Mitchell', '1-811-761-1865', '711-093-2938x73119', 'Larson Shoal', 'Her first idea was that she began nursing her child again, singing a sort of chance of her little sister''s dream. The long grass rustled at her hands, and she tried to fancy what the name of the.', '4', 1, NULL, '2015-11-24 15:44:14', '2015-11-24 15:44:14'),
 (3, 'Mrs. Hope Mraz DVM', 'Bernhard, Mertz and Rolfson', '456-231-1779', '(770)492-9900x6998', 'Parisian Ridge', 'So they sat down, and nobody spoke for some way of nursing it, (which was to find it out, we should all have our heads cut off, you know. Which shall sing?'' ''Oh, YOU sing,'' said the King. (The jury.', '5', 1, NULL, '2015-11-24 15:46:26', '2015-11-24 15:46:26'),
 (4, 'Elbert Lindgren', 'Murray, Erdman and Kuhic', '162-855-5704x707', '+49(1)2017976785', 'Cara Roads', 'And beat him when he sneezes: He only does it matter to me whether you''re nervous or not.'' ''I''m a poor man, your Majesty,'' the Hatter continued, ''in this way:-- "Up above the world am I? Ah, THAT''S.', '3', 1, NULL, '2015-11-24 15:46:26', '2015-11-24 15:46:26'),
@@ -1435,8 +1448,8 @@ INSERT INTO `lead_solutions` (`lead_id`, `solution_id`) VALUES
 (370, 3),
 (371, 3),
 (371, 2),
-(1, 2),
-(1, 3);
+(1, 3),
+(1, 2);
 
 -- --------------------------------------------------------
 
@@ -1461,14 +1474,14 @@ CREATE TABLE IF NOT EXISTS `members` (
   `logout_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `members`
 --
 
 INSERT INTO `members` (`id`, `fullname`, `usermail`, `password`, `mobile`, `address`, `zipcode`, `country`, `status`, `online`, `activation_code`, `remember_token`, `logged_at`, `logout_at`, `created_at`, `updated_at`) VALUES
-(1, 'Hoiyen Lo', 'hoiyen@itconcept.sg', '$2y$10$0sAKrS26uXFJYC17KLLl2.C37ImE3cra4DbDKGnuiVgWHu.106U.W', '0812-8092-7878', 'Jl Pengukiran 4 No 34', '11240', 'ID', '1', '1', '$2y$10$I4Xx0.KB0f5Y2GJLMzNvMu9zzxPTpte79gJX8GpGgKlWVk.uxchKK', 'LnETc9u3SDNu0XdpgfSwMLN9JoYIB7Ex3EObjrBbSaFLe2b3IHA65r5YeXHP', '2015-11-24 14:26:22', '0000-00-00 00:00:00', '2015-11-24 06:24:12', '2015-11-24 16:25:55'),
+(1, 'Hoiyen Lo', 'hoiyen@itconcept.sg', '$2y$10$0sAKrS26uXFJYC17KLLl2.C37ImE3cra4DbDKGnuiVgWHu.106U.W', '0812-8092-7878', 'Jl Pengukiran 4 No 34', '11240', 'ID', '1', '1', '$2y$10$I4Xx0.KB0f5Y2GJLMzNvMu9zzxPTpte79gJX8GpGgKlWVk.uxchKK', 'KGRSFyvkWYVVjfQmqucknokG33XYwvwiJnjRdY8nwZOehqeL4SYZ0DeGt421', '2015-11-24 14:26:22', '0000-00-00 00:00:00', '2015-11-24 06:24:12', '2015-11-27 03:20:50'),
 (2, 'Princess Wolff', 'wBoehm@yahoo.com', '$2y$10$MRoRDsJ63UsPlknHglQ1P.0eUqa4muDwVaPAM2GYGtLkObKYoziCG', '(056)095-6772', '913 Fadel Curve Suite 110\nMarcoshire, NE 10164', '80063-0458', 'SG', '1', '0', '$2y$10$BJac/MnP7r/6v5Md3drIB.mkgRd6UyhYC3wIRbR.eCADnahu61LF6', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-24 14:54:57', '2015-11-24 14:54:57'),
 (3, 'Clemmie Mosciski III', 'Jaskolski.Harry@yahoo.com', '$2y$10$3SIJX6kBixu1KdDzkcI9y.D2wc5IXSatFlGBwmko9g4BoyFtkVBX2', '(688)798-0800', '445 Bailey Grove\nBufordfurt, CA 18633', '03524', 'SG', '1', '0', '$2y$10$iKe3Ba/WkYDnfDyY5rQNCuJKaBSbz7Pdm8Vy4FrmGfa3n38g.hK1e', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-24 14:54:57', '2015-11-24 14:54:57'),
 (4, 'Dr. Verda Schowalter II', 'qWatsica@gmail.com', '$2y$10$dJWyWw1H2SK.CEF4j0lx9.7eIlamHJ5haoax2Ct53QDk53LCFzBIO', '216-279-8171', '34027 Walton Islands Apt. 630\nGleasonhaven, MT 67862-6990', '84674', 'SG', '2', '0', '$2y$10$bKNehgjnGacn0n2IUQ//p.WcV3ywoHb8qJ3A7B0ky0MrD/y068X8W', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-24 14:54:57', '2015-11-24 14:54:57'),
@@ -1568,7 +1581,8 @@ INSERT INTO `members` (`id`, `fullname`, `usermail`, `password`, `mobile`, `addr
 (98, 'Rosina Gleason', 'Lilyan.Grady@gmail.com', '$2y$10$G.7Wxh1Ktf2UcUNeV.XeVu9EpTvyDxRClSu7AHv1kjVIw0WGzCJOW', '+97(7)1261962026', '74827 Kelly Vista\nNorth Laynefurt, FL 22476-8268', '06651-1832', 'SG', '0', '0', '$2y$10$.TP4.qOiTdVWGzCgvv5AFeOT9w8aHNFkoLuAKD29VEXtgvp/7.veK', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-24 14:55:11', '2015-11-24 14:55:11'),
 (99, 'Arnaldo Schinner', 'Russell.Prohaska@hotmail.com', '$2y$10$k6tsNu0743FyNHPq633FwOrbYJkw3R686mf4EiSklnrdsjocRi9CC', '581-196-6479x57254', '48039 Dorris Park Suite 754\nPort Rickiechester, NM 15264', '97292', 'SG', '1', '0', '$2y$10$s9y4vhkC0biUIQKOhNZU4uOsx2gbzV7PVHr3kCxdQAFvaOdxovdM6', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-24 14:55:11', '2015-11-24 14:55:11'),
 (100, 'Nicholas Bahringer', 'Earline10@yahoo.com', '$2y$10$LTLQgPOA97L/ms7L.W/Cv.NvMXTReouk3q4i9ZDt8xsJr.NtxX9vG', '+95(7)0852543323', '904 Diamond Expressway\nPort Aida, NE 58089-7091', '52342', 'SG', '2', '0', '$2y$10$iN7nZruhT4ynP5WBBK5W0.qsxIVG0QDC2R/dWSfACpXlCAhG/SpdC', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-24 14:55:11', '2015-11-24 14:55:11'),
-(101, 'Ike Lebsack', 'yWehner@yahoo.com', '$2y$10$EQ53wI40V.0pFCccW7oNbulGWElE3l/Roo6vXGfet98zhi601BBdO', '751-557-4783x0436', '751 O''Kon Brook Suite 873\nNew Gilbert, HI 05304', '75876-7523', 'SG', '2', '0', '$2y$10$xQwIVPN/6qjm2z8/wXzKAeDqhlY3R1EUBZH86c1lcF1.uU45TVt1K', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-24 14:55:11', '2015-11-24 14:55:11');
+(101, 'Ike Lebsack', 'yWehner@yahoo.com', '$2y$10$EQ53wI40V.0pFCccW7oNbulGWElE3l/Roo6vXGfet98zhi601BBdO', '751-557-4783x0436', '751 O''Kon Brook Suite 873\nNew Gilbert, HI 05304', '75876-7523', 'SG', '2', '0', '$2y$10$xQwIVPN/6qjm2z8/wXzKAeDqhlY3R1EUBZH86c1lcF1.uU45TVt1K', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-24 14:55:11', '2015-11-24 14:55:11'),
+(102, 'Hoiyen', 'hoiyen.2000@gmail.com', '$2y$10$lflvCyDOls9pWHjp/U10Sum8A4NyYvdISy2t0jF5opy0TOlQkOp1W', '081299998888', 'Jl Pengukiran 4 No 48', '11240', 'SG', '1', '0', '0e44b9c76e30261f51c4ff4ebdec2de1', 'IA7FVd0mPIH4R5lr29Q0Iumx9Sg7TCkpffbntJXJ3uEq2ltNS3XcuqWoJw6K', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2015-11-27 09:29:09', '2015-11-27 11:01:45');
 
 -- --------------------------------------------------------
 
@@ -1593,6 +1607,24 @@ INSERT INTO `member_password_reminder` (`type`, `email`, `token`, `created_at`) 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `page`
+--
+
+CREATE TABLE IF NOT EXISTS `page` (
+  `id` mediumint(8) unsigned NOT NULL,
+  `admin_id` mediumint(9) NOT NULL,
+  `type` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `solutions`
 --
 
@@ -1609,9 +1641,9 @@ CREATE TABLE IF NOT EXISTS `solutions` (
 --
 
 INSERT INTO `solutions` (`id`, `name`, `price`, `fee`, `description`) VALUES
-(1, 'POS', '5000.00', '800.00', ''),
-(2, 'Booking & Scheduling System', '8000.00', '350.00', ''),
-(3, 'E-Commerce', '3000.00', '150.00', '');
+(1, 'POS', '1000.00', '500.00', ''),
+(2, 'Scheduling & Booking System', '5000.00', '800.00', '<p>Our Appointment Scheduling and Booking System is a nice and simple \r\napplication that automates your business scheduling process. It''s \r\ndesigned for customers to book online, accept online payment, auto \r\nnotification, reminder, repeat booking and calendar task all in one \r\nplace. Our cloud bases software allows you to access the application \r\nanytime and anywhere.\r\n</p>\r\n<p>This application will be very useful for company in service industry \r\nsuch as restaurant booking, clinic, spa booking, saloon/grooming booking\r\n and any other businesses offering reservations for customers. You can \r\nembed into your existing website and start accepting online booking. \r\n	<br>\r\n	<br><img src="http://itconcept.sg/scheduling.png">\r\n</p>'),
+(3, 'E-Commerce', '3000.00', '375.00', '');
 
 --
 -- Indexes for dumped tables
@@ -1622,6 +1654,12 @@ INSERT INTO `solutions` (`id`, `name`, `price`, `fee`, `description`) VALUES
 --
 ALTER TABLE `administrators`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `configuration`
+--
+ALTER TABLE `configuration`
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indexes for table `leads`
@@ -1639,7 +1677,14 @@ ALTER TABLE `lead_solutions`
 -- Indexes for table `members`
 --
 ALTER TABLE `members`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `usermail` (`usermail`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `usermail` (`usermail`);
+
+--
+-- Indexes for table `page`
+--
+ALTER TABLE `page`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `solutions`
@@ -1665,7 +1710,12 @@ ALTER TABLE `leads`
 -- AUTO_INCREMENT for table `members`
 --
 ALTER TABLE `members`
-  MODIFY `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=102;
+  MODIFY `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=103;
+--
+-- AUTO_INCREMENT for table `page`
+--
+ALTER TABLE `page`
+  MODIFY `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `solutions`
 --

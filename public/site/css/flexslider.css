@@ -1,0 +1,294 @@
+/*
+ * jQuery FlexSlider v2.0
+ * http://www.woothemes.com/flexslider/
+ *
+ * Copyright 2012 WooThemes
+ * Free to use under the GPLv2 license.
+ * http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * Contributing author: Tyler Smith (@mbmufffin)
+ */
+
+ 
+/* Browser Resets */
+.flex-container a:active, .flexslider a:active, .flex-container a:focus, .flexslider a:focus {
+	outline: none;
+}
+.slides, .flex-control-nav, .flex-direction-nav {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+/* FlexSlider Necessary Styles
+*********************************/ 
+.flexslider {
+	margin: 0;
+	padding: 0;
+}
+.flexslider .slides > li {
+	display: none;
+	-webkit-backface-visibility: hidden;
+	text-align: center;
+	position:relative;
+} /* Hide the slides before the JS is loaded. Avoids image jumping */
+.flexslider .slides > img {
+	width: 100%;
+	display: block;
+}
+.flex-pauseplay span {
+	text-transform: capitalize;
+}
+/* Clearfix for the .slides element */
+.slides:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+html[xmlns] .slides {
+	display: block;
+}
+* html .slides {
+	height: 1%;
+}
+/* No JavaScript Fallback */
+/* If you are not using another script, such as Modernizr, make sure you
+ * include js that eliminates this class on page load */
+.no-js .slides > li:first-child {
+	display: block;
+}
+/* FlexSlider Default Theme
+*********************************/
+.flexslider {
+	margin: 0px;
+	position: relative;
+}
+.flex-viewport {
+	max-height: 2000px;
+	-webkit-transition: all 1s ease;
+	-moz-transition: all 1s ease;
+	transition: all 1s ease;
+}
+.loading .flex-viewport {
+	max-height: 300px;
+}
+.flexslider .slides {
+	zoom: 1;
+}
+.carousel li {
+	margin-right: 5px
+}
+/* Direction Nav */
+.flex-direction-nav {
+	*height: 0;
+}
+.flex-direction-nav a {
+	width: 26px;
+	height: 54px;
+	margin: 0;
+	display: block;
+	position: absolute;
+	top: 50%;
+	z-index: 9999;
+	cursor: pointer;
+	text-indent: -9999px;
+	margin-top:-27px;
+	opacity: 0;
+}
+.flex-direction-nav .next, .flex-direction-nav .flex-next {
+	right: 20px;
+	background: #000;
+}
+.flex-direction-nav .prev, .flex-direction-nav .flex-prev {
+	left: 20px;
+	background: #000;
+}
+.flexslider:hover .flex-next {
+	opacity: 1;
+}
+.flexslider:hover .flex-prev {
+	opacity: 1;
+}
+.flexslider:hover .flex-next:hover, .flexslider:hover .flex-prev:hover {
+	opacity: 1;
+}
+.flex-direction-nav .flex-disabled {
+	opacity: .3!important;
+	filter: alpha(opacity=30);
+	cursor: default;
+}
+/* Control Nav */
+.flex-control-nav {
+	width: 100%;
+	position: absolute;
+	bottom: 18px;
+	text-align: center;
+	z-index:99;
+}
+.flex-control-nav li {
+	margin: 0 6px;
+	display: inline-block;
+	zoom: 1;
+*display: inline;
+}
+.flex-control-nav li a {
+	width: 14px;
+	height: 14px;
+	display: block;
+	background: #c5c5c5;
+	cursor: pointer;
+	text-indent: -9999px;
+	border:2px solid #fff;
+	border-radius:100%;
+}
+.flex-control-nav li a:hover, .flex-control-nav li a.flex-active {
+	background: #3ec1c7;
+	cursor: pointer;
+}
+.flex-control-thumbs {
+	margin: 5px 0 0;
+	position: static;
+	overflow: hidden;
+}
+.flex-control-thumbs li {
+	width: 25%;
+	float: left;
+	margin: 0;
+}
+.flex-control-thumbs img {
+	width: 100%;
+	display: block;
+	opacity: .7;
+	cursor: pointer;
+}
+.flex-control-thumbs img:hover {
+	opacity: 1;
+}
+.flex-control-thumbs .flex-active {
+	opacity: 1;
+	cursor: default;
+}
+.flexslider .caption {
+	width: 100%;
+	position: absolute;
+	left: 0px;
+	top: 0%;
+	z-index: 900;
+	padding-top:320px;
+ }
+.flexslider .caption h2 {
+	font-size: 59px;
+	width: 100%;
+	text-transform: uppercase;
+	color: #fff;
+	white-space: nowrap;
+	z-index: 909;
+	text-align: center;
+}
+.flexslider .caption h4 {
+	width: 100%;
+	font-size: 22px;
+	line-height: 1.4em;
+	text-transform: none;
+	font-weight: normal;
+	color: #fff;
+	white-space: nowrap;
+	z-index: 909;
+	text-align: center;
+}
+.flexslider .caption .da-link {
+	text-align: center;
+}
+ @media screen and (max-width: 1170px) {
+.flexslider .caption {
+	padding-top:280px;
+	background-position:center 90px;
+}
+}
+ @media screen and (max-width: 990px) {
+.flexslider .caption {
+	padding-top:200px;
+	background-position:center 50px;
+	background-size:200px 126px;
+}
+.flexslider .caption h2 {
+	font-size: 40px;
+}
+}
+
+@media screen and (max-width: 800px) {
+.flexslider .caption {
+	padding-top:200px;
+	background-position:center 50px;
+	background-size:200px 126px;
+}
+.flexslider .caption h2 {
+	font-size: 28px;
+}
+.flexslider .caption h4 {
+	font-size: 18px;
+}
+}
+@media screen and (max-width: 767px) {
+.flexslider .caption {
+	padding-top:80px;
+	background-position:center 30px;
+	background-size:100px 63px;
+}
+.flexslider .caption h2 {
+	font-size: 20px;
+}
+.flexslider .caption h4 {
+	font-size: 16px;
+	padding:0px 60px;
+	max-width:360px;
+	white-space:normal;
+}
+.flexslider .caption h4 br{
+	display:none;
+}
+.flexslider .da-link {
+	display: none;
+}
+.flex-direction-nav a {
+
+}
+}
+@media screen and (max-width: 479px) {
+.flexslider .caption {
+	padding-top:60px;
+	background-position:center 20px;
+	background-size:70px 44px;
+}
+.flexslider .caption h2 {
+	font-size: 16px;
+	margin: 0px;
+	width:100%;
+}
+.flexslider .caption h4{
+	font-size: 14px;
+	width:268px;
+	padding:0px 26px;
+	white-space:normal;
+	margin:0px;
+	line-height:1.2em;
+}
+.flexslider .da-link{
+	display: none;
+}
+.flex-direction-nav a {
+	width: 20px;
+	height: 58px;
+	margin-top: -29px;
+	background-size:cover !important;
+	z-index:9999;
+}
+.flex-direction-nav .prev{
+	left:5px;	
+}
+.flex-direction-nav .next{
+	right:5px;	
+}
+}

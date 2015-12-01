@@ -24,3 +24,25 @@ Route::group([
 {
 	require_once __DIR__ . '/front/routes.php';
 });
+
+# Installation and Upgrade
+Route::get('install', function(){
+
+	# CONTENTS MODULE
+	Schema::create('page', function($table)
+	{
+	  $table->mediumInteger('id', true, true);
+	  $table->mediumInteger('admin_id')->unsigned();
+	  $table->string('type', 50);
+	  $table->mediumText('title');
+	  $table->text('description');
+	  $table->string('slug', 100);	  
+	  $table->string('status', 20);
+	  $table->timestamps();
+	});
+
+});
+
+Route::get('upgrade', function(){
+
+});

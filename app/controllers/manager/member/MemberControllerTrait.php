@@ -1,51 +1,49 @@
 <?php
 namespace App\Controllers\Manager\Member;
-use App\Models\User;
+use App\Models\Member;
 use App\Models\Solution;
 
 trait MemberControllerTrait
 {
-  public function solution_checkbox( User $user = null )
-  {
-    $selected = [];
-    if ( $user != null ) {
-      if ( isset( $user->meta['solutions'] ) )
-        $selected = unserialize( $user->meta['solutions'] );
-    }
-
-    $solutions = Solution::all();
-    $html = '';
-    foreach ( $solutions as $solution )
-    {
-      $html .= '<div class="checkbox">';
-      $html .= form()->checkbox('meta[solutions][]', $solution->id, in_array($solution->id, $selected), ['id' => 'cb_' . $solution->id]);
-      $html .= form()->label('cb_' . $solution->id, $solution->name);
-      $html .= '</div>';
-    }
-    return $html;
-  }
-
   public function ajaxlist()
   {
   	# COMPLEX CODE FOR AJAX TABLE
     $field_names = [
-      'user.fullname',
-      'user.usermail',
+      'fullname',
+      'usermail',
       'total_lead',
       'total_fee',
+      'closed_deals',
       'logged_at'
     ];
 
     # init query object
-    $query = User::query();
-    $query->select(db()->raw('COUNT(lead.id) AS total_lead, SUM(user_meta.value) AS total_fee, user.*'));
-    $query->join('user AS lead', 'lead.parent', '=', 'user.id');
-    $query->join('user_meta', function($join) {
-      $join->on('lead.id', '=', 'user_meta.user_id');
-      $join->where('user_meta.attr', '=', 'total_fee');
+    $query = $this->member->query();
+
+    $query->join('leads', function($join) {
+      $join->on('leads.member_id', '=', 'members.id');
     });
-    $query->where('user.role_id', 2);
-    $query->groupBy('user.id');
+
+    $query->groupBy('members.id');
+
+    $search = request()->get('search');
+    if ( $search['value'] != '' ) {
+      $search = request()->get('search');
+      $query->where('members.fullname', 'like', '%' . $search['value'] . '%');
+    }
+
+    # get total
+    $total  = count( $query->select(db()->raw(1))->get() );
+
+    $query->leftJoin('lead_solutions', function($join) {
+      $join->on('lead_solutions.lead_id', '=', 'leads.id');
+    });
+
+    $query->leftJoin('solutions', function($join) {
+      $join->on('solutions.id', '=', 'lead_solutions.solution_id');
+    });
+
+    $query->select( db()->raw('members.id AS id, members.fullname AS fullname, members.usermail AS usermail, members.created_at AS logged_at, COUNT( DISTINCT leads.id ) AS total_lead, COUNT( DISTINCT CASE WHEN leads.status = 2 THEN leads.status ELSE NULL END ) as closed_deals, SUM( solutions.fee ) AS total_fee') );
 
     # setup ordering
     if ( isset( $_POST['order'] ) )
@@ -66,10 +64,8 @@ trait MemberControllerTrait
     $query->take( $_POST['length'] );
 
     # get data
-    $rows = $query->get();
-
-    # get total
-    $total = count($rows);
+    $rows   = $query->get();
+    
 
     $data  = [
       'recordsTotal' => $total,
@@ -101,13 +97,16 @@ trait MemberControllerTrait
   {
     ob_start();
     ?>
+    <a class="action-edit btn-sm btn-light btn-icon" title="Edit" href="<?php echo route('admin.member.update', ['id' => $row->id]) ?>"><i class="fa fa-edit"></i></a>
+    <a class="action-view btn-sm btn-light btn-icon" title="Edit" href="<?php echo route('admin.member.profile', ['id' => $row->id]) ?>"><i class="fa fa-eye"></i></a>
+    <!--
     <div class="btn-group">
       <button type="button" class="btn btn-sm btn-light action dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-gear"></i></button>
       <ul class="dropdown-menu dropdown-menu-list">
-        <li><a class="action-edit" href="<?php echo route('client.lead.update', ['id' => $row->id]) ?>"><i class="fa falist fa-edit"></i>Edit</a></li>
-        <li><a class="action-delete" href="#" data-id="<?php echo $row->id?>" data-name="<?php echo $row->first_name?>"><i class="fa falist fa-trash"></i>Delete</a></li>
+        <li><a class="action-edit" href="<?php echo route('admin.member.update', ['id' => $row->id]) ?>"><i class="fa falist fa-edit"></i>Edit</a></li>
       </ul>
     </div>
+    -->
     <?php
     $html = ob_get_contents();
     ob_end_clean();

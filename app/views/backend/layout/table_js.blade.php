@@ -2,16 +2,8 @@
    * Step 1
    * Init DataTable
    */
-  var dataTable = $('.data-table').DataTable({
-    serverSide: true,
-    bAutoWidth: false,
-    pageLength: 15,
-    dom: 'tp',
-    ajax: {
-      url: route,
-      type: "POST"
-    }
-  });
+  $.fn.dataTableExt.sErrMode = 'throw';
+  var dataTable = $('.data-table').DataTable(settings);
 
   /**
    * Step 2

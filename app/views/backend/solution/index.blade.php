@@ -38,6 +38,7 @@
 {{ html()->script('public/global/sweet-alert/sweet-alert.min.js') }}
 {{ html()->script('public/global/redactor/redactor.min.js') }}
 {{ html()->script('public/global/redactor/plugins/fullscreen/fullscreen.js') }}
+{{ html()->script('public/global/redactor/plugins/imagemanager/imagemanager.js') }}
 <script type="text/javascript">
 $(document).ready(function() {
 
@@ -45,11 +46,19 @@ $(document).ready(function() {
   var route_update  = '{{ route('admin.solution.update') }}';
   var route         = '{{ route('admin.solution') }}';
 
+  var settings = {
+    ajax: {
+      url: route,
+      type: "POST"
+    }
+  }
+
   @include('layout.table_js')
 
   $( document ).ajaxComplete(function() {
     $('.redactor').redactor({
-      plugins: ['fullscreen'],
+      plugins: ['fullscreen', 'imagemanager'],
+      imageUpload: '/redactor/image/upload',
       minHeight: 200
     });    
   });

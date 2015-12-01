@@ -2,28 +2,21 @@
 namespace App\Controllers\Client\Auth;
 
 use App\Controllers\Client\Controller;
-use App\Models\User;
-use App\Repositories\UserRepository;
+use App\Models\Member;
+use App\Repositories\MemberRepository;
 
 class AuthController extends Controller
 {
   protected $user;
 
-  public function __construct( UserRepository $user )
+  public function __construct( MemberRepository $user )
   {
     parent::__construct();
     $this->user = $user;
-
-    # REDIRECT LOGGED IN USER TO DASHBOARD
-    /*
-    if ( auth()->check() ) {
-      redirect()->route('client.dashboard')->send();
-    }
-    */
   }
 
   public function login()
-  {    
+  {
     $success = false;
     $view = [
       'title' => 'Member Login'
@@ -33,14 +26,10 @@ class AuthController extends Controller
     {
       extract( request()->all() );
 
-      $role_id = 2; # ONLY FOR MEMBER
-
-      # CODE BELOW WILL VALIDATE AGAINST USERNAME
-      $success = app('auth')->once(['username' => $username, 'password' => $password, 'role_id' => $role_id]) OR app('auth')->once(['usermail' => $username, 'password' => $password, 'role_id' => $role_id]);
-      #
+      $success = auth()->member()->once(['usermail' => $username, 'password' => $password]);
       
       if ( $success ) {
-        $user = auth()->user();
+        $user = auth()->member()->get();
 
         # USER NOT ACTIVATED YET, SEND ERROR
         if ( $user->status == 0 ) {
@@ -51,7 +40,7 @@ class AuthController extends Controller
           return redirect()->back()->withInput()->withErrors( 'Your account is suspended. For assistance, please call +65 6850 5001 ; ext: 888.' );
         }
         else {
-          auth()->login($user);
+          auth()->member()->login($user);
           return redirect()->intended('clientzone');
         }
       }
@@ -68,7 +57,7 @@ class AuthController extends Controller
     if ( request()->isMethod('post') )
     {
     	$input = request()->all();
-    	$validator = User::validate( $input );
+    	$validator = $this->user->validate_registration( $input );
 
     	# VALIDATE
 			if ( $validator->fails() ) {
@@ -76,7 +65,7 @@ class AuthController extends Controller
       }
       else {
 
-        if ( $user = $this->user->addNew( $input ) ) {
+        if ( $user = $this->user->register( $input ) ) {
           # ASSIGN EMAIL EVENTS
           app('events')->fire('member.registration', [$user]);
           return redirect()->route('client.registration', ['status' => 'success']);
@@ -104,7 +93,7 @@ class AuthController extends Controller
     $user = $this->user->getByActivation( $code );
     
     if ( $user ) {
-      $user->status = 1;
+      $user->status = 3;
       $user->save();
     }
 
@@ -119,7 +108,7 @@ class AuthController extends Controller
   {
     if ( request()->isMethod('post') )
     {
-      $response = app('auth.reminder')->remind( request()->only('usermail'), function ($message) {
+      $response = app('auth.reminder')->member()->remind( request()->only('usermail'), function ($message) {
         $message->from( 'no-reply@itc2.clientsdemo.net', 'IT Concept Pte Ltd' );
         $message->subject( 'Password Reminder' );
       });
@@ -149,7 +138,7 @@ class AuthController extends Controller
     {
       $credentials = request()->only('usermail', 'password', 'password_confirmation', 'token');
 
-      $response = app('auth.reminder')->reset($credentials, function($user, $password)
+      $response = app('auth.reminder')->member()->reset($credentials, function($user, $password)
       {
         $user->password = app('hash')->make($password);
         $user->save();
@@ -168,7 +157,7 @@ class AuthController extends Controller
     }
 
     $view = [
-      'title' => 'Pasword Reset',
+      'title' => 'Reset Password',
       'token' => $token
     ];
     return view()->make('user.reset', $view);
@@ -176,8 +165,44 @@ class AuthController extends Controller
 
   public function logout()
   {
-    auth()->logout();
-    return redirect()->to('clientzone');
+    auth()->member()->logout();
+    return redirect()->route('client.login');
+  }
+
+  public function profile()
+  {
+    if ( ! auth()->member()->check() ) {
+      return redirect()->route('client.login')->withErrors('Please login');
+    }
+
+    $user = auth()->member()->get();
+
+    if ( request()->isMethod('post') )
+    {
+      $input = request()->all();
+      $validator = $this->user->validate_profile( $input );
+
+      # VALIDATE
+      if ( $validator->fails() ) {
+        return redirect()->back()->withInput()->withErrors( $validator );
+      }
+      else {
+
+        if ( $user = $this->user->saveProfile( $user, $input ) ) {
+          return redirect()->route('client.login')->with('message', 'Thank you, your account information is saved. Please proceed to log-in');
+        }
+        else {
+          return redirect()->back()->withInput()->withErrors('Failed inserting data');
+        }
+
+      }
+    }
+    
+    $view = [
+      'title'   => 'Updating your account information',
+      'user'    => $user
+    ];
+    return view()->make('user.user-profile', $view);
   }
 
   private function registration_success()
@@ -187,17 +212,5 @@ class AuthController extends Controller
       'success'	=> true
     ];
     return view()->make('user.registration', $view);
-  }
-
-  private function create_admin()
-  {
-  	if( User::count() < 1 ) {
-  		$user = new User;
-  		$user->role_id 	= 1;
-  		$user->username = 'admin';
-  		$user->usermail = 'hoiyen@itconcept.sg';
-  		$user->password = app('hash')->make('admin');
-  		$user->save();
-  	}
   }
 }

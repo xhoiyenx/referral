@@ -59,6 +59,11 @@ smaller than 428
 		z-index: -4;
 	}
 	.topstats li{width: 100%;}
+	.login-form {
+		width: 100%;
+		padding-left: 5%;
+		padding-right: 5%;
+	}
 }
 
 

@@ -28,6 +28,7 @@
 			    	</p>
 			    @else
 			      @include('layout.notices')
+			      <!--
 			      <div class="row">
 				      <div class="col-md-12">
 					      <div class="group">
@@ -39,7 +40,7 @@
 			      <div class="row">
 				      <div class="col-md-6">
 					      <div class="group">
-					        {{ form()->text('meta[mobile]', null, ['class' => 'form-control', 'placeholder' => 'Mobile *']) }}
+					        {{ form()->text('mobile', null, ['class' => 'form-control', 'placeholder' => 'Mobile *']) }}
 					        <i class="fa fa-user"></i>
 					      </div>
 				      </div>
@@ -67,24 +68,53 @@
 			      <div class="row">
 			      	<div class="col-md-12">
 			      		<div class="group">
-			      			{{ form()->textarea('meta[address]', null, ['class' => 'form-control', 'rows' => 3, 'placeholder' => 'Your address']) }}
+			      			{{ form()->textarea('address', null, ['class' => 'form-control', 'rows' => 3, 'placeholder' => 'Your address']) }}
 			      		</div>
 			      	</div>
 			      </div>
 			      <div class="row">
 				      <div class="col-md-6">
 					      <div class="group">
-					        {{ form()->text('meta[zipcode]', null, ['class' => 'form-control', 'placeholder' => 'Postal']) }}
+					        {{ form()->text('zipcode', null, ['class' => 'form-control', 'placeholder' => 'Postal']) }}
 					        <i class="fa fa-map-pin"></i>
 					      </div>
 				      </div>
 				      <div class="col-md-6">
 					      <div class="group">
-					        {{ form()->select('meta[country]', get_countries(), 'SG', ['class' => 'form-control', 'placeholder' => 'Email']) }}
+					        {{ form()->select('country', get_countries(), 'SG', ['class' => 'form-control', 'placeholder' => 'Email']) }}
 					        <i class="fa fa-map"></i>
 					      </div>
 				      </div>
 			      </div>
+			      -->
+			      <div class="row">
+				      <div class="col-md-6">
+					      <div class="group">
+					        {{ form()->text('usermail', null, ['class' => 'form-control', 'placeholder' => 'Email *']) }}
+					        <i class="fa fa-user"></i>
+					      </div>
+				      </div>
+				      <div class="col-md-6">
+					      <div class="group">
+					        {{ form()->text('usermail_confirmation', null, ['class' => 'form-control', 'placeholder' => 'Repeat Email *']) }}
+					        <i class="fa fa-envelope-o"></i>
+					      </div>
+				      </div>
+			      </div>			      
+			      <div class="row">
+				      <div class="col-md-6">
+					      <div class="group">
+					        {{ form()->password('password', ['class' => 'form-control', 'placeholder' => 'Password *']) }}
+					        <i class="fa fa-key"></i>
+					      </div>
+				      </div>
+				      <div class="col-md-6">
+					      <div class="group">
+					        {{ form()->password('password_confirmation', ['class' => 'form-control', 'placeholder' => 'Repeat Password *']) }}
+					        <i class="fa fa-key"></i>
+					      </div>
+				      </div>
+			      </div>			      
 			      <div class="row">
 				      <div class="col-md-3">
 					      <div class="group" style="text-align:center">

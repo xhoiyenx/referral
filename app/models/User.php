@@ -13,6 +13,7 @@ class User extends Model implements UserInterface, RemindableInterface {
   protected $table    = 'user';
   protected $hidden   = array('password', 'remember_token');
   protected $appends  = array('meta');
+  protected $primaryKey = 'id';
 
   protected function validate( $data, $id = null, $register = true )
   {

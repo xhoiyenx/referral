@@ -2,7 +2,7 @@
 {{ form()->model( $data->toArray(), ['route' => ['client.lead.update', $data->id], 'class' => 'form-ajax'] ) }}
 @else
 {{ form()->open( ['route' => 'client.lead.create', 'class' => 'form-ajax'] ) }}
-{{ form()->hidden('meta[status]', '3') }}
+{{ form()->hidden('status', '3') }}
 @endif
 <div class="modal-header">
   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -10,12 +10,11 @@
 </div>
 <div class="modal-body">
   @include('layout.notices')
-  {{ form()->hidden('role_id', 3) }}
   <div class="row">
     <div class="col-md-12">
       <div class="form-group">
         {{ form()->label('company', 'Company Name', ['class' => 'form-label']) }} *
-        {{ form()->text('meta[company]', null, ['class' => 'form-control']) }}
+        {{ form()->text('company', null, ['class' => 'form-control']) }}
       </div>
     </div>
   </div>
@@ -30,7 +29,7 @@
     <div class="col-md-6">
       <div class="form-group">
         {{ form()->label('designation', 'Designation', ['class' => 'form-label']) }}
-        {{ form()->text('meta[designation]', null, ['class' => 'form-control', 'id' => 'designation']) }}
+        {{ form()->text('designation', null, ['class' => 'form-control', 'id' => 'designation']) }}
       </div>
     </div>    
   </div>
@@ -48,13 +47,13 @@
     <div class="col-md-6">
       <div class="form-group">
         {{ form()->label('phone', 'Phone Number', ['class' => 'form-label']) }} *
-        {{ form()->text('meta[phone]', null, ['class' => 'form-control', 'id' => 'phone']) }}
+        {{ form()->text('phone', null, ['class' => 'form-control', 'id' => 'phone']) }}
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
         {{ form()->label('mobile', 'Mobile Number', ['class' => 'form-label']) }} *
-        {{ form()->text('meta[mobile]', null, ['class' => 'form-control', 'id' => 'mobile']) }}
+        {{ form()->text('mobile', null, ['class' => 'form-control', 'id' => 'mobile']) }}
       </div>
     </div>
   </div>  
@@ -63,7 +62,7 @@
     <div class="col-md-12">
       <div class="form-group">
         {{ form()->label('introduce', 'How you introduce us', ['class' => 'form-label']) }}
-        {{ form()->textarea('meta[introduce]', null, ['class' => 'form-control', 'id' => 'introduce', 'rows' => 3]) }}
+        {{ form()->textarea('introduce', null, ['class' => 'form-control', 'id' => 'introduce', 'rows' => 3]) }}
         <p class="note">
           Explain how you introduce us. For example you tell your contact that you take product from us before, or your friend, etc.
         </p>

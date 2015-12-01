@@ -13,11 +13,6 @@
 
 ClassLoader::addDirectories(array(
 
-	app_path().'/commands',
-	app_path().'/controllers',
-	app_path().'/models',
-	app_path().'/database/seeds',
-
 ));
 
 /*
@@ -84,4 +79,4 @@ require app_path().'/facades.php';
 
 require app_path().'/functions.php';
 
-require base_path().'/app/events/events.php';
+require base_path().'/app/Events/events.php';

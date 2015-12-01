@@ -13,7 +13,11 @@
     <div class="form-area">
       @include('layout.notices')
       <div class="group">
-        {{ form()->text("username", null, ["class" => "form-control", "placeholder" => "Username / E-Mail"]) }}
+        @if ( ! isset($is_admin) )
+        {{ form()->text("username", null, ["class" => "form-control", "placeholder" => "E-Mail"]) }}
+        @else
+        {{ form()->text("username", null, ["class" => "form-control", "placeholder" => "Username"]) }}
+        @endif
         <i class="fa fa-user"></i>
       </div>
       <div class="group">
@@ -37,3 +41,11 @@
   @endif
 </div>
 @stop
+
+@section('login_footer')
+<script type="text/javascript">
+$(document).ready(function() {
+  $('input[name=username]').focus();
+});
+</script>
+@endsection

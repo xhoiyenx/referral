@@ -10,8 +10,9 @@ class UserEvents
 	public function subscribe( $events )
 	{
 		$events->listen('member.registration', 'App\Events\UserEvents@sendRegistrationConfirmation', 10);
-		$events->listen('auth.login', 'App\Events\UserEvents@trackLogin', 10);
-		$events->listen('auth.logout', 'App\Events\UserEvents@trackLogout', 10);
+		$events->listen('member.lead.status_update', 'App\Events\UserEvents@onLeadStatusUpdate', 10);
+		#$events->listen('auth.login', 'App\Events\UserEvents@trackLogin', 10);
+		#$events->listen('auth.logout', 'App\Events\UserEvents@trackLogout', 10);
 	}
 
 	public function trackLogin( $user, $remember )
@@ -37,9 +38,20 @@ class UserEvents
 	{
 		app('mailer')->send('email.member-registration', ['user' => $user], function($message) use ($user)
 		{
-			$message->from( 'no-reply@itc2.clientsdemo.net', 'IT Concept Pte Ltd' );
-		  $message->to( $user->usermail, $user->first_name . ' ' . $user->last_name );
+			$message->from( 'no-reply@itc2.clientsdemo.net', 'ITConcept Pte Ltd' );
+		  $message->to( $user->usermail, $user->fullname );
 		  $message->subject( 'Welcome to ITConcept Referral Program' );
+		});
+	}
+
+	public function onLeadStatusUpdate( $lead )
+	{
+		$user = $lead->member;
+		app('mailer')->send('email.lead-status', ['lead' => $lead, 'user' => $user], function($message) use ($user)
+		{
+			$message->from( 'no-reply@itc2.clientsdemo.net', 'ITConcept Pte Ltd' );
+		  $message->to( $user->usermail, $user->fullname );
+		  $message->subject( 'Administrator has changed one of your leads status' );
 		});
 	}
 }

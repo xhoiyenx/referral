@@ -2,6 +2,7 @@
 namespace App\Controllers\Manager\Dashboard;
 use App\Controllers\Manager\Controller;
 
+
 class DashboardController extends Controller
 {
   public function __construct()
@@ -11,7 +12,7 @@ class DashboardController extends Controller
 
   public function index()
   {
-    #dump( app('router')->currentRouteName() );
+    $this->setPageTitle('Dashboard');
     return view()->make('dashboard.index');
   }
 }

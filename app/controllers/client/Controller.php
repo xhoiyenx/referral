@@ -14,6 +14,14 @@ class Controller extends BaseController
     view()->share('logout_url', route('client.logout'));
     view()->share('main_menu', $this->mainMenu());
     view()->share('controller', $this);
+
+    if ( auth()->member()->check() )
+    {
+      if ( auth()->member()->get()->status == 2 ) {
+        auth()->logout();
+        return redirect()->route('client.login')->withErrors( 'Your account is suspended. For assistance, please call +65 6850 5001 ; ext: 888.' )->send();
+      }
+    }
   }
 
   private function mainMenu()
@@ -29,6 +37,11 @@ class Controller extends BaseController
           'name'    => 'Leads',
           'icon'    => 'fa-group',
           'active'  => app('router')->currentRouteName() == 'client.lead' ? ' active' : ''
+        ],
+        'client.solutions' => [
+          'name'    => 'Our Solutions',
+          'icon'    => 'fa-cogs',
+          'active'  => app('router')->currentRouteName() == 'client.solutions' ? ' active' : ''
         ],
       ]
     ];

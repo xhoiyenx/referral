@@ -1,7 +1,7 @@
 $.extend( true, $.fn.dataTable.defaults, {
   columnDefs: [{
     targets   : 'no-sort',
-    orderable : false,
+    orderable : false
   }],
 });
 

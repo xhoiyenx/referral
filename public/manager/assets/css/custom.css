@@ -9,6 +9,10 @@
 	padding: 0;
 }
 
+body, html {
+	text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
+}
+
 /**
  * Bootstrap table modify
  */
@@ -52,6 +56,21 @@
 }
 .data-table .btn.action .fa {
 	margin: 0;
+}
+.filter {
+	padding-bottom: 20px;
+}
+.input-filter {
+	border-radius: 0;
+	font-size: 12px;
+	border: 1px solid #CCC;
+	position: relative;
+	bottom: -1px;
+	margin: 0 5px;
+	box-shadow: none;
+}
+.select2-container--default .select2-selection--single {
+	border-radius: 0;
 }
 
 /*
@@ -223,6 +242,29 @@ b, strong {
 .panel {
 	border-radius: 0;
 }
+.blog-content {
+	min-height: 195px;
+	max-height: 195px;
+	overflow: hidden;
+}
+.blog-content img {
+	width: 100%;
+	height: auto;
+}
+.panel-fullsize .blog-content {
+	max-height: none;
+	overflow: inherit;
+}
+.blog-content img {
+	width: auto;
+	height: auto;
+}
+.blog-post .list-group-item {
+	font-size: 14px;
+}
+.panel-body.status {
+
+}
 
 /**
  * Modal
@@ -249,4 +291,14 @@ b, strong {
 .modal-body {
   max-height: calc(100vh - 212px);
   overflow-y: auto;
+}
+
+/**
+ * Lead Profile
+ */
+.lead-status .remarks {
+	padding-top: 4px;
+}
+.form-status {
+	padding: 20px;
 }

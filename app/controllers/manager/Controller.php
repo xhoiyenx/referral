@@ -35,6 +35,11 @@ class Controller extends BaseController
           'icon'    => 'fa-group',
           'active'  => app('router')->currentRouteName() == 'admin.member' ? ' active' : ''
         ],
+        'admin.lead' => [
+          'name'    => 'Leads',
+          'icon'    => 'fa-group',
+          'active'  => app('router')->currentRouteName() == 'admin.lead' ? ' active' : ''
+        ],
       ]
     ];
 
@@ -65,7 +70,7 @@ class Controller extends BaseController
   {
     $html     = '';
     $default  = [
-      'client.dashboard' => 'Dashboard'
+      'admin.dashboard' => 'Dashboard'
     ];
 
     if ( ! is_null($this->breadcrumb) )

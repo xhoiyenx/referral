@@ -6,7 +6,7 @@
 			<div class="login-form">
 			<form>
 		    <div class="top">
-		      <h1>ITConcept Pte Ltd</h1>
+		      <h1>ITCONCEPT PTE LTD</h1>
 		      <h4>{{ $title }}</h4>
 		    </div>
 		    <div class="form-area">

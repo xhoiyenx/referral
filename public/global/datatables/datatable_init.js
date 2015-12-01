@@ -1,9 +1,15 @@
-$.extend( true, $.fn.dataTable.defaults, {
+$.extend( $.fn.dataTable.defaults, {
   columnDefs: [{
     targets   : 'no-sort',
     orderable : false,
-  }]
+  }],
+  serverSide: true,
+  bAutoWidth: false,
+  pageLength: 15,
+  dom: 'tp'
 });
+
+
 
 function dataTableDelete( datatable, location, text )
 {

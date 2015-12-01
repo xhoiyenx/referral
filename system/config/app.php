@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://referral.dev',
+	'url' => 'http://referralsg.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return array(
 	|
 	*/
 
-	'key' => 'sen7jszXSxcRRZ6hb6mLslGguiT9GgO0',
+	'key' => 'CsL69sUYV9sy81DRzAXcN8x7w5uGSTwc',
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
 	/*
@@ -95,7 +95,7 @@ return array(
 	'providers' => array(
 
 		'Illuminate\Foundation\Providers\ArtisanServiceProvider',
-		'Illuminate\Auth\AuthServiceProvider',
+		#'Illuminate\Auth\AuthServiceProvider',
 		'Illuminate\Cache\CacheServiceProvider',
 		'Illuminate\Session\CommandsServiceProvider',
 		'Illuminate\Foundation\Providers\ConsoleSupportServiceProvider',
@@ -113,7 +113,7 @@ return array(
 		'Illuminate\Queue\QueueServiceProvider',
 		'Illuminate\Redis\RedisServiceProvider',
 		'Illuminate\Remote\RemoteServiceProvider',
-		'Illuminate\Auth\Reminders\ReminderServiceProvider',
+		#'Illuminate\Auth\Reminders\ReminderServiceProvider',
 		'Illuminate\Database\SeedServiceProvider',
 		'Illuminate\Session\SessionServiceProvider',
 		'Illuminate\Translation\TranslationServiceProvider',
@@ -121,8 +121,11 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
-		'Barryvdh\Debugbar\ServiceProvider',
+		'Ollieread\Multiauth\MultiauthServiceProvider',
+		'Ollieread\Multiauth\Reminders\ReminderServiceProvider',
+		#'Barryvdh\Debugbar\ServiceProvider',
 		'Mews\Captcha\CaptchaServiceProvider',
+		'App\Providers\ConfigurationServiceProvider',
 	),
 
 	/*

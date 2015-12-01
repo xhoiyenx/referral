@@ -15,7 +15,7 @@ return array(
 	|
 	*/
 
-	'driver' => 'eloquent',
+	#'driver' => 'eloquent',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -28,7 +28,7 @@ return array(
 	|
 	*/
 
-	'model' => 'App\Models\User',
+	#'model' => 'App\Models\Member',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -41,7 +41,18 @@ return array(
 	|
 	*/
 
-	'table' => 'user',
+	#'table' => 'members',
+	
+	'multi' 	=> array(
+    'member' 		=> array(
+      'driver' 	=> 'eloquent',
+      'model' 	=> 'App\Models\Member'
+    ),
+    'admin' 		=> array(
+      'driver' 	=> 'database',
+      'table' 	=> 'administrators'
+    )
+  ),	
 
 	/*
 	|--------------------------------------------------------------------------
@@ -60,7 +71,7 @@ return array(
 
 	'reminder' 	=> array(
 		'email' 	=> 'email.member-reminder',
-		'table' 	=> 'user_password_reminder',
+		'table' 	=> 'member_password_reminder',
 		'expire' 	=> 60,
 	),
 

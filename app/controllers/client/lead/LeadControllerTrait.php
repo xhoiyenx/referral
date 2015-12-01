@@ -1,46 +1,63 @@
 <?php
 namespace App\Controllers\Client\Lead;
-use App\Models\User;
-use App\Models\Solution;
 
 trait LeadControllerTrait
 {
-  public function solution_checkbox( User $user = null )
+  public function ajaxlist( $member_id = null )
   {
-    $selected = [];
-    if ( $user != null ) {
-      $selected  = $user->solutions()->lists('solution_id');
-    }
-
-    $solutions = Solution::all();
-    $html = '';
-    foreach ( $solutions as $solution )
-    {
-      $html .= '<div class="checkbox">';
-      $html .= form()->checkbox('solutions[]', $solution->id, in_array($solution->id, $selected), ['id' => 'cb_' . $solution->id]);
-      $html .= form()->label('cb_' . $solution->id, $solution->name);
-      $html .= '</div>';
-    }
-    return $html;
-  }
-
-  public function ajaxlist()
-  {
-  	# COMPLEX CODE FOR AJAX TABLE
+    # COMPLEX CODE FOR AJAX TABLE
     $field_names = [
       'created_at',
-      'usermeta.company',
+      'company',
       'fullname',
       'solutions',
       'referral_fee',
       'sales_id',
-      'usermeta.status'
+      'status'
     ];
 
     # because we have relationship table, need to create 2 query for filtering and ordering with sub data from another table
     # init query object
-    $query = User::query();
-    $query->select( 'user.id' );
+    $query = $this->lead->query();
+
+    if ( ! is_null( $member_id ) )
+      $query->where('leads.member_id', $member_id);
+
+    if ( request()->has('status') ) {
+      $status = request()->get('status');
+      if ( $status != '' )
+        $query->where('leads.status', $status);
+    }
+
+    if ( request()->has('ds') AND request()->has('de') ) {
+      $date_start = request()->get('ds');
+      $date_end   = request()->get('de');
+      if ( $date_start != '' AND $date_end != '' ) {
+        $query->whereBetween('leads.created_at', [$date_start, $date_end]);
+      }
+    }
+
+    $search = request()->get('search');
+    if ( $search['value'] != '' ) {
+      $search = request()->get('search');
+      $query->where('leads.company', 'like', '%' . $search['value'] . '%');
+      $query->orWhere('leads.fullname', 'like', '%' . $search['value'] . '%');
+    }
+
+    # get total
+    $total = $query->count();
+
+    $query->select( db()->raw('leads.*, SUM( solutions.fee ) AS referral_fee, GROUP_CONCAT(solutions.name SEPARATOR ", ") AS solutions') );
+
+    $query->leftJoin('lead_solutions', function($join) {
+      $join->on('lead_solutions.lead_id', '=', 'leads.id');
+    });
+
+    $query->leftJoin('solutions', function($join) {
+      $join->on('solutions.id', '=', 'lead_solutions.solution_id');
+    });
+
+    $query->groupBy('leads.id');
 
     # setup ordering
     if ( isset( $_POST['order'] ) )
@@ -51,51 +68,16 @@ trait LeadControllerTrait
       $field_key  = $_POST['order'][0]['column'];
       $field_ord  = $_POST['order'][0]['dir'];
       $field_name = $field_names[ $field_key ];
-
-      if ( strpos($field_name, '.') )
-      {
-      	list($table, $value) = explode('.', $field_name);
-
-		    $query->join('user_meta', function($join) use ($value) {
-		    	$join->on('user.id', '=', 'user_meta.user_id');
-		    	$join->where('user_meta.attr', '=', $value);
-		    });
-		    $query->orderBy( 'user_meta.value', $field_ord );
-      }
-      else {
-      	$query->orderBy( $field_name, $field_ord );
-      }
+      $query->orderBy( $field_name, $field_ord );
     }
 
-    $query->where( 'parent', auth()->id() );
-    
     # add offset
     $query->offset( $_POST['start'] );
 
     # add limit
-    $query->take( $_POST['length'] );    
-    $users = $query->lists('user.id');
-    $query = null;
+    $query->take( $_POST['length'] );
 
-    # get total
-    #$total = $query->count();
-    $total = count($users);
-
-    if ( $total > 0 )
-    {
-      # filtering and ordering data done, show real data here
-      $query = User::with('usermeta')->whereIn( 'id', $users );
-      $query->orderByRaw( 'FIELD (id,' . implode(',', $users) . ')' );
-
-      # add offset
-      $query->offset( $_POST['start'] );
-
-      # add limit
-      $query->take( $_POST['length'] );
-
-      # get data
-      $rows = $query->get();
-    }
+    $rows  = $query->get();
 
     $data  = [
       'recordsTotal' => $total,
@@ -103,8 +85,8 @@ trait LeadControllerTrait
       'data' => []
     ];
 
-    if ( $total > 0 ) {
-    #if ( ! $rows->isEmpty() ) {
+    if ( ! $rows->isEmpty() )
+    {
       foreach ( $rows as $row )
       {
         # TO-DO add this to library
@@ -112,38 +94,21 @@ trait LeadControllerTrait
         $fields = [];
         for ( $i = 0, $c = count($field_names); $i < $c; $i++ )
         {
+
           # CREATED AT
           if ( $field_names[$i] == 'created_at' ) {
             $fields[] = $row->created_at->toFormattedDateString();
             continue;
           }
 
-          # REFERRAL FEE TOTAL
-          if ( $field_names[$i] == 'referral_fee' ) {
-            $fields[] = $row->solutions()->sum('fee');
+          # STATUS
+          if ( $field_names[$i] == 'status' ) {
+            $fields[] = $this->lead->getStatus( $row->$field_names[$i] );
             continue;
-          }
-
-          # GET SOLUTIONS LIST
-          if ( $field_names[$i] == 'solutions' ) {
-            $fields[] = $row->solutions()->lists('name');
-            continue;
-          }
-
-          if ( strpos( $field_names[$i], '.' ) !== false )
-          {
-          	$meta = explode('.', $field_names[$i] );
-
-            if ( $meta[1] == 'status' ) {
-              $fields[] = $this->user->leadStatus( $this->user->getMeta( $row, $meta[1] ) );
-              continue;
-            }
-
-          	$fields[] = $this->user->getMeta( $row, $meta[1] );
-          	continue;
           }
 
           $fields[] = $row->$field_names[$i];
+
         }
         # Add action button here, on last column
         $fields[] = $this->list_action_button( $row );
@@ -158,13 +123,15 @@ trait LeadControllerTrait
   {
     ob_start();
     ?>
+    <a class="action-edit btn-sm btn-light btn-icon" title="Edit" href="<?php echo route('client.lead.update', ['id' => $row->id]) ?>"><i class="fa fa-edit"></i></a>
+    <!--
     <div class="btn-group">
       <button type="button" class="btn btn-sm btn-light action dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-gear"></i></button>
       <ul class="dropdown-menu dropdown-menu-list">
         <li><a class="action-edit" href="<?php echo route('client.lead.update', ['id' => $row->id]) ?>"><i class="fa falist fa-edit"></i>Edit</a></li>
-        <li><a class="action-delete" href="#" data-id="<?php echo $row->id?>" data-name="<?php echo $row->first_name?>"><i class="fa falist fa-trash"></i>Delete</a></li>
       </ul>
     </div>
+    -->
     <?php
     $html = ob_get_contents();
     ob_end_clean();

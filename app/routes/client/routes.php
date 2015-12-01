@@ -1,4 +1,21 @@
 <?php
+Route::filter('auth.clientzone', function()
+{
+  if ( ! Auth::member()->check() ) {
+    if (Request::ajax()) {
+      return Response::make('Unauthorized', 401);
+    }
+    else {
+      return Redirect::route('client.login');
+    }
+  }
+  else {
+    if ( Auth::member()->get()->status == 3 ) {
+      return Redirect::route('client.member.forced_profile');
+    }
+  }
+});
+
 # LOGIN PAGE
 Route::match(['GET', 'POST'], 'login', [
   'as'    => 'client.login', 
@@ -29,6 +46,12 @@ Route::match(['GET', 'POST'], 'reset/{token}', [
   'uses'  => 'Auth\AuthController@reset',
 ]);
 
+#RESET PASSWORD PAGE
+Route::match(['GET', 'POST'], 'user-profile', [
+  'as'    => 'client.member.forced_profile', 
+  'uses'  => 'Auth\AuthController@profile',
+]);
+
 # CLIENTZONE AFTER LOGIN
 Route::group(['before' => 'auth.clientzone'], function(){
 
@@ -42,6 +65,12 @@ Route::group(['before' => 'auth.clientzone'], function(){
   Route::get('/', [
     'as'    => 'client.dashboard', 
     'uses'  => 'Dashboard\DashboardController@index',
+  ]);
+
+  # SOLUTION INFO
+  Route::get('solutions', [
+    'as'    => 'client.solutions', 
+    'uses'  => 'Dashboard\DashboardController@solutions',
   ]);
 
   # LEAD

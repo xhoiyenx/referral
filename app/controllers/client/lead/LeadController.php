@@ -1,20 +1,21 @@
 <?php
 namespace App\Controllers\Client\Lead;
 use App\Controllers\Client\Controller;
-use App\Repositories\UserRepository;
+
+use App\Models\Lead;
+use App\Repositories\LeadRepository;
 use App\Repositories\SolutionRepository;
-use App\Models\User;
 
 class LeadController extends Controller
 {
   use LeadControllerTrait;
 
-  protected $user;
+  protected $lead;
   protected $solution;
-	public function __construct( UserRepository $user, SolutionRepository $solution )
+	public function __construct( LeadRepository $lead, SolutionRepository $solution )
 	{
 		parent::__construct();
-		$this->user = $user;
+		$this->lead     = $lead;
     $this->solution = $solution;
 	}
 
@@ -22,17 +23,7 @@ class LeadController extends Controller
 	{
     if ( request()->ajax() )
     {
-      if ( request()->has('delete') ) {
-        $user = User::find( request()->get('delete') );
-
-        if ( $user ){
-          $user->delete();
-          return 1;
-        }
-      }
-      else {
-        return $this->ajaxlist();
-      }
+      return $this->ajaxlist( auth()->member()->id() );
     }
 
 		$this->setPageTitle('Lead');
@@ -50,22 +41,21 @@ class LeadController extends Controller
     if ( request()->isMethod('post') )
     {
     	$input = request()->all();
-      $validator = User::validate_lead( $input );
+      $validator = $this->lead->validate( $input );
 
       if ( $validator->fails() ) {
         request()->flash();
         session()->flash('errors', $validator);
-        #return view()->make('user.lead.create', $view)->withErrors($validator);
       }
       else {
-      	if ( $this->user->saveLead($input) ) {
-          session()->flash('message', 'Lead ' . $input['meta']['company'] . ' created');
+      	if ( $this->lead->save($input) ) {
+          session()->flash('message', 'Lead ' . $input['company'] . ' created');
       	}
       }
     }
 
     $view = [
-      'solutions' => $this->solution_checkbox()
+      'solutions' => $this->solution->solution_checkbox(),
     ];    
 
 		return view()->make('user.lead.create', $view);
@@ -75,26 +65,26 @@ class LeadController extends Controller
   {
     $this->setPageTitle('Edit Lead');
     
-    $data = User::find($id);
+    $data = $this->lead->find($id);
 
     if ( request()->isMethod('post') )
     {
       $input = request()->all();
-      $validator = User::validate_lead( $input );
+      $validator = $this->lead->validate( $input );
 
       if ( $validator->fails() ) {
         request()->flash();
         session()->flash('errors', $validator);
       }
       else {
-        if ( $this->user->saveLead($input, $data) ) {
-          session()->flash('message', 'Lead ' . $input['meta']['company'] . ' updated');
+        if ( $this->lead->save($input, $data) ) {
+          session()->flash('message', 'Lead ' . $data->company . ' updated');
         }
       }
     }
 
     $view = [
-      'solutions' => $this->solution_checkbox($data),
+      'solutions' => $this->solution->solution_checkbox($data),
       'data' => $data
     ];    
 

@@ -48,7 +48,7 @@ class UserRepository
     $user = new User;
     $user->role_id    = isset($input['role_id']) ? $input['role_id'] : 2; # ROLE ID member
     $user->fullname   = $input['fullname'];
-    $user->username   = $input['username'];
+    #$user->username   = $input['username'];
     $user->usermail   = $input['usermail'];
     $user->password   = app('hash')->make($input['password']);
     $user->status     = 0;
@@ -126,6 +126,18 @@ class UserRepository
   {
     $user = User::where('activation_code', $code)->first();
     return $user;
+  }
+
+  public function getTotalLeadStatusByUser( $status, User $user )
+  {
+    $query = User::query();
+    $query->join('user_meta', function($join) use ($status) {
+      $join->on('user.id', '=', 'user_meta.user_id');
+      $join->where('user_meta.attr', '=', 'status');
+      $join->where('user_meta.value', '=', $status);
+    });
+    $query->where('user.parent', $user->id);
+    return $query->count();
   }
 
 }

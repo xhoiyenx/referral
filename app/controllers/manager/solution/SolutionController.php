@@ -1,7 +1,6 @@
 <?php
 namespace App\Controllers\Manager\Solution;
 use App\Controllers\Manager\Controller;
-use Illuminate\Support\Facades\Response;
 use App\Models\Solution;
 
 class SolutionController extends Controller
@@ -43,15 +42,13 @@ class SolutionController extends Controller
   		$input = request()->all();
   		$validator = Solution::validate($input);
   		if ( $validator->fails() ) {
-  			#return Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
   			request()->flash();
-  			return view()->make('solution.create')->withErrors($validator);
+        session()->flash('errors', $validator);
   		}
   		else {
   			$solution = Solution::create($input);
   			if ($solution) {
   				session()->flash('message', 'Solution ' . $input['name'] . ' added');
-  				return view()->make('solution.create');
   			}
   		}
   	}
@@ -70,15 +67,13 @@ class SolutionController extends Controller
   		$validator = Solution::validate($input);
 
   		if ( $validator->fails() ) {
-  			#return Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
   			request()->flash();
-  			return view()->make('solution.create', compact('data'))->withErrors($validator);
+        session()->flash('errors', $validator);
   		}
   		else {
   			$solution = $data->fill($input)->save();
   			if ($solution) {
   				session()->flash('message', 'Solution ' . $input['name'] . ' saved');
-  				return view()->make('solution.create', compact('data'));
   			}
   		}
   	}

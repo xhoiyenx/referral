@@ -21,7 +21,7 @@
         {{ form()->password("password_confirmation", ["class" => "form-control", "placeholder" => "Repeat Password"]) }}
         <i class="fa fa-key"></i>
       </div>
-      <button type="submit" class="btn btn-default btn-block">SEND RESET REQUEST</button>
+      <button type="submit" class="btn btn-default btn-block">CHANGE PASSWORD</button>
     </div>
   {{ form()->close() }}
 </div>

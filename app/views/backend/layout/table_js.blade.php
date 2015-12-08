@@ -23,8 +23,24 @@
    */
   $('.modal').on('submit', '.form-ajax', function(event) {
     event.preventDefault();
-    $.post($(this).attr('action'), $(this).serialize(), function(data, textStatus, xhr) {
+    /*
+    
+    var formData = new FormData($('form')[0]);
+    console.log(formData);
+    $.post($(this).attr('action'), formData, function(data, textStatus, xhr) {
       $('.modal-content').html(data);
+    });
+    */
+    $.ajax({
+      url: $(this).attr('action'), 
+      type: 'POST',             
+      data: new FormData($(this)[0]),
+      contentType: false,       
+      cache: false,             
+      processData:false,        
+      success: function(data) {
+        $('.modal-content').html(data);
+      }
     });
   });
 

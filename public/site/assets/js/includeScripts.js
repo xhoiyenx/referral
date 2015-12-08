@@ -6,6 +6,6 @@ include('jquery.placeholder.js');  // Include placeholder library
 include('app.js');  // Include Custom Function
 //----Include-Function----
 function include(url){
-  document.write('<script type="text/javascript" src="js/' + url + '"></script>'); // Print js files on page
+  document.write('<script type="text/javascript" src="public/site/assets/js/' + url + '"></script>'); // Print js files on page
   return false ;
 }

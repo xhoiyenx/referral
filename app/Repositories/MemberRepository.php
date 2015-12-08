@@ -45,6 +45,11 @@ class MemberRepository
     return Member::validate_resend_activation( $input );
   }
 
+  public function validate_update( $input, $id )
+  {
+    return Member::validate_update( $input, $id );
+  }
+
   public function addNew( $input )
   {
     # INSERT USER DATA
@@ -90,6 +95,40 @@ class MemberRepository
     if ( $member->save() ) {
       return $member;
     }
+  }
+
+  public function adminUpdate( Member $member, $input )
+  {
+    $member->fullname = $input['fullname'];
+    $member->usermail = $input['usermail'];
+    $member->mobile   = $input['mobile'];
+    $member->address  = $input['address'];
+    $member->status   = $input['status'];
+    if ( $member->save() ) {
+      return $member;
+    }
+    else {
+      return false;
+    }
+  }
+
+  public function getTotalByStatus( $status )
+  {
+    return $this->model->where('status', $status)->count();
+  }
+
+  public function queryOnlineMembers()
+  {
+    $query = $this->query();
+    $query->where('online', 1);
+    $query->orWhereRaw('logged_at >= DATE_SUB(NOW(), INTERVAL 10 MINUTE)');
+    return $query;
+  }
+
+  public function getOnlineMembers()
+  {
+    $query = $this->queryOnlineMembers();
+    return $query->get();
   }
 
   public function getByActivation( $code )

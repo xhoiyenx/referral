@@ -1,0 +1,2 @@
+#
+ALTER TABLE `leads` ADD `deal_closed_at` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `sales_id`;

@@ -31,16 +31,11 @@
       </div>
       -->
       <button type="submit" class="btn btn-default btn-block">LOGIN</button>
-      @if ( ! isset($is_admin) )
-      <div class="text-c"><br>
-        <a href="{{ route('client.resend') }}">Resend activation email</a>
-      </div>
-      @endif
     </div>
   {{ form()->close() }}
   @if ( ! isset($is_admin) )
   <div class="footer-links row">
-    <div class="col-xs-6"><a href="{{ route('client.registration') }}"><i class="fa fa-external-link"></i> Register Now</a></div>
+    <div class="col-xs-6"><a href="{{ route('client.resend') }}"><i class="fa fa-external-link"></i> Resend activation email</a></div>
     <div class="col-xs-6 text-right"><a href="{{ route('client.reminder') }}"><i class="fa fa-lock"></i> Forgot password</a></div>
   </div>
   @endif

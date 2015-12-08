@@ -64,6 +64,11 @@ Route::group(['before' => 'auth.admin'], function(){
     'uses'  => 'Member\MemberController@profile',
   ])->where('id', '[0-9]+');
 
+  Route::get('member/sendactivationemail/{id}', [
+    'as'    => 'admin.member.sendactivationemail', 
+    'uses'  => 'Member\MemberController@sendactivationemail',
+  ])->where('id', '[0-9]+');
+
   # LEADS PAGE
   Route::match(['GET', 'POST'], 'lead/{member_id?}', [
     'as'    => 'admin.lead', 
@@ -106,6 +111,23 @@ Route::group(['before' => 'auth.admin'], function(){
     'as'    => 'admin.sales.leads',
     'uses'  => 'Sales\SalesController@leads',
   ])->where('id', '[0-9]+');
+
+  # TESTIMONIALS PAGE
+  Route::match(['GET', 'POST'], 'testimonials', [
+    'as'    => 'admin.testimonials',
+    'uses'  => 'Testimonial\TestimonialController@index',
+  ]);
+
+  Route::match(['GET', 'POST'], 'testimonials/update/{id?}', [
+    'as'    => 'admin.testimonials.update', 
+    'uses'  => 'Testimonial\TestimonialController@update',
+  ])->where('id', '[0-9]+');
+
+  Route::match(['GET', 'POST'], 'testimonials/create', [
+    'as'    => 'admin.testimonials.create', 
+    'uses'  => 'Testimonial\TestimonialController@create',
+  ]);
+
 
   # CONFIGURATION PAGE
   Route::match(['GET', 'POST'], 'configuration/{mode?}', [

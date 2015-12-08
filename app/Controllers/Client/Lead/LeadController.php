@@ -21,22 +21,26 @@ class LeadController extends Controller
 
 	public function index()
 	{
-    if ( request()->ajax() )
-    {
-      return $this->ajaxlist( auth()->member()->id() );
-    }
-
 		$this->setPageTitle('Lead');
     $this->setBreadcrumb([
       'client.lead' => 'Lead'
     ]);
 
-		return view()->make('user.lead.index');
+    if ( request()->ajax() )
+    {
+      return $this->ajaxlist( auth()->member()->id() );
+    }
+
+		return view()->make('client.lead.index');
 	}
 
 	public function create()
 	{
 		$this->setPageTitle('Add New Lead');
+
+    $view = [
+      'solutions' => $this->solution->solution_checkbox(),
+    ];    
 
     if ( request()->isMethod('post') )
     {
@@ -45,7 +49,7 @@ class LeadController extends Controller
 
       if ( $validator->fails() ) {
         request()->flash();
-        session()->flash('errors', $validator);
+        return view()->make('client.lead.create', $view)->withInput($input)->withErrors($validator);
       }
       else {
       	if ( $this->lead->save($input) ) {
@@ -54,18 +58,17 @@ class LeadController extends Controller
       }
     }
 
-    $view = [
-      'solutions' => $this->solution->solution_checkbox(),
-    ];    
-
-		return view()->make('user.lead.create', $view);
+		return view()->make('client.lead.create', $view);
 	}
 
   public function update( $id )
   {
     $this->setPageTitle('Edit Lead');
-    
     $data = $this->lead->find($id);
+    $view = [
+      'solutions' => $this->solution->solution_checkbox($data),
+      'data' => $data
+    ];    
 
     if ( request()->isMethod('post') )
     {
@@ -74,20 +77,17 @@ class LeadController extends Controller
 
       if ( $validator->fails() ) {
         request()->flash();
-        session()->flash('errors', $validator);
+        return view()->make('client.lead.create', $view)->withInput($input)->withErrors($validator);
       }
       else {
         if ( $this->lead->save($input, $data) ) {
+          request()->flash();
+          $view['solutions'] = $this->solution->solution_checkbox($data);
           session()->flash('message', 'Lead ' . $data->company . ' updated');
         }
       }
     }
 
-    $view = [
-      'solutions' => $this->solution->solution_checkbox($data),
-      'data' => $data
-    ];    
-
-    return view()->make('user.lead.create', $view);
+    return view()->make('client.lead.create', $view);
   }
 }

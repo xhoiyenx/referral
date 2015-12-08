@@ -36,7 +36,7 @@ class LeadController extends Controller
     ]);
 
     $view = [
-      'members' => $this->member->query()->select('id', 'fullname', 'usermail', 'mobile')->orderBy('fullname', 'asc')->get(),
+      'members' => $this->member->query()->select('id', 'fullname', 'usermail', 'mobile')->where('status', 1)->orderBy('fullname', 'asc')->get(),
     ];
 
     return view()->make('user.lead.admin.index', $view);
@@ -59,7 +59,7 @@ class LeadController extends Controller
     if ( request()->isMethod('post') )
     {
       $input = request()->all();
-      if ( $this->lead->save_status( $input, $data ) ) {
+      if ( $data = $this->lead->save_status( $input, $data ) ) {
         session()->flash('message', 'Lead ' . $data->company . ' updated');
       }
     }
@@ -67,7 +67,6 @@ class LeadController extends Controller
     $view = [
       'solutions' => $this->solution->solution_checkbox($data),
       'status' => $this->lead->statuses(),
-      #'sales' => array_merge(['' => 'Select sales person'], $this->sales->query()->lists('fullname', 'id')),
       'sales' => ['' => 'Select sales person'] + $this->sales->query()->lists('fullname', 'id'),
       'data' => $data
     ];    

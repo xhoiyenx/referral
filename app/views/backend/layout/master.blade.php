@@ -68,7 +68,7 @@
     <!-- START SIDEBAR -->
     <!-- <div class="sidebar clearfix hidden"> SET DEFAULT HIDDEN -->
     <!-- <div class="sidebar clearfix"> SET DEFAULT SHOWING -->
-    <div class="sidebar clearfix hidden">
+    <div class="sidebar clearfix">
       @include('layout.menu')
     </div>
     <!-- END SIDEBAR -->
@@ -76,11 +76,12 @@
     <!-- START CONTENT -->
     <!-- <div class="content" style="margin-left:0"> SET DEFAULT SHOWING -->
     <!-- <div class="content"> SET DEFAULT HIDDEN -->
-    <div class="content" style="margin-left:0">
+    <div class="content">
       @if( $controller->useHeader() )
       <div class="page-header">
         <h1 class="title">{{ $controller->getPageTitle() }}</h1>
         {{ $controller->drawBreadcrumb() }}
+        @section('page-header')@show
       </div>
       @endif
       @yield('content')

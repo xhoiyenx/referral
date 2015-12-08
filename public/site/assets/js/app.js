@@ -23,4 +23,23 @@ $(function(){
 	$('[data-toggle="tooltip"]').tooltip();
 	
 	$('input, textarea').placeholder();
+
+	var menuClass = '.mainMenu';
+		var top = $(menuClass).offset().top - parseFloat($(menuClass).css('marginTop').replace(/auto/, 0));
+		setMenuTop(menuClass, top);
+		$(window).scroll(function (event) {
+			setMenuTop(menuClass, top);
+		});
+		
+	function setMenuTop(menuSelector, top){
+		var y = $(window).scrollTop();
+		if (y >= top) {
+			$(menuSelector).addClass('fixed');
+		} else {
+			$(menuSelector).removeClass('fixed');
+		}
+	}		
+
+	$('.homeBanner > .container').prepend('<h1 class="text-uppercase text-right txtMobile">' + $(".txtDesktop").html() + '</h1>');
+	
 })

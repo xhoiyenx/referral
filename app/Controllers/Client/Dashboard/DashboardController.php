@@ -15,7 +15,7 @@ class DashboardController extends Controller
   public function index()
   {
   	$this->setPageTitle('Dashboard');
-    return view()->make('dashboard.index');
+    return view()->make('client.dashboard.index');
   }
 
   public function solutions()

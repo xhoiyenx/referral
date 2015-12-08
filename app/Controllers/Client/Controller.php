@@ -43,6 +43,11 @@ class Controller extends BaseController
           'icon'    => 'fa-cogs',
           'active'  => app('router')->currentRouteName() == 'client.solutions' ? ' active' : ''
         ],
+        'client.logout' => [
+          'name'    => 'Log Out',
+          'icon'    => 'fa-power-off',
+          'active'  => app('router')->currentRouteName() == 'client.logout' ? ' active' : ''
+        ],
       ]
     ];
 
@@ -99,5 +104,5 @@ class Controller extends BaseController
     $html .= '</ol>';
 
     return $html;
-  }  
+  }
 }

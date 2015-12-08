@@ -27,6 +27,7 @@ $(document).ready(function() {
 /* Sidebar Show-Hide On Mobile */
 $(document).ready(function() {
   $(".sidebar-open-button-mobile").click(function() {
+    $(".sidebar").removeClass('hidden');
     $(".sidebar").toggle(150);
   });
 });
@@ -166,6 +167,20 @@ $(window).load(function() {
  */
 $(document).ready(function() {
   $('select').select2();
+
+  $('.numeric').keyup(function(event) {
+    var text = $(this).val();
+    text = text.replace(/\D/g, '');
+    $(this).val(text);
+  });
+
+  $(document).on('keyup', '.numeric', function(event) {
+    var text = $(this).val();
+    console.log(text);
+    text = text.replace(/\D/g, '');
+    $(this).val(text);
+  });
+
 });
 
 /*

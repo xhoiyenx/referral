@@ -39,28 +39,41 @@ class MemberController extends Controller
       'admin.member' => 'Member'
     ]);
 
-    return view()->make('user.member.index');
+    $view = [
+      'total_active'  => $this->member->getTotalByStatus(1),
+      'total_pending' => $this->member->getTotalByStatus(0),
+      'total_suspend' => $this->member->getTotalByStatus(2),
+      'total_active_profile' => $this->member->getTotalByStatus(3),
+      'total_members' => $this->member->query()->count(),
+      'total_online'  => $this->member->queryOnlineMembers()->count()
+    ];
+
+    return view()->make('manager.member.index', $view);
   }
 
   public function update( $id )
   {
     $this->setPageTitle('Edit Member');
-    
     $data = $this->member->find($id);
-
-    if ( request()->isMethod('post') )
-    {
-      $input = request()->all();
-      $data->status = $input['status'];
-      $data->save();
-      session()->flash('message', 'Member ' . $data->fullname . ' updated');
-    }
-
     $view = [
       'data' => $data
     ];    
 
-    return view()->make('user.member.create', $view);
+    if ( request()->isMethod('post') )
+    {
+      $input = request()->all();
+      $validator = $this->member->validate_update( $input, $id );
+      if ( $validator->fails() ) {
+        request()->flash();
+        return view()->make('manager.member.create', $view)->withInput($input)->withErrors($validator);
+      }
+      else {
+        $this->member->adminUpdate( $data, $input );
+        session()->flash('message', 'Member ' . $data->fullname . ' updated');
+      }
+    }
+
+    return view()->make('manager.member.create', $view);
   }
 
   public function profile( $id )
@@ -77,6 +90,13 @@ class MemberController extends Controller
       'data' => $data
     ];
 
-    return view()->make('user.member.profile', $view);
+    return view()->make('manager.member.profile', $view);
+  }
+
+  public function sendactivationemail( $id )
+  {
+    $data = $this->member->find($id);
+    app('events')->fire('member.registration', [$data]);
+    return redirect()->back()->with('message', 'Activation email has been sent to ' . $data->usermail);
   }
 }

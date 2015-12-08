@@ -33,7 +33,7 @@ class AuthController extends Controller
 
         # USER NOT ACTIVATED YET, SEND ERROR
         if ( $user->status == 0 ) {
-          return redirect()->back()->withInput()->withErrors( 'Your account is not activated yet, please check your email for activation instructions' );
+          return redirect()->back()->withInput()->withErrors( 'Your account has not been activated. Please check your registered email (inbox and spam folders) to activate your account.<br><br> Please <a href="'.route('client.resend').'">click here</a> to resend the activation email if you don’t receive any activation email.' );
         }
         else
         if ( $user->status == 2 ) {
@@ -41,7 +41,7 @@ class AuthController extends Controller
         }
         else {
           auth()->member()->login($user);
-          return redirect()->intended('clientzone');
+          return redirect()->intended('clientzone/lead');
         }
       }
       else {
@@ -189,10 +189,12 @@ class AuthController extends Controller
       else {
 
         if ( $user = $this->user->saveProfile( $user, $input ) ) {
-          return redirect()->route('client.login')->with('message', 'Thank you, your account information is saved. Please proceed to log-in');
+          #return redirect()->route('client.login')->with('message', 'Thank you, your account information is saved. Please proceed to log-in');
+          app('events')->fire('member.member_activated', [$user]);
+          return redirect()->route('client.dashboard');
         }
         else {
-          return redirect()->back()->withInput()->withErrors('Failed inserting data');
+          return redirect()->back()->withInput()->withErrors('Failed updating data');
         }
 
       }

@@ -45,6 +45,11 @@ class Controller extends BaseController
           'icon'    => 'fa-user',
           'active'  => app('router')->currentRouteName() == 'admin.sales' ? ' active' : ''
         ],
+        'admin.testimonials' => [
+          'name'    => 'Testimonials',
+          'icon'    => 'fa-comments',
+          'active'  => app('router')->currentRouteName() == 'admin.testimonials' ? ' active' : ''
+        ],
       ]
     ];
 

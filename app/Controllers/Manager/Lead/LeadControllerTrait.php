@@ -44,7 +44,7 @@ trait LeadControllerTrait
       $date_start = request()->get('ds');
       $date_end   = request()->get('de');
       if ( $date_start != '' AND $date_end != '' ) {
-        $query->whereBetween('leads.created_at', [$date_start, $date_end]);
+        $query->whereBetween(db()->raw('DATE(`leads`.`created_at`)'), [$date_start, $date_end]);
       }
     }
 

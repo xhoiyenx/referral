@@ -46,10 +46,10 @@ body, html {
 	color: #FFF;
 }
 .data-table > thead > tr > th.action {
-	width: 10%;
+	width: 15%;
 }
 .data-table > tbody > tr > td:last-child {
-	text-align: center;
+	text-align: right;
 }
 .data-table .btn-group {
 	margin: -4px auto;
@@ -71,6 +71,9 @@ body, html {
 }
 .select2-container--default .select2-selection--single {
 	border-radius: 0;
+}
+.member-status.selected {
+	background-color: #DDD;
 }
 
 /*
@@ -301,4 +304,18 @@ b, strong {
 }
 .form-status {
 	padding: 20px;
+}
+
+/**
+ * Media Queries
+ */
+@media screen and (max-width: 428px) {
+	.select2, .input-filter, .filter button, .filter .float-r {
+		width: 100% !important;
+		margin: 0 0 10px 0;
+	}
+
+	.filter {
+		padding: 0;
+	}
 }

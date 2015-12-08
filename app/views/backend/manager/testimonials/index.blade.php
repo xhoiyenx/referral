@@ -1,22 +1,16 @@
 @extends("layout.master")
 @section("content")
+<div class="page-action">
+  <div>
+    <a href="#" class="btn btn-primary add-new">ADD NEW</a>
+  </div>
+</div>
 @include('layout.notices')
 <div class="container-default">
-  <div class="filter clearfix">
-    <div class="float-r">
-      <input type="text" id="search" class="input-filter" value="" placeholder="Search" />
-      <button type="button" id="search-button" class="btn btn-primary">Search</button>
-    </div>
-  </div>
   <table class="table data-table">
     <thead>
       <tr>
-        <th>Fullname</th>
-        <th>Email</th>
-        <th>Total Leads</th>  
-        <th>Total Referral Fee</th>
-        <th>Closed Deals</th>
-        <th>Last Login</th>      
+        <th>Title</th>
         <th class="no-sort action">&nbsp;</th>
       </tr>
     </thead>
@@ -26,6 +20,7 @@
 
 @section("header_before_style")
 {{ html()->style('public/global/sweet-alert/sweet-alert.css') }}
+{{ html()->style('public/global/redactor/redactor.css') }}
 @endsection
 
 @section("header_after_style")
@@ -39,12 +34,15 @@
   </div>
 </div>
 {{ html()->script('public/global/sweet-alert/sweet-alert.min.js') }}
+{{ html()->script('public/global/redactor/redactor.min.js') }}
+{{ html()->script('public/global/redactor/plugins/fullscreen/fullscreen.js') }}
+{{ html()->script('public/global/redactor/plugins/imagemanager/imagemanager.js') }}
 <script type="text/javascript">
 $(document).ready(function() {
 
-  var route         = '{{ route('admin.member') }}';
-  var route_create  = '';
-  var route_update  = '{{ route('admin.member.update') }}';
+  var route_create  = '{{ route('admin.testimonials.create') }}';
+  var route_update  = '{{ route('admin.testimonials.update') }}';
+  var route         = '{{ route('admin.testimonials') }}';
 
   var settings = {
     ajax: {
@@ -55,11 +53,14 @@ $(document).ready(function() {
 
   @include('layout.table_js')
 
-  $('#search-button').click(function(event) {
-    dataTable.search( $('#search').val() ).draw();
+  $( document ).ajaxComplete(function() {
+    $('.redactor').redactor({
+      plugins: ['fullscreen', 'imagemanager'],
+      imageUpload: '/redactor/image/upload',
+      minHeight: 200
+    });    
   });
 
-  
 });
 </script>
 @endsection

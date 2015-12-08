@@ -13,7 +13,7 @@ class SolutionRepository
 
   public function all()
   {
-    return $this->model->all();
+    return $this->model->orderBy('sort_order')->get();
   }
 
   public function find( $value )
@@ -63,7 +63,7 @@ class SolutionRepository
   {
     $selected = [];
     if ( $lead != null ) {
-      $selected  = $lead->solutions()->lists('solution_id');
+      $selected  = $lead->solutions()->orderBy('sort_order')->lists('solution_id');
     }
 
     $solutions = $this->all();

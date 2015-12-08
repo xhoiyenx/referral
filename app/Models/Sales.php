@@ -31,6 +31,6 @@ class Sales extends Model
 
   public function lead()
   {
-    return $this->belongsTo('App\Models\Lead');
+    return $this->hasMany('App\Models\Lead');
   }
 }

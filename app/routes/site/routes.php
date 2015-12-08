@@ -21,14 +21,7 @@ Route::post('redactor/image/upload', function(){
 
 });
 
-Route::get('/', function()
-{
-  
-  #seed_member();
-  #
-  #seed_lead();
-
-});
+Route::controller('/', 'SiteController');
 
 function seed_lead()
 {

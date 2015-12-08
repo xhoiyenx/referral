@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories;
 use App\Models\Lead;
+use App\Models\Sales;
 
 class LeadRepository
 {
@@ -87,7 +88,7 @@ class LeadRepository
 
     $lead->company      = $input['company'];
     $lead->fullname     = $input['fullname'];
-    $lead->mobile       = $input['mobile'];
+    $lead->usermail     = $input['usermail'];
     $lead->phone        = $input['phone'];
     $lead->designation  = $input['designation'];
     $lead->introduce    = $input['introduce'];
@@ -97,7 +98,9 @@ class LeadRepository
     if ( $lead->save() )
     {
       # INSERT PIVOT DATA
-      $lead->solutions()->sync( $input['solutions'] );
+      if ( isset($input['solutions']) && !empty($input['solutions']) ) {
+        $lead->solutions()->sync( $input['solutions'] );
+      }
     }
 
     return $lead;
@@ -113,6 +116,10 @@ class LeadRepository
     }
 
     if ( isset($input['sales_id']) AND !empty($input['sales_id']) ) {
+      if ( $lead->sales_id != $input['sales_id'] ) {
+        $sales = Sales::find( $input['sales_id'] );
+        app('events')->fire('lead.assign_sales', [$lead, $sales]);
+      }
       $lead->sales_id = $input['sales_id'];
       $lead->save();
     }
@@ -123,7 +130,6 @@ class LeadRepository
         app('events')->fire('member.lead.status_update', [$lead]);
         return $lead;
       }
-      $lead->save();
     }
     else {
       return $lead;

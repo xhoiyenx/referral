@@ -74,6 +74,29 @@ class Member extends Model implements UserInterface, RemindableInterface
     return $validator;
   }
 
+  protected function validate_update( $input, $id )
+  {
+    $rules = [
+      'fullname'  => 'required',
+      'usermail'  => 'required|email|unique:members,usermail,' . $id,
+      'mobile'    => 'required|numeric',
+      'address'   => 'required'
+    ];
+
+    $messages = array(
+      'fullname.required'   => 'Fullname is required',
+      'usermail.required'   => 'Email is required',
+      'usermail.confirmed'  => 'Email confirmation does not match.',
+      'usermail.unique'     => 'Email has already been taken.',      
+      'mobile.required'     => 'Mobile number is required',
+      'mobile.numeric'      => 'Mobile number needs all numeric',
+      'address.required'    => 'Address is required',
+    );
+
+    $validator = validator()->make( $input, $rules, $messages );
+    return $validator;    
+  }
+
   public function getReminderEmail()
   {
     return $this->usermail;

@@ -6,7 +6,8 @@ $.extend( $.fn.dataTable.defaults, {
   serverSide: true,
   bAutoWidth: false,
   pageLength: 15,
-  dom: 'tp'
+  dom: 'tp',
+  aaSorting : [[0, 'desc']]
 });
 
 

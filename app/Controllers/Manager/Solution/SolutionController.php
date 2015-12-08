@@ -46,6 +46,21 @@ class SolutionController extends Controller
         session()->flash('errors', $validator);
   		}
   		else {
+        # HANDLE UPLOAD
+        if ( request()->hasFile('image') ) {
+          $image = request()->file('image');
+          if ( $image->isValid() )
+          {
+            $valid_ext = ['jpg', 'jpeg', 'gif', 'png', 'bmp'];
+            $ext = $image->getClientOriginalExtension();
+
+            if ( in_array($ext, $valid_ext) ) {
+              $image->move( public_path() . '/uploads', $image->getClientOriginalName() );
+              $input['image'] = $image->getClientOriginalName();
+            }
+          }
+        }
+
   			$solution = Solution::create($input);
   			if ($solution) {
   				session()->flash('message', 'Solution ' . $input['name'] . ' added');
@@ -71,6 +86,25 @@ class SolutionController extends Controller
         session()->flash('errors', $validator);
   		}
   		else {
+
+        # HANDLE UPLOAD
+        if ( request()->hasFile('image') ) {
+          $image = request()->file('image');
+          if ( $image->isValid() )
+          {
+            $valid_ext = ['jpg', 'jpeg', 'gif', 'png', 'bmp'];
+            $ext = $image->getClientOriginalExtension();
+
+            if ( in_array($ext, $valid_ext) ) {
+              $image->move( public_path() . '/uploads', $image->getClientOriginalName() );
+              $input['image'] = $image->getClientOriginalName();
+            }
+          }
+          else {
+            unset($input['image']);
+          }
+        }
+
   			$solution = $data->fill($input)->save();
   			if ($solution) {
   				session()->flash('message', 'Solution ' . $input['name'] . ' saved');
@@ -84,6 +118,7 @@ class SolutionController extends Controller
   public function ajaxlist()
   {
     $field_names = [
+      'sort_order',
       'name',
       'price',
       'fee',

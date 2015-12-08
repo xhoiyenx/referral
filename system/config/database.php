@@ -55,7 +55,7 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'data_referral',
+			'database'  => 'itc2_referral',
 			'username'  => 'root',
 			'password'  => '1234',
 			'charset'   => 'utf8mb4',

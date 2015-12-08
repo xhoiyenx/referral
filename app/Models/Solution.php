@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class Solution extends Model
 {
   protected $table = 'solutions';
-  protected $fillable = ['name', 'price', 'fee', 'description'];
+  protected $fillable = ['name', 'image', 'price', 'fee', 'description', 'sort_order'];
   public $timestamps = false;
 
   protected function validate( $data )

@@ -10,6 +10,7 @@
   <table class="table data-table">
     <thead>
       <tr>
+        <th>Index</th>
         <th>Name</th>
         <th>Price</th>
         <th>Fee</th>        
@@ -50,7 +51,8 @@ $(document).ready(function() {
     ajax: {
       url: route,
       type: "POST"
-    }
+    },
+    aaSorting : [[0, 'asc']]
   }
 
   @include('layout.table_js')

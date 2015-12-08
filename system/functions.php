@@ -6,7 +6,10 @@ function get_countries()
 
 function get_country_name( $code )
 {
-  return db()->table('countries')->select('name')->where('code', $code)->first();
+  $query = db()->table('countries')->select('name')->where('code', $code)->first();
+  if ($query) {
+    return $query->name;
+  }
 }
 
 function currency_format( $float )

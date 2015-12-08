@@ -12,7 +12,7 @@ trait LeadControllerTrait
       'fullname',
       'solutions',
       'referral_fee',
-      'sales_id',
+      'sales',
       'status'
     ];
 
@@ -33,21 +33,29 @@ trait LeadControllerTrait
       $date_start = request()->get('ds');
       $date_end   = request()->get('de');
       if ( $date_start != '' AND $date_end != '' ) {
-        $query->whereBetween('leads.created_at', [$date_start, $date_end]);
+        $query->whereBetween(db()->raw('DATE(`leads`.`created_at`)'), [$date_start, $date_end]);
       }
     }
 
     $search = request()->get('search');
     if ( $search['value'] != '' ) {
       $search = request()->get('search');
-      $query->where('leads.company', 'like', '%' . $search['value'] . '%');
-      $query->orWhere('leads.fullname', 'like', '%' . $search['value'] . '%');
+      $query->where(function($query) use ($search){
+        $query->where('leads.company', 'like', '%' . $search['value'] . '%');
+        $query->orWhere('leads.fullname', 'like', '%' . $search['value'] . '%');
+        $query->orWhere('leads.phone', 'like', '%' . $search['value'] . '%');
+        $query->orWhere('leads.usermail', 'like', '%' . $search['value'] . '%');
+      });
     }
 
     # get total
     $total = $query->count();
 
-    $query->select( db()->raw('leads.*, SUM( solutions.fee ) AS referral_fee, GROUP_CONCAT(solutions.name SEPARATOR ", ") AS solutions') );
+    $query->select( db()->raw('leads.*, CONCAT( sales.fullname, " (", sales.mobile, ")" ) AS sales, SUM( solutions.fee ) AS referral_fee, GROUP_CONCAT(solutions.name SEPARATOR ", ") AS solutions') );
+
+    $query->leftJoin('sales', function($join) {
+      $join->on('leads.sales_id', '=', 'sales.id');
+    });
 
     $query->leftJoin('lead_solutions', function($join) {
       $join->on('lead_solutions.lead_id', '=', 'leads.id');

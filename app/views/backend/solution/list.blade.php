@@ -14,7 +14,7 @@
           {{ $solution->name }}
           <ul class="panel-tools">
             <li><a class="icon expand-tool"><i class="fa fa-eye"></i></a></li>
-            <li><a class="icon closed-tool"><i class="fa fa-times"></i></a></li>
+            <!--<li><a class="icon closed-tool"><i class="fa fa-times"></i></a></li>-->
           </ul>
         </div>
         <div class="panel-body">

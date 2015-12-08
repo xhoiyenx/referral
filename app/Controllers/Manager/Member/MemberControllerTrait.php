@@ -9,6 +9,7 @@ trait MemberControllerTrait
   {
   	# COMPLEX CODE FOR AJAX TABLE
     $field_names = [
+      'created_at',
       'fullname',
       'usermail',
       'total_lead',
@@ -20,7 +21,7 @@ trait MemberControllerTrait
     # init query object
     $query = $this->member->query();
 
-    $query->join('leads', function($join) {
+    $query->leftJoin('leads', function($join) {
       $join->on('leads.member_id', '=', 'members.id');
     });
 
@@ -33,6 +34,12 @@ trait MemberControllerTrait
       $query->orWhere('members.usermail', 'like', '%' . $search['value'] . '%');
     }
 
+    if ( request()->has('status') ) {
+      $status = request()->get('status');
+      if ( $status != '' )
+        $query->where('members.status', $status);
+    }    
+    
     # get total
     $total  = count( $query->select(db()->raw(1))->get() );
 
@@ -44,7 +51,7 @@ trait MemberControllerTrait
       $join->on('solutions.id', '=', 'lead_solutions.solution_id');
     });
 
-    $query->select( db()->raw('members.id AS id, members.fullname AS fullname, members.usermail AS usermail, members.created_at AS logged_at, COUNT( DISTINCT leads.id ) AS total_lead, COUNT( DISTINCT CASE WHEN leads.status = 2 THEN leads.status ELSE NULL END ) as closed_deals, SUM( solutions.fee ) AS total_fee') );
+    $query->select( db()->raw('members.created_at as created_at, members.id AS id, members.fullname AS fullname, members.usermail AS usermail, members.created_at AS logged_at, COUNT( DISTINCT leads.id ) AS total_lead, COUNT( DISTINCT CASE WHEN leads.status = 2 THEN leads.status ELSE NULL END ) as closed_deals, SUM( solutions.fee ) AS total_fee') );
 
     # setup ordering
     if ( isset( $_POST['order'] ) )
@@ -58,15 +65,15 @@ trait MemberControllerTrait
       $query->orderBy( $field_name, $field_ord );
     }
 
-    # add offset
-    $query->offset( $_POST['start'] );
-
     # add limit
-    $query->take( $_POST['length'] );
+    if ( $_POST['length'] != -1 ) {
+      # add offset
+      $query->offset( $_POST['start'] );
+      $query->take( $_POST['length'] );
+    }
 
     # get data
     $rows   = $query->get();
-    
 
     $data  = [
       'recordsTotal' => $total,
@@ -82,6 +89,12 @@ trait MemberControllerTrait
         $fields = [];
         for ( $i = 0, $c = count($field_names); $i < $c; $i++ )
         {
+          # CREATED AT
+          if ( $field_names[$i] == 'created_at' ) {
+            $fields[] = $row->created_at->toFormattedDateString();
+            continue;
+          }
+
           $field = str_replace('user.', '', $field_names[$i]);
           $fields[] = $row->$field;
         }
@@ -100,14 +113,7 @@ trait MemberControllerTrait
     ?>
     <a class="action-edit btn-sm btn-light btn-icon" title="Edit" href="<?php echo route('admin.member.update', ['id' => $row->id]) ?>"><i class="fa fa-edit"></i></a>
     <a class="action-view btn-sm btn-light btn-icon" title="Edit" href="<?php echo route('admin.member.profile', ['id' => $row->id]) ?>"><i class="fa fa-eye"></i></a>
-    <!--
-    <div class="btn-group">
-      <button type="button" class="btn btn-sm btn-light action dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-gear"></i></button>
-      <ul class="dropdown-menu dropdown-menu-list">
-        <li><a class="action-edit" href="<?php echo route('admin.member.update', ['id' => $row->id]) ?>"><i class="fa falist fa-edit"></i>Edit</a></li>
-      </ul>
-    </div>
-    -->
+    <a class="btn-sm btn-light btn-icon" title="Send activation email" href="<?php echo route('admin.member.sendactivationemail', ['id' => $row->id]) ?>"><i class="fa fa-envelope"></i></a>
     <?php
     $html = ob_get_contents();
     ob_end_clean();

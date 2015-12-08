@@ -1,4 +1,7 @@
 <?php
+# System Route
+require_once __DIR__ . '/system.php';
+
 # Manager Route
 Route::group([
 	'namespace' => 'App\Controllers\Manager',
@@ -19,40 +22,8 @@ Route::group([
 
 # Frontend Route
 Route::group([
-	'namespace' => 'App\Controllers\Front'
+	'namespace' => 'App\Controllers\Site'
 ], function()
 {
-	require_once __DIR__ . '/front/routes.php';
-});
-
-# Installation and Upgrade
-Route::get('install', function(){
-
-});
-
-Route::get('upgrade', function(){
-
-	# CONTENTS MODULE
-	Schema::create('page', function($table)
-	{
-	  $table->mediumInteger('id', true, true);
-	  $table->mediumInteger('admin_id')->unsigned();
-	  $table->string('type', 50);
-	  $table->mediumText('title');
-	  $table->text('description');
-	  $table->string('slug', 100);	  
-	  $table->string('status', 20);
-	  $table->timestamps();
-	});
-
-	# SALES MODULE
-	Schema::create('sales', function($table)
-	{
-	  $table->mediumInteger('id', true, true);
-	  $table->string('fullname');	  
-	  $table->string('usermail');
-	  $table->string('mobile', 30);
-	  $table->timestamps();
-	});
-
+	require_once __DIR__ . '/site/routes.php';
 });

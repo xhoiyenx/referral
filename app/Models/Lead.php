@@ -11,15 +11,18 @@ class Lead extends Model
     $messages = array(
       'company.required'  => 'Company name is required',
       'phone.required'    => 'Phone number is required',
-      'mobile.required'   => 'Mobile number is required',
+      #'mobile.required'   => 'Mobile number is required',
+      'phone.numeric'    => 'Phone number needs all numeric',
+      #'mobile.numeric'   => 'Mobile number needs all numeric',
       'fullname.required' => 'Fullname is required'
     );
 
     $rules = [
       'fullname'=> 'required',
       'company' => 'required',
-      'phone'   => 'required',
-      'mobile'  => 'required'
+      'phone'   => 'required|numeric',
+      #'mobile'  => 'required|numeric',
+      'usermail' => 'email'
     ];
 
     $validator = validator()->make( $data, $rules, $messages );
@@ -38,6 +41,6 @@ class Lead extends Model
 
   public function sales()
   {
-    return $this->hasOne('App\Models\Sales');
+    return $this->belongsTo('App\Models\Sales');
   }  
 }

@@ -24,7 +24,7 @@
               Singapore 169874
             </p>
             <p>Tel : +65 6850 5001<br/>
-              Ext : 888
+              Ext : 888#
             </p>
           </div>
         </div>

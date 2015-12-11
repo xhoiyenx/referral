@@ -7,9 +7,19 @@ Route::get('system/install', function(){
 Route::get('system/upgrade', function(){
 
 	/**
+	 * VERSION 0.1.5
+	 * Add configuration
+	 */
+	Schema::create('configuration', function($table) {
+		$table->string('name', 100)->unique();
+		$table->text('value');
+		$table->timestamps();
+	});
+
+	/**
 	 * VERSION 0.1.4
 	 * Add Image Column on solution and testimonial
- 	*/
+ 	
 	Schema::table('solutions', function($table) {
 		$table->string('image', 100)->nullable()->after('name');
 	});
@@ -17,6 +27,7 @@ Route::get('system/upgrade', function(){
 	Schema::table('page', function($table) {
 		$table->string('image', 100)->nullable()->after('admin_id');
 	});
+	*/
 
 
 	/**

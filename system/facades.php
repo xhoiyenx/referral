@@ -44,6 +44,16 @@ function session()
   return app('session');
 }
 
+function settings( $key = null )
+{
+  if ( ! is_null($key) ) {
+    return app('settings')->get( $key );
+  }
+  else {
+    return app('settings');
+  }
+}
+
 function validator()
 {
 	return app('validator');

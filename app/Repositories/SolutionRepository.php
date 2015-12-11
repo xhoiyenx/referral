@@ -66,6 +66,12 @@ class SolutionRepository
       $selected  = $lead->solutions()->orderBy('sort_order')->lists('solution_id');
     }
 
+    if ( request()->isMethod('post') ) {
+      if ( request()->has('solutions') ) {
+        $selected = request()->get('solutions');
+      }
+    }
+
     $solutions = $this->all();
     $html = '';
     foreach ( $solutions as $solution )

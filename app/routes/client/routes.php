@@ -97,4 +97,9 @@ Route::group(['before' => 'auth.clientzone'], function(){
     'uses'  => 'Lead\LeadController@update',
   ]);
 
+  Route::get('page/{mode?}/{content?}', [
+    'as'    => 'client.page', 
+    'uses'  => 'Dashboard\DashboardController@page',
+  ]);
+
 });

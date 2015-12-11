@@ -2,6 +2,7 @@
 namespace App\Controllers\Manager\Solution;
 use App\Controllers\Manager\Controller;
 use App\Models\Solution;
+use abeautifulsite\SimpleImage;
 
 class SolutionController extends Controller
 {
@@ -46,6 +47,8 @@ class SolutionController extends Controller
         session()->flash('errors', $validator);
   		}
   		else {
+        $image = null;
+
         # HANDLE UPLOAD
         if ( request()->hasFile('image') ) {
           $image = request()->file('image');
@@ -59,6 +62,12 @@ class SolutionController extends Controller
               $input['image'] = $image->getClientOriginalName();
             }
           }
+          else {
+            unset($input['image']);
+          }
+        }
+        else {
+          unset($input['image']);
         }
 
   			$solution = Solution::create($input);
@@ -86,6 +95,7 @@ class SolutionController extends Controller
         session()->flash('errors', $validator);
   		}
   		else {
+        $image = null;
 
         # HANDLE UPLOAD
         if ( request()->hasFile('image') ) {
@@ -102,6 +112,15 @@ class SolutionController extends Controller
           }
           else {
             unset($input['image']);
+          }
+        }
+        else {
+          unset($input['image']);
+        }
+
+        if ( request()->has('delete_image') ) {
+          if ( is_null($image) ) {
+            $input['image'] = null;
           }
         }
 

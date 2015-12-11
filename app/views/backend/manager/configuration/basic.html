@@ -1,0 +1,17 @@
+@extends('layout.master')
+@section('content')
+<div class="container-default">
+{{ form()->model( $data, ['route' => 'admin.configuration.save', 'class' => 'form-horizontal'] ) }}
+
+	<div class="page-action with-tab">
+	  <div class="action-button">
+	    <button type="submit" class="btn btn-primary">SAVE</button>
+	  </div>
+	  @include('layout.settings_tab')
+	</div>
+
+	@include('layout.notices')
+
+{{ form()->close() }}
+</div>
+@endsection

@@ -125,7 +125,7 @@ return array(
 		'Ollieread\Multiauth\Reminders\ReminderServiceProvider',
 		#'Barryvdh\Debugbar\ServiceProvider',
 		'Mews\Captcha\CaptchaServiceProvider',
-		'App\Providers\ConfigurationServiceProvider',
+		'App\Providers\AppServiceProvider'
 	),
 
 	/*

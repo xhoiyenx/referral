@@ -28,11 +28,13 @@ class Controller extends BaseController
   {
     $menu = [
       'menu' => [
+      /*
         'client.dashboard' => [
           'name'    => 'Dashboard',
           'icon'    => 'fa-home',
           'active'  => app('router')->currentRouteName() == 'client.dashboard' ? ' active' : ''
         ],
+      */
         'client.lead' => [
           'name'    => 'Leads',
           'icon'    => 'fa-group',

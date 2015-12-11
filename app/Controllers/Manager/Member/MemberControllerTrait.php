@@ -51,7 +51,7 @@ trait MemberControllerTrait
       $join->on('solutions.id', '=', 'lead_solutions.solution_id');
     });
 
-    $query->select( db()->raw('members.created_at as created_at, members.id AS id, members.fullname AS fullname, members.usermail AS usermail, members.created_at AS logged_at, COUNT( DISTINCT leads.id ) AS total_lead, COUNT( DISTINCT CASE WHEN leads.status = 2 THEN leads.status ELSE NULL END ) as closed_deals, SUM( solutions.fee ) AS total_fee') );
+    $query->select( db()->raw('members.status as status, members.created_at as created_at, members.id AS id, members.fullname AS fullname, members.usermail AS usermail, members.created_at AS logged_at, COUNT( DISTINCT leads.id ) AS total_lead, COUNT( DISTINCT CASE WHEN leads.status = 2 THEN leads.status ELSE NULL END ) as closed_deals, SUM( solutions.fee ) AS total_fee') );
 
     # setup ordering
     if ( isset( $_POST['order'] ) )
@@ -113,7 +113,9 @@ trait MemberControllerTrait
     ?>
     <a class="action-edit btn-sm btn-light btn-icon" title="Edit" href="<?php echo route('admin.member.update', ['id' => $row->id]) ?>"><i class="fa fa-edit"></i></a>
     <a class="action-view btn-sm btn-light btn-icon" title="Edit" href="<?php echo route('admin.member.profile', ['id' => $row->id]) ?>"><i class="fa fa-eye"></i></a>
+    <?php if ( $row->status == 3 ): ?>
     <a class="btn-sm btn-light btn-icon" title="Send activation email" href="<?php echo route('admin.member.sendactivationemail', ['id' => $row->id]) ?>"><i class="fa fa-envelope"></i></a>
+    <?php endif;?>
     <?php
     $html = ob_get_contents();
     ob_end_clean();

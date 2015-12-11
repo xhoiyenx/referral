@@ -128,11 +128,15 @@ Route::group(['before' => 'auth.admin'], function(){
     'uses'  => 'Testimonial\TestimonialController@create',
   ]);
 
-
   # CONFIGURATION PAGE
-  Route::match(['GET', 'POST'], 'configuration/{mode?}', [
+  Route::get('configuration/{mode?}', [
     'as'    => 'admin.configuration', 
-    'uses'  => 'Configuration\ConfigurationController@index',
+    'uses'  => 'Config\ConfigController@index',
+  ]);
+
+  Route::post('configuration/save', [
+    'as'    => 'admin.configuration.save', 
+    'uses'  => 'Config\ConfigController@save',
   ]);
 
 });

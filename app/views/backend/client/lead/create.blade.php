@@ -38,7 +38,14 @@
     <div class="col-md-12">
       <div class="form-group">
         {{ form()->label('solutions', 'Solutions Interested', ['class' => 'form-label']) }}
-        {{ $solutions }}
+        @if ( ! empty( $solutions ) )
+          @foreach ( $solutions as $id => $name )
+          <div class="checkbox">
+          {{ form()->checkbox('solutions[]', $id, null, ['id' => 'cb_' . $id]); }}
+          {{ form()->label('cb_' . $id, $name) }}
+          </div>
+          @endforeach
+        @endif
       </div>
     </div>
   </div>
@@ -62,7 +69,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="form-group">
-        {{ form()->label('introduce', 'How you introduce us', ['class' => 'form-label']) }}
+        {{ form()->label('introduce', 'How you introduce us *', ['class' => 'form-label']) }}
         {{ form()->textarea('introduce', null, ['class' => 'form-control', 'id' => 'introduce', 'rows' => 3]) }}
         <span class="help-block">
           Explain how you introduce us. For example you tell your contact that you take product from us before, or your friend, etc.
@@ -73,7 +80,19 @@
 
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-  <button type="submit" class="btn btn-primary">Save changes</button>
+  <div class="row">
+    <div class="col-md-6">
+      @if ( ! isset( $data ) )
+      <div class="checkbox text-left">
+        {{ form()->checkbox('tnc', 1, null, ['id' => 'tnc']) }}
+        <label for="tnc"><a href="{{ route('client.page', 'tnc') }}" target="_blank">I agree on terms & conditions</a></label>
+      </div>
+      @endif
+    </div>
+    <div class="col-md-6">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      <button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+  </div>
 </div>
 {{ form()->close() }}

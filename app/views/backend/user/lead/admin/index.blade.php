@@ -6,9 +6,16 @@
     <select id="member">
       <option value="">Filter by member:</option>
       @foreach($members as $member)
-      <option value="{{ $member->id }}">{{ $member->fullname }}</option>
+      <option value="{{ $member->id }}">{{ $member->fullname }} ({{ $member->usermail }})</option>
       @endforeach
     </select>
+
+    <select id="solution">
+      <option value="">Filter by solutions:</option>
+      @foreach($solutions as $solution)
+      <option value="{{ $solution->id }}">{{ $solution->name }}</option>
+      @endforeach
+    </select>    
 
     <select id="status">
       <option value="">Filter by status:</option>
@@ -33,6 +40,7 @@
         <th>Contact Person</th>  
         <th>Solutions</th> 
         <th>Referral Fee</th>
+        <th>Member</th>
         <th>Sales Info</th>
         <th>Status</th>
         <th class="no-sort action">&nbsp;</th>
@@ -81,8 +89,10 @@ $(document).ready(function() {
       url: route,
       type: "POST",
       data: function ( d ) {
+
         d.status = $('#status').val();
         d.member_id = $('#member').val();
+        d.solution_id = $('#solution').val();
 
         if ( $('#created_date').val() != '' ) {
           d.ds = $('#created_date').data('daterangepicker').startDate.format('YYYY-MM-DD');
@@ -90,6 +100,10 @@ $(document).ready(function() {
         }
 
       }
+    },
+    drawCallback: function ( settings ) {
+      $('.dataTables_paginate').append('<a href="#" id="DataTables_View_All" aria-controls="DataTables_Table_0" class="paginate_button">View All</a>');
+      //console.log( settings );
     }
   }
   
@@ -104,12 +118,21 @@ $(document).ready(function() {
     dataTable.draw();
   });
 
+  $('#solution').change(function(event) {
+    dataTable.draw();
+  });
+
   $('#created_date').on('apply.daterangepicker', function(event, picker) {
     dataTable.draw();
   });
 
   $('#search-button').click(function(event) {
     dataTable.search( $('#search').val() ).draw();
+  });
+
+  $('.dataTables_wrapper').on('click', '#DataTables_View_All', function(event) {
+    event.preventDefault();
+    dataTable.page.len( -1 ).draw();
   });
 
   

@@ -37,6 +37,7 @@ class LeadController extends Controller
 
     $view = [
       'members' => $this->member->query()->select('id', 'fullname', 'usermail', 'mobile')->where('status', 1)->orderBy('fullname', 'asc')->get(),
+      'solutions' => $this->solution->all()
     ];
 
     return view()->make('user.lead.admin.index', $view);

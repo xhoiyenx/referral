@@ -27,9 +27,9 @@ class LeadRepository
     return $this->model->query();
   }
 
-  public function validate( $input )
+  public function validate( $input, $id = null )
   {
-    return Lead::validate( $input );
+    return Lead::validate( $input, $id );
   }
 
   public function statuses()

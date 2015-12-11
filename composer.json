@@ -9,7 +9,8 @@
 		"barryvdh/laravel-debugbar": "1.8.7",
 		"ollieread/multiauth": "dev-master",
 		"symfony/var-dumper": "2.7.6",
-		"mews/captcha": "1.0.1"
+		"mews/captcha": "1.0.1",
+		"abeautifulsite/simpleimage": "2.6.*"
 	},
 	"autoload": {
     "psr-4": {

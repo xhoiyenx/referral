@@ -6,7 +6,9 @@
             <ul class="slides">
             @foreach( $testimonials->get() as $testimonial )
               <li>
-                <figure class="imgClient"><img src="/public/site/assets/images/imgClient1.png" alt="" class="img-circle" width="60" height="61" /></figure>
+                @if ( ! empty($testimonial->image) )
+                <figure class="imgClient"><img src="{{ '/public/uploads/' . $testimonial->image }}" alt="" class="img-circle" width="60" height="60" /></figure>
+                @endif
                 <div class="testimonial">
                   {{ $testimonial->description }}
                   <div class="clientName">- {{ $testimonial->title }}</div>

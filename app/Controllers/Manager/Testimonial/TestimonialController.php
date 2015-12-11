@@ -2,6 +2,7 @@
 namespace App\Controllers\Manager\Testimonial;
 use App\Controllers\Manager\Controller;
 use App\Repositories\PageRepository;
+use abeautifulsite\SimpleImage;
 
 class TestimonialController extends Controller
 {
@@ -52,7 +53,9 @@ class TestimonialController extends Controller
         $testimonial->title = $input['title'];
         $testimonial->description = $input['description'];
         $testimonial->type = 'testimonial';
+
   			if ( $testimonial->save() ) {
+          $this->handle_image( $testimonial );
   				session()->flash('message', 'Testimonial by ' . $input['title'] . ' is added');
   			}
   		}
@@ -80,12 +83,60 @@ class TestimonialController extends Controller
         $data->description = $input['description'];
         $data->type = 'testimonial';
         if ( $data->save() ) {
+          $this->handle_image( $data );
   				session()->flash('message', 'Testimonial by ' . $input['title'] . ' is updated');
   			}
   		}
   	}
 
   	return view()->make('manager.testimonials.form', compact('data'));
+  }
+
+  protected function handle_image( $data )
+  {
+    $image = null;
+
+    if ( request()->has('delete_image') ) {
+      $fullpath = public_path() . '/uploads/' . $image->image;
+      @unlink($fullpath);
+      $fullpath = null;
+    }
+
+    if ( request()->hasFile('image') ) {
+      $image = request()->file('image');
+      if ( $image->isValid() )
+      {
+        $valid_ext = ['jpg', 'jpeg', 'gif', 'png', 'bmp'];
+        $ext = $image->getClientOriginalExtension();
+
+        if ( in_array($ext, $valid_ext) ) {
+          $fullpath = public_path() . '/uploads/' . $image->getClientOriginalName();
+          $target = $image->move( public_path() . '/uploads', $image->getClientOriginalName() );
+
+          # RESIZE
+          if ( file_exists($fullpath) ) {
+            $newpath = public_path() . '/uploads/testimonial_' . $data->id . '.' . $ext;
+
+            if ( file_exists($newpath) ) {
+              @unlink($newpath);
+            }
+
+            $resize = new SimpleImage( $fullpath );
+            $resize->best_fit(100, 100);
+            $resize->save( $newpath );
+            @unlink($fullpath);
+
+            # SAVE IMAGE FILENAME
+            $data->image = 'testimonial_' . $data->id . '.' . $ext;
+            $data->save();
+          }
+        }
+        # WRONG IMAGE FORMAT
+        else {
+
+        }
+      }
+    }
   }
 
   public function ajaxlist()

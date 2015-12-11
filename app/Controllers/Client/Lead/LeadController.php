@@ -39,8 +39,8 @@ class LeadController extends Controller
 		$this->setPageTitle('Add New Lead');
 
     $view = [
-      'solutions' => $this->solution->solution_checkbox(),
-    ];    
+      'solutions'  => $this->solution->query()->lists('name', 'id')
+    ];
 
     if ( request()->isMethod('post') )
     {
@@ -54,6 +54,7 @@ class LeadController extends Controller
       else {
       	if ( $this->lead->save($input) ) {
           session()->flash('message', 'Lead ' . $input['company'] . ' created');
+          return view()->make('client.lead.create', $view);
       	}
       }
     }
@@ -66,14 +67,15 @@ class LeadController extends Controller
     $this->setPageTitle('Edit Lead');
     $data = $this->lead->find($id);
     $view = [
-      'solutions' => $this->solution->solution_checkbox($data),
+      #'solutions' => $this->solution->solution_checkbox($data),
+      'solutions'  => $this->solution->query()->lists('name', 'id'),      
       'data' => $data
     ];    
 
     if ( request()->isMethod('post') )
     {
       $input = request()->all();
-      $validator = $this->lead->validate( $input );
+      $validator = $this->lead->validate( $input, $id );
 
       if ( $validator->fails() ) {
         request()->flash();
@@ -82,7 +84,6 @@ class LeadController extends Controller
       else {
         if ( $this->lead->save($input, $data) ) {
           request()->flash();
-          $view['solutions'] = $this->solution->solution_checkbox($data);
           session()->flash('message', 'Lead ' . $data->company . ' updated');
         }
       }

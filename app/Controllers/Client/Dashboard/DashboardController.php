@@ -29,6 +29,35 @@ class DashboardController extends Controller
     	'solutions' => $this->solution->all()
     ];
 
-    return view()->make('solution.list', $view);
-  }  
+    return view()->make('client.solution.list', $view);
+  }
+
+  public function page( $mode = null, $content = null )
+  {
+    $contents = '';
+
+    switch ($mode) {
+      case 'tnc':
+        $this->setPageTitle('Terms & Conditions');
+        $this->setBreadcrumb([
+          '/' => 'Terms & Conditions'
+        ]);
+        $contents = settings('tnc');
+        break;
+    }
+
+    $view = [
+      'content' => $contents
+    ];
+
+    # VIEW SOLUTIONS ON MODAL
+    if ( request()->ajax() && $mode == 'solution' ) {
+      $data = $this->solution->find( $content );
+      $this->setPageTitle($data->name);
+      $view['data'] = $data;
+      return view()->make('client.solution.content', $view);
+    }
+    
+    return view()->make('client.page.index', $view);
+  }
 }

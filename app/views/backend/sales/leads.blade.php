@@ -11,6 +11,7 @@
         <th>Contact Person</th>  
         <th>Solutions</th> 
         <th>Referral Fee</th>
+        <th>Member</th>
         <th>Sales Info</th>
         <th>Status</th>
         <th class="no-sort action">&nbsp;</th>

@@ -89,6 +89,10 @@ $(document).ready(function() {
         }
 
       }
+    },
+    drawCallback: function ( settings ) {
+      $('.dataTables_paginate').append('<a href="#" id="DataTables_View_All" aria-controls="DataTables_Table_0" class="paginate_button">View All</a>');
+      //console.log( settings );
     }
   }
   
@@ -113,6 +117,11 @@ $(document).ready(function() {
     $("#status").select2('val', '');
     $('#search').val('');
     dataTable.draw();
+  });
+
+  $('.dataTables_wrapper').on('click', '#DataTables_View_All', function(event) {
+    event.preventDefault();
+    dataTable.page.len( -1 ).draw();
   });
   
 });

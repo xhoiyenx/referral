@@ -40,20 +40,22 @@
         </div>
       </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-6">
       <div class="form-group">
         {{ form()->label('image', 'Featured Image', ['class' => 'form-label']) }}
         {{ form()->file('image') }}
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
+    @if ( isset($data) && $data->image != '' )
       <div class="form-group">
-      @if ( isset($data) && $data->image != '' )
-        <img class="img-responsive" src="{{ '/public/uploads/' . $data->image }}">
-        {{ form()->checkbox('delete_image', 1) }}
-        {{ form()->label('delete_image', 'Delete image', ['class' => 'form-label']) }}
-      @endif
+        <img class="img-responsive img-thumbnail" src="{{ '/public/uploads/' . $data->image }}">
       </div>
+      <div class="checkbox checkbox-primary">
+        {{ form()->checkbox('delete_image', 1, null, ['id' => 'delete_image']) }}
+        {{ form()->label('delete_image', 'Delete image', ['class' => 'form-label']) }}
+      </div>
+    @endif
     </div>
     <div class="col-md-12">
       <div class="form-group margin-0">

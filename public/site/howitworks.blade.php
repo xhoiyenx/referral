@@ -21,7 +21,7 @@
                 <div class="step1Area text-left">
                   <div class="step1Icon"><img src="/public/site/assets/images/icoStep1.png" alt="" /></div>
                   <div class="step1Number">1</div>
-                  <div class="step1Txt"><span>Register referral account</span> with us. <br/><a href="#" title="">Click Here</a></div>
+                  <div class="step1Txt"><span>Register referral account</span> with us. <br/><a href="/register" title="">Click Here</a></div>
                 </div>
               </li>
               <li class="step2 col-lg-6 col-md-6 col-sm-12 col-xs-12">

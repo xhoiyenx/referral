@@ -12,8 +12,9 @@ trait LeadControllerTrait
       'created_at',
       'company',
       'fullname',
-      'solutions',
+      'solution',
       'referral_fee',
+      'member',
       'sales',
       'status'
     ];
@@ -55,13 +56,14 @@ trait LeadControllerTrait
       $query->orWhere('leads.fullname', 'like', '%' . $search['value'] . '%');
     }
 
-    # get total
-    $total = $query->count();
-
-    $query->select( db()->raw('leads.*, CONCAT( sales.fullname, " (", sales.mobile, ")" ) AS sales, SUM( solutions.fee ) AS referral_fee, GROUP_CONCAT(solutions.name SEPARATOR ", ") AS solutions') );
+    $query->select( db()->raw('leads.*, members.id as members_id, members.fullname as members_name, lead_solutions.solution_id, CONCAT( sales.fullname, " (", sales.mobile, ")" ) AS sales, SUM( solutions.fee ) AS referral_fee, GROUP_CONCAT(solutions.name SEPARATOR ", ") AS solution') );
 
     $query->leftJoin('sales', function($join) {
       $join->on('leads.sales_id', '=', 'sales.id');
+    });
+
+    $query->join('members', function($join) {
+      $join->on('leads.member_id', '=', 'members.id');
     });
 
     $query->leftJoin('lead_solutions', function($join) {
@@ -73,6 +75,15 @@ trait LeadControllerTrait
     });
 
     $query->groupBy('leads.id');
+
+    if ( request()->has('solution_id') ) {
+      $solution = request()->get('solution_id');
+      if ( $solution != '' )
+        $query->where('lead_solutions.solution_id', '=', $solution);
+    }
+
+    # get total
+    $total = count($query->get());    
 
     # setup ordering
     if ( isset( $_POST['order'] ) )
@@ -86,11 +97,12 @@ trait LeadControllerTrait
       $query->orderBy( $field_name, $field_ord );
     }
 
-    # add offset
-    $query->offset( $_POST['start'] );
-
     # add limit
-    $query->take( $_POST['length'] );
+    if ( $_POST['length'] != -1 ) {
+      # add offset
+      $query->offset( $_POST['start'] );
+      $query->take( $_POST['length'] );
+    }
 
     $rows  = $query->get();
 
@@ -119,6 +131,12 @@ trait LeadControllerTrait
           # STATUS
           if ( $field_names[$i] == 'status' ) {
             $fields[] = $this->lead->getStatus( $row->$field_names[$i] );
+            continue;
+          }
+
+          # STATUS
+          if ( $field_names[$i] == 'member' ) {
+            $fields[] = '<a target="_blank" href="' . route('admin.member.profile', ['id' => $row->members_id]) . '">'. $row->members_name .'</a>';
             continue;
           }
 

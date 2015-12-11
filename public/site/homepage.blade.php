@@ -7,15 +7,17 @@
             <figure class="bannerImg">{{ html()->image('public/site/assets/images/bannerHome.png') }}</figure>
           </div>
           <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-            <h1 class="text-uppercase text-right txtDesktop">Join our <strong class="red">referral program</strong><br/>and <strong>earn UP TO S$800</strong></h1>
-            <p>ITConcept is an IT Company base in Singapore. The referral program allow you to earn extra by simply referring people to us. Our solutions range from POS System, Appointment &amp; Booking System, E-Commerce and Corporate Website. Earn up to S$800 for every success referral that sign the deal with us. </p>
+            <h1 class="text-uppercase text-right txtDesktop" style="font-size:40px">Join our <strong class="red">referral program</strong><br/>and <strong>earn UP TO S$4.000 PER MONTH</strong></h1>
+            <p>Referral SG is a new campaign that run by ITConcept Pte Ltd. The program allows you to earn extra cash by simply referring people to us. No MLM, No Selling, No Payment. Simply earn up to S$800 for every success lead that sign the deal with us. <a href="/howitworks">Learn how it works >></a></p>
             @if ( count($testimonials->get()) > 0 )
             <div class="testimonials text-center">
               <div class="flexslider">
                 <ul class="slides">
                 @foreach( $testimonials->get() as $testimonial )
                   <li>
-                    <figure class="imgClient"><img src="public/site/assets/images/imgClient1.png" alt="" class="img-circle" width="60" height="61" /></figure>
+                    @if ( ! empty($testimonial->image) )
+                    <figure class="imgClient"><img src="{{ '/public/uploads/' . $testimonial->image }}" alt="" class="img-circle" width="60" height="60" /></figure>
+                    @endif
                     <div class="testimonial">
                       {{ $testimonial->description }}
                       <div class="clientName">- {{ $testimonial->title }}</div>

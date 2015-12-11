@@ -37,12 +37,12 @@ class Controller extends BaseController
         ],
         'admin.lead' => [
           'name'    => 'Leads',
-          'icon'    => 'fa-group',
+          'icon'    => 'fa-user-plus',
           'active'  => app('router')->currentRouteName() == 'admin.lead' ? ' active' : ''
         ],
         'admin.sales' => [
           'name'    => 'Sales Person',
-          'icon'    => 'fa-user',
+          'icon'    => 'fa-user-secret',
           'active'  => app('router')->currentRouteName() == 'admin.sales' ? ' active' : ''
         ],
         'admin.testimonials' => [
@@ -50,6 +50,11 @@ class Controller extends BaseController
           'icon'    => 'fa-comments',
           'active'  => app('router')->currentRouteName() == 'admin.testimonials' ? ' active' : ''
         ],
+        'admin.configuration' => [
+          'name'    => 'Configuration',
+          'icon'    => 'fa-gear',
+          'active'  => app('router')->currentRouteName() == 'admin.configuration' ? ' active' : '',
+        ]
       ]
     ];
 

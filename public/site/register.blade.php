@@ -32,9 +32,8 @@
               <strong>ITConcept Pte Ltd</strong>
             </p>            
             @else
-            <h2 class="text-uppercase">Please fill in the form below</h2>
             <div class="form-container text-left">
-              {{ form()->open(['url' => 'register', 'class' => 'form-horizontal']) }}
+              {{ form()->open(['url' => 'register']) }}
                 @if ( $errors->count() > 0 )
                 <div class="errors">
                   @foreach ($errors->all() as $error)
@@ -42,40 +41,32 @@
                   @endforeach
                 </div>
                 @endif
-                <div class="col-lg-12">
-                  <div class="form-group">
-                    <label for="" class="col-sm-4">E-mail Address <span class="pull-right">:</span></label>
-                    <div class="col-sm-8">
-                      {{ form()->text('usermail', null, ['class' => 'form-control']) }}
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      {{ form()->text('usermail', null, ['class' => 'form-control', 'placeholder' => 'E-mail*']) }}
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      {{ form()->text('usermail_confirmation', null, ['class' => 'form-control', 'placeholder' => 'Re-type E-mail*']) }}
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      {{ form()->password('password', ['class' => 'form-control', 'placeholder' => 'Password*']) }}
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      {{ form()->password('password_confirmation', ['class' => 'form-control', 'placeholder' => 'Re-type Password*']) }}
                     </div>
                   </div>
                 </div>
                 <div class="col-lg-12">
-                  <div class="form-group">
-                    <label for="" class="col-sm-4">Re-type E-mail Address <span class="pull-right">:</span></label>
-                    <div class="col-sm-8">
-                      {{ form()->text('usermail_confirmation', null, ['class' => 'form-control']) }}
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <div class="form-group">
-                    <label for="" class="col-sm-4">Password<span class="pull-right">:</span></label>
-                    <div class="col-sm-8">
-                      {{ form()->password('password', ['class' => 'form-control']) }}
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <div class="form-group">
-                    <label for="" class="col-sm-4">Confirm Password<span class="pull-right">:</span></label>
-                    <div class="col-sm-8">
-                      {{ form()->password('password_confirmation', ['class' => 'form-control']) }}
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <div class="form-group">
+                  <div class="form-group clearfix">
                     <label for="" class="col-sm-4">Captcha <span class="pull-right">:</span></label>
                     <div class="col-sm-8">
                       <div class="captcha pull-left">
@@ -89,7 +80,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group clearfix">
                   <div class="col-sm-offset-3 col-sm-9">
                     <button type="submit" class="btn text-center text-uppercase">REGISTER NOW</button>
                   </div>

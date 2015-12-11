@@ -10,7 +10,7 @@ trait LeadControllerTrait
       'created_at',
       'company',
       'fullname',
-      'solutions',
+      'solution',
       'referral_fee',
       'sales',
       'status'
@@ -51,7 +51,7 @@ trait LeadControllerTrait
     # get total
     $total = $query->count();
 
-    $query->select( db()->raw('leads.*, CONCAT( sales.fullname, " (", sales.mobile, ")" ) AS sales, SUM( solutions.fee ) AS referral_fee, GROUP_CONCAT(solutions.name SEPARATOR ", ") AS solutions') );
+    $query->select( db()->raw('leads.*, CONCAT( sales.fullname, " (", sales.mobile, ")" ) AS sales, SUM( solutions.fee ) AS referral_fee, GROUP_CONCAT(solutions.name SEPARATOR ", ") AS solution') );
 
     $query->leftJoin('sales', function($join) {
       $join->on('leads.sales_id', '=', 'sales.id');
@@ -79,11 +79,12 @@ trait LeadControllerTrait
       $query->orderBy( $field_name, $field_ord );
     }
 
-    # add offset
-    $query->offset( $_POST['start'] );
-
     # add limit
-    $query->take( $_POST['length'] );
+    if ( $_POST['length'] != -1 ) {
+      # add offset
+      $query->offset( $_POST['start'] );
+      $query->take( $_POST['length'] );
+    }
 
     $rows  = $query->get();
 

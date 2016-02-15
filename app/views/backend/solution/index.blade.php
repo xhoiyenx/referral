@@ -48,6 +48,7 @@ $(document).ready(function() {
   var route         = '{{ route('admin.solution') }}';
 
   var settings = {
+    responsive: true,    
     ajax: {
       url: route,
       type: "POST"

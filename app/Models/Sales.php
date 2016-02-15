@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class Sales extends Model
 {
   protected $table = 'sales';
-  protected $fillable = ['fullname', 'usermail', 'mobile'];
+  protected $fillable = ['fullname', 'usermail', 'password', 'mobile'];
 
   protected function validate( $data, $id = null )
   {
@@ -21,9 +21,11 @@ class Sales extends Model
       'fullname'  => 'required',
       'usermail'  => 'required|email|unique:sales,usermail,' . $id,
       'mobile'    => 'required|numeric',
+      'password'  => 'required|confirmed'
     ];
 
-
+    if ( ! is_null($id) )
+      $rules['password'] = 'sometimes|confirmed';
 
     $validator = validator()->make( $data, $rules, $messages );
     return $validator;

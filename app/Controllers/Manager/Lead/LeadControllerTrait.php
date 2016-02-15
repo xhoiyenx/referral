@@ -23,8 +23,11 @@ trait LeadControllerTrait
     # init query object
     $query = $this->lead->query();
 
-    if ( ! is_null( $member_id ) )
+    if ( ! is_null( $member_id ) ) {
       $query->where('leads.member_id', $member_id);
+      unset($field_names[5]);
+      $field_names = array_values($field_names);
+    }
 
     if ( ! is_null( $sales_id ) )
       $query->where('leads.sales_id', $sales_id);
@@ -56,7 +59,8 @@ trait LeadControllerTrait
       $query->orWhere('leads.fullname', 'like', '%' . $search['value'] . '%');
     }
 
-    $query->select( db()->raw('leads.*, members.id as members_id, members.fullname as members_name, lead_solutions.solution_id, CONCAT( sales.fullname, " (", sales.mobile, ")" ) AS sales, SUM( solutions.fee ) AS referral_fee, GROUP_CONCAT(solutions.name SEPARATOR ", ") AS solution') );
+    #$query->select( db()->raw('leads.*, members.id as members_id, members.fullname as members_name, lead_solutions.solution_id, CONCAT( sales.fullname, " (", sales.mobile, ")" ) AS sales, SUM( solutions.fee ) AS referral_fee, GROUP_CONCAT(solutions.name SEPARATOR ", ") AS solution') );
+    $query->select( db()->raw('leads.*, members.id as members_id, members.fullname as members_name, lead_solutions.solution_id, CONCAT( sales.fullname, " (", sales.mobile, ")" ) AS sales, ( CASE WHEN ( SUM( lead_solutions.custom_fee ) > 0 ) THEN SUM( lead_solutions.custom_fee ) + SUM( solutions.fee ) ELSE SUM( solutions.fee ) END ) AS referral_fee, GROUP_CONCAT(solutions.name SEPARATOR ", ") AS solution') );
 
     $query->leftJoin('sales', function($join) {
       $join->on('leads.sales_id', '=', 'sales.id');
@@ -156,8 +160,8 @@ trait LeadControllerTrait
   {
     ob_start();
     ?>
-    <a class="action-edit btn-sm btn-light btn-icon" title="Edit" href="<?php echo route('admin.lead.update', ['id' => $row->id]) ?>"><i class="fa fa-edit"></i></a>
-    <a class="action-view btn-sm btn-light btn-icon" title="View" href="<?php echo route('admin.lead.profile', ['id' => $row->id]) ?>"><i class="fa fa-eye"></i></a>
+    <a class="action-edit btn-sm btn-light btn-icon" title="View" href="<?php echo route('admin.lead.update', ['id' => $row->id]) ?>"><i class="fa fa-eye"></i></a>
+    <a class="action-view btn-sm btn-light btn-icon" title="Profile" href="<?php echo route('admin.lead.profile', ['id' => $row->id]) ?>"><i class="fa fa-edit"></i></a>
     <!--
     <div class="btn-group">
       <button type="button" class="btn btn-sm btn-light action dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-gear"></i></button>

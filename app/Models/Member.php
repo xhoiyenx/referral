@@ -58,6 +58,26 @@ class Member extends Model implements UserInterface, RemindableInterface
     return $validator;
   }
 
+  protected function validate_account( $data, $edit_password = false )
+  {
+    $rules = [
+      'mobile'    => 'required|numeric',
+      'address'   => 'required',
+      'old_password' => 'sometimes|passcheck|required_with:new_password,new_password_confirmation',
+      'new_password' => 'sometimes|confirmed|required_with:old_password'
+    ];
+
+    $messages = array(
+      'mobile.required'     => 'Mobile number is required',
+      'mobile.numeric'      => 'Mobile number needs all numeric',
+      'address.required'    => 'Address is required',
+      'old_password.passcheck' => 'Invalid password'
+    );
+
+    $validator = validator()->make( $data, $rules, $messages );
+    return $validator;
+  }
+
   protected function validate_resend_activation( $data )
   {
     $rules = [

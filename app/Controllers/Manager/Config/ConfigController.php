@@ -6,7 +6,8 @@ class ConfigController extends Controller
 {
 	protected $mode = [
 		'general',
-		'content'
+		'content',
+		'pagemeta'
 	];
 
 	public function __construct()

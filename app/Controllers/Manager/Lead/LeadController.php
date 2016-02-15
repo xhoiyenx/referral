@@ -53,7 +53,7 @@ class LeadController extends Controller
 
 	public function update( $id )
 	{
-    $this->setPageTitle('Edit Lead');
+    $this->setPageTitle('View Lead');
     
     $data = $this->lead->find($id);
 
@@ -72,7 +72,7 @@ class LeadController extends Controller
       'data' => $data
     ];    
 
-    return view()->make('user.lead.admin.create', $view);
+    return view()->make('manager.lead.update', $view);
 	}
 
   public function profile( $id )
@@ -86,10 +86,70 @@ class LeadController extends Controller
     ]);    
 
     $view = [
-      'solutions' => $this->solution->solution_checkbox($data),
+      'solutions' => $this->solution->all(),
+      'statuses'  => $this->lead->statuses(),
+      'sales'     => ['' => 'Select sales person'] + $this->sales->query()->lists('fullname', 'id'),
+      'is_admin'  => auth()->admin()->user()->id,
       'data' => $data,
     ];    
 
-    return view()->make('user.lead.profile', $view);
+    return view()->make('manager.lead.profile', $view);
+  }
+
+  public function postProfile( $id )
+  {
+    $solutions = null;
+
+    $lead = $this->lead->find( $id );
+    if ( ! $lead )
+      return;
+
+    $input = request()->all();
+
+    # PARSE NEW FEE, IF EXISTS
+    if ( request()->has('new_fee') ) {
+      foreach ( $input['solutions'] as $solution ) {
+        if ( isset( $input['new_fee'][$solution] ) ) {
+          $solutions[$solution] = ['custom_fee' => $input['new_fee'][$solution]];
+        }
+        else {
+          $solutions[$solution] = ['custom_fee' => null];
+        }
+      }
+    }
+    else {
+      $solutions = $input['solutions'];
+    }
+
+    $lead->company      = $input['company'];
+    $lead->fullname     = $input['fullname'];
+    $lead->usermail     = $input['usermail'];
+    $lead->phone        = $input['phone'];
+    $lead->designation  = $input['designation'];
+    $lead->introduce    = $input['introduce'];
+
+    try {
+      if ( $lead->save() ) {
+        $lead->solutions()->sync( $solutions );
+      }
+    } catch (Exception $e) {
+      return redirect()->back()->withErrors($e);
+    }
+
+    return redirect()->back()->with('message', 'Lead data updated');
+  }
+
+  public function postStatus( $id )
+  {
+    $lead = $this->lead->find( $id );
+    if ( ! $lead )
+      return;
+
+    $input = request()->all();
+
+    $save = $this->lead->save_history( $input, $lead );
+    if ( $save ) {
+      return redirect()->back()->with('message', 'Lead history added');
+    }
   }
 }

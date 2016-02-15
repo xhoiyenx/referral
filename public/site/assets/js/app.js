@@ -25,7 +25,8 @@ $(function(){
 	$('input, textarea').placeholder();
 
 	var menuClass = '.mainMenu';
-		var top = $(menuClass).offset().top - parseFloat($(menuClass).css('marginTop').replace(/auto/, 0));
+		//var top = $(menuClass).offset().top - parseFloat($(menuClass).css('marginTop').replace(/auto/, 0));
+		var top = $(menuClass).offset().top - parseFloat($(menuClass).css('marginTop').replace(/auto/, 0)) + 100;
 		setMenuTop(menuClass, top);
 		$(window).scroll(function (event) {
 			setMenuTop(menuClass, top);

@@ -7,7 +7,7 @@
   <div class="row">
 
     @foreach ( $solutions as $solution )
-    <div class="col-md-6">
+    <div class="col-md-3">
 
       <div class="panel panel-default blog-post">
         <div class="panel-title">
@@ -19,11 +19,10 @@
         </div>
         <div class="panel-body">
           @if ( $solution->image != '' )
-          <img src="{{ '/public/uploads/' . $solution->image }}" class="image" style="opacity:1">
+          <a href="{{ route('client.page', ['solution', $solution->id]) }}" class="view-modal">
+            <img src="{{ '/public/uploads/' . $solution->image }}" class="image" style="opacity:1">
+          </a>
           @endif
-          <div class="blog-content">
-            {{ $solution->description }}
-          </div>
           <ul class="list-group">
             <li class="list-group-item font-title"><strong>Price:</strong> S${{ currency_format($solution->price) }}</li>
             <li class="list-group-item font-title"><strong>Referral Fee:</strong> S${{ currency_format($solution->fee) }}</li>

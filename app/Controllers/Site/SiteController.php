@@ -19,32 +19,54 @@ class SiteController extends Controller
 
 	public function getIndex()
 	{
-		$this->setPageTitle('Welcome');
-		return view()->make('homepage');
+		$this->setPageTitle( settings('homepage_title') );
+		$view = [
+			'meta_desc' => settings('homepage_description'),
+			'meta_key'	=> settings('homepage_keywords')
+		];
+		return view()->make('homepage', $view);
 	}
 
 	public function getHowitworks()
 	{
-		$this->setPageTitle('How It Works');
-		return view()->make('howitworks');
+		$this->setPageTitle( settings('howitworks_title') );
+		$view = [
+			'meta_desc' => settings('howitworks_description'),
+			'meta_key'	=> settings('howitworks_keywords')
+		];
+		return view()->make('howitworks', $view);
 	}
 
 	public function getWhyus()
 	{
-		$this->setPageTitle('Why Us');
-		return view()->make('whyus');
+		$this->setPageTitle( settings('whyus_title') );
+		$view = [
+			'meta_desc' => settings('whyus_description'),
+			'meta_key'	=> settings('whyus_keywords'),
+			'faqs'			=> $this->page->queryByType('faq')
+		];
+
+		return view()->make('whyus', $view);
 	}
 
 	public function getContact()
 	{
-		$this->setPageTitle('Contact');		
-		return view()->make('contact');
+		$this->setPageTitle( settings('contact_title') );
+		$view = [
+			'meta_desc' => settings('contact_description'),
+			'meta_key'	=> settings('contact_keywords'),
+		];
+		return view()->make('contact', $view);
 	}
 
 	public function getRegister()
 	{
-		$this->setPageTitle('Register');		
-		return view()->make('register');
+		$this->setPageTitle( settings('register_title') );
+		$view = [
+			'meta_desc' => settings('register_description'),
+			'meta_key'	=> settings('register_keywords'),
+		];
+		return view()->make('register', $view);
 	}
 
 	public function postRegister()
@@ -70,7 +92,11 @@ class SiteController extends Controller
 	public function getRegistersuccess()
 	{
 		$this->setPageTitle('Register Now');
-		return view()->make('register')->with('registration_success', true);
+		$view = [
+			'meta_desc' => settings('register_description'),
+			'meta_key'	=> settings('register_keywords'),
+		];		
+		return view()->make('register', $view)->with('registration_success', true);
 	}
 
 	public function missingMethod($parameters = [])

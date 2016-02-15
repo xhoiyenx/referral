@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <title>{{ $pageTitle or $controller->getPageTitle() }}</title>
+    @if ( $meta_desc != '' )
+    <meta name="description" content="{{ $meta_desc }}" />
+    @endif
+    @if ( $meta_key != '' )
+    <meta name="keywords" content="{{ $meta_key }}" />
+    @endif
     {{ html()->style('public/site/assets/css/bootstrap.css') }}
     {{ html()->style('public/site/assets/css/flexslider.css') }}
     {{ html()->style('public/site/assets/css/style.css') }}
@@ -37,9 +43,8 @@
       </nav>
     </header>
     @yield('content')
-    <footer class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">Copyright &copy; 2015 ITConcept Pte Ltd. All Rights Reserved.</footer>
+    <footer class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">{{ settings('footer') }}</footer>
     {{ html()->script('public/site/assets/js/includeScripts.js') }}
-    @section('footer')
     <div id="up-branding">Viral <a target="_blank" href="http://www.upshare.co/buttons/">Buttons</a> by UP</div>
     <script src="//widget.upshare.co/up-load.js?signupArrow=true" id="UPWidget"></script>
     <!--Start of Tawk.to Script-->
@@ -52,9 +57,18 @@
         s1.charset='UTF-8';
         s1.setAttribute('crossorigin','*');
         s0.parentNode.insertBefore(s1,s0);
-      })();
+      })();      
     </script>
-    <!--End of Tawk.to Script-->         
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-71428333-1', 'auto');
+      ga('send', 'pageview');
+    </script>    
+    @section('footer')
     @show
   </body>
 </html>

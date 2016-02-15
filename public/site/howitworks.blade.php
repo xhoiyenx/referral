@@ -16,6 +16,8 @@
       <section class="container">
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center howitworksSteps">
+            {{ settings('howitworks') }}
+            <?php /*
             <ul class="row">
               <li class="step1 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div class="step1Area text-left">
@@ -103,6 +105,7 @@
                 </div>
               </li>
             </ul>
+            */ ?>
           </div>
         </div>
       </section>

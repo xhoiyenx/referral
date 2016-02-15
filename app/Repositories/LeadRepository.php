@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories;
 use App\Models\Lead;
+use App\Models\LeadHistory;
 use App\Models\Sales;
 
 class LeadRepository
@@ -106,7 +107,7 @@ class LeadRepository
     return $lead;
   }
 
-  public function save_status( $input, Lead $lead )
+  public function save_status( $input, Lead $lead = null )
   {
     if ( is_null($lead) )
       return false;
@@ -135,4 +136,84 @@ class LeadRepository
       return $lead;
     }
   }
+
+  public function save_history( $input, Lead $lead = null )
+  {
+    $is_admin = $is_sales = $is_member = false;
+    if ( is_null($lead) )
+      return false;
+
+    $lead_history = new LeadHistory;
+    $lead_history->lead_id = $lead->id;
+
+    if ( isset( $input['is_admin'] ) ) {
+      $lead_history->admin_id = $input['is_admin'];
+    }
+
+    if ( isset( $input['is_sales'] ) ) {
+      $lead_history->sales_id = $input['is_sales'];
+    }
+
+    if ( isset( $input['is_member'] ) ) {
+      $lead_history->member_id = $input['is_member'];
+    }
+
+    # check if status changed
+    if ( $input['status'] != $lead->status ) {
+      $lead_history->old_status = $lead->status;
+      $lead_history->new_status = $input['status'];
+      $lead->status = $input['status'];
+    }
+
+    # check if sales assigned
+    if ( isset($input['sales_id']) AND !empty($input['sales_id']) ) {
+      if ( $lead->sales_id != $input['sales_id'] ) {
+        $lead_history->old_sales_id = $lead->sales_id;
+        $lead_history->new_sales_id = $input['sales_id'];
+        $lead->sales_id = $input['sales_id'];
+      }      
+    }
+
+    # check if there any notes
+    if ( ! empty( $input['notes'] ) ) {
+      $lead_history->notes = $input['notes'];
+    }
+
+    # if no new status update and no notes, don't save and throw error
+    if ( is_null($lead_history->new_sales_id) && is_null($lead_history->new_status) && is_null($lead_history->notes) ) {
+      return redirect()->back()->withErrors('Please insert notes, assign sales or change lead status to save history')->send();
+    }
+    else {
+      $lead->save();
+      $lead_history->save();
+
+      if ( ! is_null($lead_history->new_sales_id) ) {
+        $sales = Sales::find( $lead_history->new_sales_id );
+        app('events')->fire('lead.assign_sales', [$lead, $sales, $lead_history->notes]);
+      }
+
+      if ( ! is_null($lead_history->new_status) ) {
+        app('events')->fire('member.lead.status_update', [$lead, $lead_history->notes]);
+      }
+
+      return $lead_history;
+    }
+
+  }
+
+  public function leadCheck( $company_name )
+  {
+    $query = $this->query();
+    $query->where('member_id', auth()->member()->get()->id);
+    $query->where('company', $company_name);
+    $query->whereRaw('created_at > DATE_SUB(NOW(), INTERVAL 24 HOUR)');
+
+    if ( $query->count() > 0 ) {
+      return true;
+    }
+    else {
+      return false;
+    }
+
+  }  
 }

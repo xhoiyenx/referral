@@ -51,6 +51,10 @@ return array(
     'admin' 		=> array(
       'driver' 	=> 'database',
       'table' 	=> 'administrators'
+    ),
+    'sales' 		=> array(
+      'driver' 	=> 'database',
+      'table' 	=> 'sales'
     )
   ),	
 

@@ -122,6 +122,7 @@ $(document).ready(function() {
   var route_update  = '{{ route('admin.lead.update') }}';
 
   var settings = {
+    responsive: true,
     ajax: {
       url: route,
       type: "POST",

@@ -19,8 +19,8 @@ class UserEvents
 
 	public function trackLogin( $user, $remember )
 	{
-		if ( is_a($user, 'Member') ) {
-			$user->logged_at = $user->freshTimestamp();
+		if ( is_a($user, 'App\Models\Member') ) {
+			$user->logged_at = $user->freshTimestampString();
 			$user->online = 1;
 			$user->save();
 		}
@@ -28,8 +28,8 @@ class UserEvents
 
 	public function trackLogout( $user )
 	{
-		if ( is_a($user, 'Member') ) {
-			$user->logout_at = $user->freshTimestamp();
+		if ( is_a($user, 'App\Models\Member') ) {
+			$user->logout_at = $user->freshTimestampString();
 			$user->online = 0;
 			$user->save();
 		}
@@ -42,41 +42,68 @@ class UserEvents
 	 */
 	public function sendRegistrationConfirmation( $user )
 	{
-		$mail = app('mailer')->send('email.member-registration', ['user' => $user], function($message) use ($user)
-		{
-			$message->from( 'no-reply@referralsg.com', 'ITConcept Pte Ltd' );
-		  $message->to( $user->usermail, $user->fullname );
-		  $message->subject( 'Welcome to ITConcept Referral Program -> Account Pending for Activation' );
-		});
+		try {
+			$mail = app('mailer')->send('email.member-registration', ['user' => $user], function($message) use ($user)
+			{
+				$message->from( 'jonathan@referralsg.com', 'ITConcept Pte Ltd' );
+			  $message->to( $user->usermail, $user->fullname );
+			  $message->subject( 'Welcome to ITConcept Referral Program -> Account Pending for Activation' );
+			});
+		}
+		catch (Exception $e) {
+			return $e->getMessage();
+		}
 		
-		return $mail;
+		//return $mail;
 	}
 
-	public function onLeadStatusUpdate( $lead )
+	public function onLeadStatusUpdate( $lead, $notes )
 	{
 		if ( $lead->status == 2 ) {
-			$lead->deal_closed_at = $lead->freshTimestamp();
+			$lead->deal_closed_at = $lead->freshTimestampString();
 			$lead->save();
 		}
 
 		$user = $lead->member;
-		$mail = app('mailer')->send('email.lead-status', ['lead' => $lead, 'user' => $user], function($message) use ($user)
-		{
-			$message->from( 'no-reply@referralsg.com', 'ITConcept Pte Ltd' );
-		  $message->to( $user->usermail, $user->fullname );
-		  $message->subject( 'Administrator has changed one of your leads status' );
-		});
+		try {
+			$mail = app('mailer')->send('email.lead-status', ['lead' => $lead, 'user' => $user, 'notes' => $notes], function($message) use ($user)
+			{
+				$message->from( 'jonathan@referralsg.com', 'ITConcept Pte Ltd' );
+			  $message->to( $user->usermail, $user->fullname );
+			  $message->subject( 'Administrator has changed one of your leads status' );
+			});
+		}
+		catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
-	public function onLeadAssignSales( $lead, $user )
+	public function onLeadAssignSales( $lead, $sales, $notes )
 	{
-		# Send email to sales
-		$mail = app('mailer')->send('email.lead-sales', ['lead' => $lead, 'user' => $user], function($message) use ($user)
-		{
-			$message->from( 'no-reply@referralsg.com', 'ITConcept Pte Ltd' );
-		  $message->to( $user->usermail, $user->fullname );
-		  $message->subject( 'Administrator has assigned you a Lead' );
-		});
+		
+		$member = $lead->member;
+		try {
+			
+			# Send email to sales
+			$mail = app('mailer')->send('email.lead-sales', ['lead' => $lead, 'sales' => $sales, 'notes' => $notes], function($message) use ($sales)
+			{
+				$message->from( 'jonathan@referralsg.com', 'ITConcept Pte Ltd' );
+			  $message->to( $sales->usermail, $sales->fullname );
+			  $message->subject( 'Administrator has assigned you a Lead' );
+			});
+
+			# Send email to member
+			$mail = app('mailer')->send('email.lead-member', ['lead' => $lead, 'sales' => $sales, 'member' => $member], function($message) use ($member)
+			{
+				$message->from( 'jonathan@referralsg.com', 'ITConcept Pte Ltd' );
+			  $message->to( $member->usermail, $member->fullname );
+			  $message->subject( 'A Sales Person has been assigned' );
+			});
+
+		}
+		catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 	public function onMemberActivated( $user )
@@ -84,13 +111,18 @@ class UserEvents
 		if ( is_null($user) )
 			return false;
 
-		$mail = app('mailer')->send('email.member-activated', ['user' => $user], function($message) use ($user)
-		{
-			$message->from( 'no-reply@referralsg.com', 'ITConcept Pte Ltd' );
-		  $message->to( $user->usermail, $user->fullname );
-		  $message->subject( 'Welcome to ITConcept Referral Program' );
-		});
+		try {
+			$mail = app('mailer')->send('email.member-activated', ['user' => $user], function($message) use ($user)
+			{
+				$message->from( 'jonathan@referralsg.com', 'ITConcept Pte Ltd' );
+			  $message->to( $user->usermail, $user->fullname );
+			  $message->subject( 'Welcome to ITConcept Referral Program' );
+			});
+		}
+		catch (Exception $e) {
+			return $e->getMessage();
+		}
 		
-		return $mail;
+		//return $mail;
 	}
 }

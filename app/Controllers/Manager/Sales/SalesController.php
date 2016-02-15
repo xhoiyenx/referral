@@ -37,7 +37,7 @@ class SalesController extends Controller
       'admin.sales' => 'Sales Person'
     ]);
 
-    return view()->make('sales.index');
+    return view()->make('manager.sales.index');
   }
 
   public function create()
@@ -49,18 +49,19 @@ class SalesController extends Controller
       $validator = $this->sales->validate($input);
       if ( $validator->fails() ) {
         request()->flash();
-        return view()->make('sales.create')->withInput($input)->withErrors($validator);
+        return view()->make('manager.sales.create')->withInput($input)->withErrors($validator);
       }
       else {
+        $input['password'] = app('hash')->make($input['password']);
         $solution = $this->sales->create($input);
         if ($solution) {
           session()->flash('message', 'Sales ' . $input['fullname'] . ' added');
-          return view()->make('sales.create');
+          return view()->make('manager.sales.create');
         }
       }
     }
 
-    return view()->make('sales.create');
+    return view()->make('manager.sales.create');
   }
 
   public function update( $id )
@@ -78,18 +79,21 @@ class SalesController extends Controller
       $validator = $this->sales->validate($input, $id);
       if ( $validator->fails() ) {
         request()->flash();
-        return view()->make('sales.create')->withInput($input)->withErrors($validator);
+        return view()->make('manager.sales.create')->withInput($input)->withErrors($validator);
       }
       else {
+        if ( request()->has('password') ) {
+          $input['password'] = app('hash')->make($input['password']);
+        }
         $solution = $data->fill($input)->save();
         if ($solution) {
           session()->flash('message', 'Sales ' . $input['fullname'] . ' updated');
-          return view()->make('sales.create', $view);
+          return view()->make('manager.sales.create', $view);
         }
       }
     }
 
-    return view()->make('sales.create', $view);
+    return view()->make('manager.sales.create', $view);
   }
 
   public function leads( $lead_id = null )
@@ -106,6 +110,6 @@ class SalesController extends Controller
       'data' => $data
     ];
 
-    return view()->make('sales.leads', $view);
+    return view()->make('manager.sales.leads', $view);
   }
 }

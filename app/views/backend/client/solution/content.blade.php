@@ -7,7 +7,7 @@
     <div class="col-md-12">
       @if ( $data->image != '' )
       <div class="page-image">
-        <img src="{{ '/public/uploads/' . $data->image }}" class="image img-responsive">
+        <img src="{{ '/public/uploads/' . $data->image }}" class="image">
       </div>
       @endif
       <div class="page-price clearfix">

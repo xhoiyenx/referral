@@ -2,7 +2,9 @@
 @section('content')
 <?php
 $contents = [
-  'tnc' => 'Terms & Conditions'
+  'tnc' => 'Terms & Conditions',
+  'homepage' => 'Front Page',
+  'howitworks' => 'How It Works'
 ];
 ?>
 <div class="container-default">
@@ -29,7 +31,7 @@ $contents = [
       </div>
       <div style="height: 0px;" id="{{ $key }}" class="panel-collapse collapse" role="tabpanel">
         <div class="panel-body">
-          {{ form()->textarea('config['.$key.']', null, ['class' => 'form-control redactor', 'id' => 'desc']) }}
+          {{ form()->textarea('config['.$key.']', null, ['class' => 'redactor', 'id' => 'desc']) }}
         </div>
       </div>
     </div>
@@ -55,6 +57,7 @@ $(document).ready(function() {
     imageUpload: '/redactor/image/upload',
     minHeight: 200,
     maxHeight: 400,
+    replaceDivs: false
   });    
 });
 </script>

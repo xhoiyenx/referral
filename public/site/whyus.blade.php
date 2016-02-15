@@ -13,6 +13,18 @@
       <section class="container">
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center whyusQuestion">
+          @if ( $faqs->count() > 0 )
+            <ul>
+            @foreach ( $faqs->orderBy('sort_order')->get() as $faq )
+              <li>
+                <strong class="text-uppercase"><span>Q : {{ $faq->title }}</span></strong>
+                {{ $faq->description }}
+              </li>
+            @endforeach
+            </ul>
+          @endif
+          <?php
+          /*
             <ul>
               <li>
                 <strong class="text-uppercase">Q : Why you give <span>high referral</span>?</strong>
@@ -63,6 +75,8 @@
                 </p>
               </li>
             </ul>
+          */
+          ?>
           </div>
         </div>
       </section>
@@ -72,8 +86,9 @@
       <section class="container text-center">
         <h2>TESTIMONIALS</h2>
         <div class="row">
+        <?php $i = 1?>
         @foreach( $testimonials->take(6)->get() as $testimonial )
-          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="col-lg-6 col-sm-6">
             @if ( ! empty($testimonial->image) )
             <figure class="imgClient"><img src="{{ '/public/uploads/' . $testimonial->image }}" alt="" class="img-circle" width="60" height="60" /></figure>
             @endif
@@ -82,6 +97,10 @@
               <div class="clientName">- {{ $testimonial->title }}</div>
             </div>
           </div>
+          @if ( $i % 2 == 0 )
+          <div class="clearfix"></div>
+          @endif
+          <?php $i++ ?>
         @endforeach
         </div>
       </section>

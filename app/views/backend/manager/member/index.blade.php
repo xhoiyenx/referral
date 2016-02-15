@@ -64,7 +64,12 @@ $(document).ready(function() {
   var route_create  = '';
   var route_update  = '{{ route('admin.member.update') }}';
 
+  /**
+   * Change to array object data
+   */
   var settings = {
+    serverSide: false,
+    responsive: true,
     ajax: {
       url: route,
       type: "POST",
@@ -83,7 +88,7 @@ $(document).ready(function() {
   $('.member-status').click(function(event) {
     $('.member-status').removeClass('selected');
     $(this).addClass('selected');
-    dataTable.draw();
+    dataTable.ajax.reload();
   });
 
   $('#search-button').click(function(event) {

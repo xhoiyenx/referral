@@ -4,8 +4,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lead extends Model
 {
-  protected $fillable = ['fullname', 'company', 'phone', 'mobile', 'designation', 'status'];
-  protected $appends  = array('solutions');
+  protected $fillable = ['fullname', 'usermail', 'company', 'phone', 'mobile', 'designation', 'status'];
+  protected $appends  = array('solutions', 'set_fee', 'new_fee');
 
   protected function validate( $data, $id = null )
   {
@@ -18,15 +18,16 @@ class Lead extends Model
       'fullname.required' => 'Fullname is required',
       'tnc.accepted' => 'Please check terms and conditions',
       'introduce.required' => 'Please fill info on how will you introduce us',
-      'solutions.required' => 'Please select one or more solutions available'
+      'solutions.required' => 'Please select one or more solutions available',
+      'company.leadcheck' => 'You just add another lead with the same company name in last 24 hours'
     );
 
     $rules = [
       'fullname'=> 'required',
-      'company' => 'required',
+      'company' => 'required|leadcheck',
       'phone'   => 'required|numeric',
       #'mobile'  => 'required|numeric',
-      'usermail' => 'email',
+      'usermail' => 'sometimes|email',
       'tnc' => 'accepted',
       'introduce' => 'required',
       'solutions' => 'required'
@@ -43,7 +44,17 @@ class Lead extends Model
   public function getSolutionsAttribute()
   {
     return $this->solutions()->lists('id');
-  }  
+  }
+
+  public function getSetFeeAttribute()
+  {
+    return $this->solutions()->whereNull('custom_fee', 'and', true)->lists('id');
+  }
+
+  public function getNewFeeAttribute()
+  {
+    return $this->solutions()->whereNull('custom_fee', 'and', true)->lists('custom_fee', 'id');
+  }
 
   public function solutions()
   {
@@ -58,5 +69,10 @@ class Lead extends Model
   public function sales()
   {
     return $this->belongsTo('App\Models\Sales');
-  }  
+  }
+
+  public function history()
+  {
+    return $this->hasMany('App\Models\LeadHistory');
+  }
 }

@@ -86,10 +86,20 @@ Route::group(['before' => 'auth.admin'], function(){
     'uses'  => 'Lead\LeadController@update',
   ]);
 
-  Route::match(['GET', 'POST'], 'lead/profile/{id}', [
+  Route::get('lead/profile/{id}', [
     'as'    => 'admin.lead.profile', 
     'uses'  => 'Lead\LeadController@profile',
   ])->where('id', '[0-9]+');
+
+  Route::post('lead/profile/{id}', [
+    'as'    => 'admin.lead.save_profile', 
+    'uses'  => 'Lead\LeadController@postProfile',
+  ])->where('id', '[0-9]+');
+
+  Route::post('lead/status/{id}', [
+    'as'    => 'admin.lead.save_status', 
+    'uses'  => 'Lead\LeadController@postStatus',
+  ])->where('id', '[0-9]+');  
 
   # SALES PERSON PAGE
   Route::match(['GET', 'POST'], 'sales', [
@@ -127,6 +137,23 @@ Route::group(['before' => 'auth.admin'], function(){
     'as'    => 'admin.testimonials.create', 
     'uses'  => 'Testimonial\TestimonialController@create',
   ]);
+
+  # FAQ PAGE
+  Route::match(['GET', 'POST'], 'faqs', [
+    'as'    => 'admin.faqs',
+    'uses'  => 'Faq\FaqController@index',
+  ]);
+
+  Route::match(['GET', 'POST'], 'faqs/update/{id?}', [
+    'as'    => 'admin.faqs.update', 
+    'uses'  => 'Faq\FaqController@update',
+  ])->where('id', '[0-9]+');
+
+  Route::match(['GET', 'POST'], 'faqs/create', [
+    'as'    => 'admin.faqs.create', 
+    'uses'  => 'Faq\FaqController@create',
+  ]);
+
 
   # CONFIGURATION PAGE
   Route::get('configuration/{mode?}', [

@@ -20,6 +20,15 @@ Route::group([
 	require_once __DIR__ . '/client/routes.php';
 });
 
+# Sales Route
+Route::group([
+	'namespace' => 'App\Controllers\Sales',
+	'prefix' => 'sales'
+], function()
+{
+	require_once __DIR__ . '/sales/routes.php';
+});
+
 # Frontend Route
 Route::group([
 	'namespace' => 'App\Controllers\Site'

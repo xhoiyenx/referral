@@ -2,18 +2,22 @@
 namespace App\Controllers\Client\Dashboard;
 use App\Controllers\Client\Controller;
 use App\Repositories\SolutionRepository;
+use App\Repositories\MemberRepository;
 
 class DashboardController extends Controller
 {
-	protected $solution;	
-  public function __construct( SolutionRepository $solution )
+	protected $solution;
+  protected $member;
+  public function __construct( SolutionRepository $solution, MemberRepository $member )
   {
     parent::__construct();
     $this->solution = $solution;
+    $this->member   = $member;
   }
 
   public function index()
   {
+    return redirect()->route('client.lead');
   	$this->setPageTitle('Dashboard');
     return view()->make('client.dashboard.index');
   }
@@ -59,5 +63,44 @@ class DashboardController extends Controller
     }
     
     return view()->make('client.page.index', $view);
+  }
+
+  public function myaccount()
+  {
+    $this->setPageTitle('My Account');
+    $this->setBreadcrumb([
+      '/' => 'My Account'
+    ]);
+
+    $user = auth()->member()->user();
+
+    if ( request()->isMethod('post') )
+    {
+      $input = request()->all();
+      $validator = $this->member->validate_account( $input );
+
+      if ( $validator->fails() ) {
+        return redirect()->back()->withInput()->withErrors( $validator );
+      }
+      else {
+        if ( request()->has('new_password') ) {
+          $user->password = app('hash')->make($input['new_password']);
+        }
+        $user->mobile   = $input['mobile'];
+        $user->address  = $input['address'];
+        $user->zipcode  = $input['zipcode'];
+        $user->country  = $input['country'];
+
+        if ( $user->save() ) {
+          return redirect()->back()->with( 'message', 'Your account information has been updated' );
+        }
+      }
+    }
+
+    $view = [
+      'data' => $user
+    ];
+
+    return view()->make('client.dashboard.account', $view);
   }
 }

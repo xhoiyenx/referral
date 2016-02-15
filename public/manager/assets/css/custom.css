@@ -57,6 +57,12 @@ body, html {
 .data-table .btn.action .fa {
 	margin: 0;
 }
+table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child, table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child {
+	background-clip: padding-box;
+}
+table.dataTable > tbody > tr.child ul li {
+	border: none;
+}
 .filter {
 	padding-bottom: 20px;
 }
@@ -130,6 +136,14 @@ body, html {
 	border: 1px solid #DDD;
 	border-bottom: none;
 	padding: 8px 15px;
+}
+
+.sidepanel-open-button {
+	color: #CCC;
+}
+
+.sidepanel-open-button:hover {
+	color: #FFF;
 }
 
 /**
@@ -252,7 +266,7 @@ b, strong {
 	overflow: hidden;
 }
 .blog-content img {
-	width: 100%;
+	max-width: 100%;
 	height: auto;
 }
 .panel-fullsize .blog-content {
@@ -336,19 +350,29 @@ b, strong {
  * Page content / CMS
  */
 .page-content {
-	font-size: 14px;
+	font-size: 13px;
 }
 
 .page-content h1 {
 	margin: 10px 0;
 }
 
+.page-content embed, .page-content iframe {
+	width: 100%;
+}
+
 .page-image {
 	margin-bottom: 20px;
 }
 
+.page-image img {
+	width: 100%;
+	height: auto;
+}
+
 .page-price {
 	border: 1px solid #E2E2E2;
+	margin-bottom: 20px;
 }
 
 .page-price div {

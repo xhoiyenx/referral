@@ -22,10 +22,22 @@
         {{ form()->text('usermail', null, ['class' => 'form-control', 'id' => 'usermail']) }}
       </div>
     </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        {{ form()->label('password', 'Password', ['class' => 'form-label']) }}
+        {{ form()->password('password', ['class' => 'form-control', 'id' => 'password']) }}
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        {{ form()->label('password_confirmation', 'Password Confirmation', ['class' => 'form-label']) }}
+        {{ form()->password('password_confirmation', ['class' => 'form-control', 'id' => 'password_confirmation']) }}
+      </div>
+    </div>
     <div class="col-md-12">
       <div class="form-group">
         {{ form()->label('mobile', 'Mobile', ['class' => 'form-label']) }} *
-        {{ form()->text('mobile', null, ['class' => 'form-control', 'id' => 'mobile']) }}
+        {{ form()->text('mobile', null, ['class' => 'form-control numeric', 'id' => 'mobile']) }}
         <span class="help-block">Please insert only numeric data</span>
       </div>
     </div>

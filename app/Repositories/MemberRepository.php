@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories;
 use App\Models\Member;
+use App\Models\Lead;
 
 class MemberRepository
 {
@@ -48,6 +49,11 @@ class MemberRepository
   public function validate_update( $input, $id )
   {
     return Member::validate_update( $input, $id );
+  }
+
+  public function validate_account( $data, $edit_password = false )
+  {
+    return Member::validate_account( $data, $edit_password );
   }
 
   public function addNew( $input )
@@ -121,7 +127,7 @@ class MemberRepository
   {
     $query = $this->query();
     $query->where('online', 1);
-    $query->orWhereRaw('logged_at >= DATE_SUB(NOW(), INTERVAL 10 MINUTE)');
+    #$query->orWhereRaw('logged_at >= DATE_SUB(NOW(), INTERVAL 10 MINUTE)');
     return $query;
   }
 
@@ -136,4 +142,40 @@ class MemberRepository
     $user = Member::where('activation_code', $code)->first();
     return $user;
   }
+
+  public function getTotalFee( Member $member )
+  {
+    $query = Lead::query();
+
+    $query->leftJoin('lead_solutions', function($join) {
+      $join->on('lead_solutions.lead_id', '=', 'leads.id');
+    });
+
+    $query->leftJoin('solutions', function($join) {
+      $join->on('solutions.id', '=', 'lead_solutions.solution_id');
+    });
+
+    $query->where('leads.member_id', '=', $member->id);
+    $query->select( db()->raw('lead_solutions.*, solutions.fee') );
+
+    $rows = $query->get();
+
+    if ( ! $rows->isEmpty() ) {
+      $total = 0;
+      foreach ( $rows as $item )
+      {
+        if ( ! is_null($item->custom_fee) ) {
+          $total += $item->custom_fee;
+        }
+        else {
+          $total += $item->fee;
+        }
+      }
+      return $total;
+    }
+    else {
+      return 0;
+    }
+  }
+
 }

@@ -45,6 +45,11 @@ class Controller extends BaseController
           'icon'    => 'fa-cogs',
           'active'  => app('router')->currentRouteName() == 'client.solutions' ? ' active' : ''
         ],
+        'client.account' => [
+          'name'    => 'My Account',
+          'icon'    => 'fa-user',
+          'active'  => app('router')->currentRouteName() == 'client.account' ? ' active' : ''
+        ],
         'client.logout' => [
           'name'    => 'Log Out',
           'icon'    => 'fa-power-off',

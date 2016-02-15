@@ -16,9 +16,6 @@
 		    	</p>
 		    @else
 		    	<p>
-		    		Dear {{ $user->fullname }},
-		    	</p>
-		    	<p>
 		    		Your account has been activated. You can {{ link_to_route('client.login', 'login') }} and simply submit new lead to start earning.
 		    	</p>
 		    	<p>

@@ -51,7 +51,8 @@ trait MemberControllerTrait
       $join->on('solutions.id', '=', 'lead_solutions.solution_id');
     });
 
-    $query->select( db()->raw('members.status as status, members.created_at as created_at, members.id AS id, members.fullname AS fullname, members.usermail AS usermail, members.created_at AS logged_at, COUNT( DISTINCT leads.id ) AS total_lead, COUNT( DISTINCT CASE WHEN leads.status = 2 THEN leads.status ELSE NULL END ) as closed_deals, SUM( solutions.fee ) AS total_fee') );
+    #$query->select( db()->raw('members.status as status, members.created_at as created_at, members.id AS id, members.fullname AS fullname, members.usermail AS usermail, members.logged_at AS logged_at, COUNT( DISTINCT leads.id ) AS total_lead, COUNT( DISTINCT CASE WHEN leads.status = 2 THEN leads.status ELSE NULL END ) as closed_deals, ( CASE WHEN ( SUM( lead_solutions.custom_fee ) > 0 ) THEN SUM( lead_solutions.custom_fee ) ELSE SUM( solutions.fee ) END ) AS total_fee') );
+    $query->select( db()->raw('members.status as status, members.created_at as created_at, members.id AS id, members.fullname AS fullname, members.usermail AS usermail, members.logged_at AS logged_at, COUNT( DISTINCT leads.id ) AS total_lead, COUNT( DISTINCT CASE WHEN leads.status = 2 THEN leads.status ELSE NULL END ) as closed_deals') );
 
     # setup ordering
     if ( isset( $_POST['order'] ) )
@@ -65,12 +66,14 @@ trait MemberControllerTrait
       $query->orderBy( $field_name, $field_ord );
     }
 
+    /*
     # add limit
     if ( $_POST['length'] != -1 ) {
       # add offset
       $query->offset( $_POST['start'] );
       $query->take( $_POST['length'] );
     }
+    */
 
     # get data
     $rows   = $query->get();
@@ -95,8 +98,12 @@ trait MemberControllerTrait
             continue;
           }
 
-          $field = str_replace('user.', '', $field_names[$i]);
-          $fields[] = $row->$field;
+          if ( $field_names[$i] == 'total_fee' ) {
+            $fields[] = $this->member->getTotalFee( $row );
+            continue;
+          }
+
+          $fields[] = $row->$field_names[$i];
         }
         # Add action button here, on last column
         $fields[] = $this->list_action_button($row);
@@ -113,7 +120,7 @@ trait MemberControllerTrait
     ?>
     <a class="action-edit btn-sm btn-light btn-icon" title="Edit" href="<?php echo route('admin.member.update', ['id' => $row->id]) ?>"><i class="fa fa-edit"></i></a>
     <a class="action-view btn-sm btn-light btn-icon" title="Edit" href="<?php echo route('admin.member.profile', ['id' => $row->id]) ?>"><i class="fa fa-eye"></i></a>
-    <?php if ( $row->status == 3 ): ?>
+    <?php if ( $row->status == 0 ): ?>
     <a class="btn-sm btn-light btn-icon" title="Send activation email" href="<?php echo route('admin.member.sendactivationemail', ['id' => $row->id]) ?>"><i class="fa fa-envelope"></i></a>
     <?php endif;?>
     <?php

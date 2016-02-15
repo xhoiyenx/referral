@@ -91,15 +91,22 @@ Route::group(['before' => 'auth.clientzone'], function(){
     'uses'  => 'Lead\LeadController@create',
   ]);  
 
-  # LEAD CREATE
+  # LEAD UPDATE
   Route::match(['GET', 'POST'], 'lead/update/{id}', [
     'as'    => 'client.lead.update', 
     'uses'  => 'Lead\LeadController@update',
   ]);
 
+  # CONTENT
   Route::get('page/{mode?}/{content?}', [
     'as'    => 'client.page', 
     'uses'  => 'Dashboard\DashboardController@page',
+  ]);
+
+  # ACCOUNT
+  Route::match(['GET', 'POST'], 'my-account', [
+    'as'    => 'client.account', 
+    'uses'  => 'Dashboard\DashboardController@myaccount',
   ]);
 
 });

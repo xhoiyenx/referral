@@ -45,6 +45,7 @@ $(document).ready(function() {
   var route         = '{{ route('admin.testimonials') }}';
 
   var settings = {
+    responsive: true,    
     ajax: {
       url: route,
       type: "POST"
